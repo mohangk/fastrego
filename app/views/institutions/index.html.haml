@@ -1,0 +1,25 @@
+%h1 Listing institutions
+
+%table
+  %tr
+    %th Name
+    %th Abbreviation
+    %th Website
+    %th Country
+    %th
+    %th
+    %th
+
+  - @institutions.each do |institution|
+    %tr
+      %td= institution.name
+      %td= institution.abbreviation
+      %td= institution.website
+      %td= institution.country
+      %td= link_to 'Show', institution
+      %td= link_to 'Edit', edit_institution_path(institution)
+      %td= link_to 'Destroy', institution, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Institution', new_institution_path
