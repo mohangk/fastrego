@@ -48,6 +48,10 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  require 'factory_girl_rails'
+  Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
+    load model
+  end
   # This code will be run each time you run your specs.
 
 end

@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe Institution do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject { Factory(:institution) }
+  it { should validate_presence_of(:name) }
+  it { should validate_presence_of(:abbreviation) }
+  it { should validate_presence_of(:country) }
+  it { should validate_uniqueness_of(:name) }
+  it { should validate_uniqueness_of(:abbreviation) }
+  it { should validate_uniqueness_of(:country) }
 end
