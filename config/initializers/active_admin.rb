@@ -33,7 +33,7 @@ ActiveAdmin.setup do |config|
   #
   # Active Admin will automatically call an authentication 
   # method in a before filter of all controller actions to 
-  # ensure that there is a currently logged in admin user.
+  # ensure that there is a currently logged in admin users.
   #
   # This setting changes the method which Active Admin calls
   # within the controller.
@@ -43,10 +43,10 @@ ActiveAdmin.setup do |config|
   # == Current User
   #
   # Active Admin will associate actions with the current
-  # user performing them.
+  # users performing them.
   #
   # This setting changes the method which Active Admin calls
-  # to return the currently logged in user.
+  # to return the currently logged in users.
   config.current_user_method = :current_admin_user
 
 

@@ -44,11 +44,11 @@ class InstitutionsController < ApplicationController
 
     respond_to do |format|
       if @institution.save
-        format.html { redirect_to @institution, notice: 'Institution was successfully created.' }
-        format.json { render json: @institution, status: :created, location: @institution }
+        format.html { redirect_to institutions_path, notice: 'Institution was successfully registered.' }
+        #format.json { render json: @institution, status: :created, location: @institution }
       else
         format.html { render action: "new" }
-        format.json { render json: @institution.errors, status: :unprocessable_entity }
+        #format.json { render json: @institution.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -71,13 +71,13 @@ class InstitutionsController < ApplicationController
 
   # DELETE /institutions/1
   # DELETE /institutions/1.json
-  def destroy
-    @institution = Institution.find(params[:id])
-    @institution.destroy
-
-    respond_to do |format|
-      format.html { redirect_to institutions_url }
-      format.json { head :ok }
-    end
-  end
+  #def destroy
+  #  @institution = Institution.find(params[:id])
+  #  @institution.destroy
+  #
+  #  respond_to do |format|
+  #    format.html { redirect_to institutions_url }
+  #    format.json { head :ok }
+  #  end
+  #end
 end

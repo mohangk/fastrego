@@ -25,6 +25,8 @@ gem 'meta_search', '>= 1.1.0.pre'
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'factory_girl_rails', "~> 1.2"
+  gem 'spork', '~> 0.9.0.rc'
 end
 
 # To use ActiveModel has_secure_password

@@ -1,4 +1,4 @@
-%h1 Listing institutions
+%h1 Registered institutions
 
 %table
   %tr
@@ -7,8 +7,6 @@
     %th Website
     %th Country
     %th
-    %th
-    %th
 
   - @institutions.each do |institution|
     %tr
@@ -16,10 +14,8 @@
       %td= institution.abbreviation
       %td= institution.website
       %td= institution.country
-      %td= link_to 'Show', institution
       %td= link_to 'Edit', edit_institution_path(institution)
-      %td= link_to 'Destroy', institution, :confirm => 'Are you sure?', :method => :delete
 
 %br
 
-= link_to 'New Institution', new_institution_path
+%p Cannot find your institution ? #{link_to 'Click here to add your institution now', new_institution_path}
