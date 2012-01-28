@@ -29,7 +29,7 @@ describe "Users" do
       Factory(:user)
     end
 
-    it 'allows a user that is logged in to be able to see his '
+    it 'allows a user that is logged in to be able to see his profile'
   end
 
 
