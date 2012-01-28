@@ -6,9 +6,15 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    %p{:class => "notice" }
-      = notice
-    %p{:class => "alert" }
-      = alert
+    %section.header
+      %div#menu
+      - unless current_user.nil?
+        = link_to "Logout", destroy_user_session_path, method: :delete
+      %div#messages
+        %p{:class => "notice" }
+          = notice
+        %p{:class => "alert" }
+          = alert
 
-    = yield
+    %section.main
+      = yield

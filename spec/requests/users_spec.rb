@@ -29,7 +29,19 @@ describe "Users" do
       Factory(:user)
     end
 
-    it 'allows a user that is logged in to be able to see his profile'
+    it 'should allow a user that is logged in to be able to see his profile that will have a logout link, upon clicking it logs the user out'  do
+      visit profile_path
+      page.should have_content 'You need to sign in'
+      fill_in 'Email', with: 'suthen.thomas@gmail.com'
+      fill_in 'Password', with: 'password'
+      click_button 'Sign in'
+      page.current_path.should == profile_path
+      page.should have_content 'Signed in successfully'
+      page.should have_link 'Logout'
+      click_link 'Logout'
+      page.should have_content 'You need to sign in'
+
+    end
   end
 
 
