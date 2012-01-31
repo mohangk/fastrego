@@ -1,14 +1,21 @@
 class Setting < ActiveRecord::Base
   validates :key, presence: true, uniqueness: true
-  def self.method_missing(*args)
-    if args.length == 1
+  def self.key(key, value=nil)
 
-      setting = self.find_by_key(args[0])
+    if value.nil?
+      setting = self.find_by_key(key)
       if not setting.nil?
         setting.value
       end
     else
-      super
+      setting = self.find_by_key(key)
+      if setting.nil?
+        setting = Setting.new
+        setting.key = key
+      end
+      setting.value = value
+      setting.save
+      setting.reload
     end
   end
 end
