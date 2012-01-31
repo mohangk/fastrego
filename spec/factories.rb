@@ -13,4 +13,9 @@ FactoryGirl.define do
     phone_number '123123123123'
     institution
   end
+
+  factory :enable_pre_registration, :class => Setting do
+    key 'enable_pre_registration'
+    value 'True'
+  end
 end
