@@ -15,7 +15,6 @@ class Setting < ActiveRecord::Base
       end
       setting.value = value
       setting.save
-      setting.reload
     end
   end
 end
