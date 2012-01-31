@@ -9,7 +9,8 @@
     %section.header
       %div#menu
       - unless current_user.nil?
-        = link_to "Logout", destroy_user_session_path, method: :delete
+        = link_to 'Edit profile', edit_user_registration_path
+        = link_to 'Logout', destroy_user_session_path, method: :delete
       %div#messages
         %p{:class => "notice" }
           = notice

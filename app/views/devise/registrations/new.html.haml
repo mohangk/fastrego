@@ -10,6 +10,15 @@
     %br/
     = f.email_field :email
   %div
+    = f.label :institution_id
+    (If you can't find your institution, please check in the #{link_to "institution register", institutions_path})
+    %br/
+    = f.collection_select(:institution_id, Institution.all, :id, :name)
+  %div
+    = f.label :phone_number
+    %br/
+    = f.text_field :phone_number
+  %div
     = f.label :password
     %br/
     = f.password_field :password
@@ -17,13 +26,6 @@
     = f.label :password_confirmation
     %br/
     = f.password_field :password_confirmation
-  %div
-    = f.label :institution_id
-    %br/
-    = f.collection_select(:institution_id, Institution.all, :id, :name)
-  %div
-    = f.label :phone_number
-    %br/
-    = f.text_field :phone_number
+
   %div= f.submit "Sign up"
 = render :partial => "devise/shared/links"
