@@ -6,7 +6,7 @@ UadcRego::Application.routes.draw do
 
   devise_for :users
 
-  resources :institutions, except: [:delete]
+  resources :institutions, only: [:new, :create, :index]
   match "profile" => "users#show", as: :profile, via: :get
   match "users/registration" => "users#registration", via: :post
   match "users/registration" => redirect('/profile'), via: :get

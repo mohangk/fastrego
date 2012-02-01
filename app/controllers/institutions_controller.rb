@@ -12,14 +12,14 @@ class InstitutionsController < ApplicationController
 
   # GET /institutions/1
   # GET /institutions/1.json
-  def show
-    @institution = Institution.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @institution }
-    end
-  end
+  #def show
+  #  @institution = Institution.find(params[:id])
+  #
+  #  respond_to do |format|
+  #    format.html # show.html.erb
+  #    format.json { render json: @institution }
+  #  end
+  #end
 
   # GET /institutions/new
   # GET /institutions/new.json
@@ -33,9 +33,9 @@ class InstitutionsController < ApplicationController
   end
 
   # GET /institutions/1/edit
-  def edit
-    @institution = Institution.find(params[:id])
-  end
+  #def edit
+  #  @institution = Institution.find(params[:id])
+  #end
 
   # POST /institutions
   # POST /institutions.json
@@ -55,19 +55,19 @@ class InstitutionsController < ApplicationController
 
   # PUT /institutions/1
   # PUT /institutions/1.json
-  def update
-    @institution = Institution.find(params[:id])
-
-    respond_to do |format|
-      if @institution.update_attributes(params[:institution])
-        format.html { redirect_to @institution, notice: 'Institution was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @institution.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  #def update
+  #  @institution = Institution.find(params[:id])
+  #
+  #  respond_to do |format|
+  #    if @institution.update_attributes(params[:institution])
+  #      format.html { redirect_to @institution, notice: 'Institution was successfully updated.' }
+  #      format.json { head :ok }
+  #    else
+  #      format.html { render action: "edit" }
+  #      format.json { render json: @institution.errors, status: :unprocessable_entity }
+  #    end
+  #  end
+  #end
 
   # DELETE /institutions/1
   # DELETE /institutions/1.json

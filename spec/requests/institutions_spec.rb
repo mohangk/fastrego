@@ -11,6 +11,7 @@ describe "Institutions" do
       page.should have_content('MMU')
       page.should have_content('Malaysia')
       page.should have_content('http://www.mmu.edu.my')
+      page.should_have_link('Add a team manager')
       page.should have_link 'Click here to add your institution now'
     end
   end
@@ -30,12 +31,6 @@ describe "Institutions" do
     end
   end
 
-  describe "edit" do
-    it "should not have an edit page"
-  end
 
-  describe "show" do
-    it "should not have a show page"
-  end
 
 end
