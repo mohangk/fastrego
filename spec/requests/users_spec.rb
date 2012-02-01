@@ -81,13 +81,7 @@ describe "Users" do
         page.should have_content 'Signed in successfully'
       end
 
-      context "will have a registration section" do
-        it "is closed by default" do
-          page.should have_content('Registration is currently closed.')
-        end
 
-        it "is open when the system setting 'enable_pre_registration' is enabled"
-      end
     end
 
 

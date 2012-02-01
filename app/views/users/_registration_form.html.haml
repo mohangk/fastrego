@@ -1,0 +1,37 @@
+= form_for @registration do |f|
+  -if @registration.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@registration.errors.count, "error")} prohibited this registration from being saved:"
+      %ul
+        - @registration.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :debate_team_requested
+    = f.number_field :debate_team_requested
+  .field
+    = f.label :adjudicators_requested
+    = f.number_field :adjudicators_requested
+  .field
+    = f.label :observers_requested
+    = f.number_field :observers_requested
+  .field
+    = f.label :debate_teams_granted
+    = f.number_field :debate_teams_granted
+  .field
+    = f.label :adjudicators_granted
+    = f.number_field :adjudicators_granted
+  .field
+    = f.label :observers_granted
+    = f.number_field :observers_granted
+  .field
+    = f.label :debate_teams_confirmed
+    = f.number_field :debate_teams_confirmed
+  .field
+    = f.label :observers_confirmed
+    = f.number_field :observers_confirmed
+  .field
+    = f.label :adjudicators_confirmed
+    = f.number_field :adjudicators_confirmed
+  .actions
+    = f.submit 'Save'

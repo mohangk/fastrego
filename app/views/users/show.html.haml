@@ -12,4 +12,7 @@
     %b Phone number:
     = current_user.phone_number
 %section#registration
-  %p Registration is currently closed.
+  - if  Setting.key('enable_pre_registration')
+    %p Registration is currently closed.
+  - else
+    = render 'registration_form'

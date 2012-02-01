@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120131032138) do
+ActiveRecord::Schema.define(:version => 20120131111024) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -51,6 +51,21 @@ ActiveRecord::Schema.define(:version => 20120131032138) do
     t.string   "abbreviation"
     t.string   "website"
     t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "registrations", :force => true do |t|
+    t.integer  "debate_team_requested"
+    t.integer  "adjudicators_requested"
+    t.integer  "observers_requested"
+    t.integer  "debate_teams_granted"
+    t.integer  "adjudicators_granted"
+    t.integer  "observers_granted"
+    t.integer  "debate_teams_confirmed"
+    t.integer  "observers_confirmed"
+    t.integer  "adjudicators_confirmed"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,0 +1,39 @@
+%h1 Listing registrations
+
+%table
+  %tr
+    %th Debate team requested
+    %th Adjudicators requested
+    %th Observers requested
+    %th Debate teams granted
+    %th Adjudicators granted
+    %th Observers granted
+    %th Debate teams confirmed
+    %th Observers confirmed
+    %th Adjudicators confirmed
+    %th User
+    %th Requested at
+    %th
+    %th
+    %th
+
+  - @registrations.each do |registration|
+    %tr
+      %td= registration.debate_team_requested
+      %td= registration.adjudicators_requested
+      %td= registration.observers_requested
+      %td= registration.debate_teams_granted
+      %td= registration.adjudicators_granted
+      %td= registration.observers_granted
+      %td= registration.debate_teams_confirmed
+      %td= registration.observers_confirmed
+      %td= registration.adjudicators_confirmed
+      %td= registration.user_id
+      %td= registration.requested_at
+      %td= link_to 'Show', registration
+      %td= link_to 'Edit', edit_registration_path(registration)
+      %td= link_to 'Destroy', registration, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Registration', new_registration_path
