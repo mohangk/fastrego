@@ -16,8 +16,7 @@
       %td= institution.country
       %td
         - if institution.user.nil?
-          =link_to 'Add team manager', "/users/sign_up?insititution_id=#{institution.id}"
-
+          =link_to 'Add team manager', new_user_registration_path(institution_id: institution.id)
 %br
 
 %p Cannot find your institution ? #{link_to 'Click here to add your institution now', new_institution_path}

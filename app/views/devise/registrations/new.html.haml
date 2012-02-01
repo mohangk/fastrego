@@ -1,3 +1,6 @@
+- if not params[:institution_id].nil? and not Institution.find_by_id(params[:institution_id].to_i).nil?
+  - resource.institution_id = params[:institution_id].to_i
+-
 %h2 Sign up
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
   = devise_error_messages!
