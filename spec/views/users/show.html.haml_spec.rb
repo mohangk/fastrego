@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "users/show.html.haml" do
   before(:each) do
     sign_in Factory(:user)
+    @registration = Registration.new
   end
 
   it "renders the team managers details" do

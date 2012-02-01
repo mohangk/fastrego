@@ -18,7 +18,7 @@ describe "institutions/new" do
       assert_select "input#institution_name", :name => "institution[name]"
       assert_select "input#institution_abbreviation", :name => "institution[abbreviation]"
       assert_select "input#institution_website", :name => "institution[website]"
-      assert_select "input#institution_country", :name => "institution[country]"
+      assert_select "select#institution_country", :name => "institution[country]"
     end
   end
 end

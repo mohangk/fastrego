@@ -1,5 +1,4 @@
 UadcRego::Application.routes.draw do
-  resources :registrations
 
   ActiveAdmin.routes(self)
 
@@ -11,6 +10,9 @@ UadcRego::Application.routes.draw do
   match "profile" => "users#show", as: :profile
 
   root :to => "users#show"
+
+  #resources :registrations
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

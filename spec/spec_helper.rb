@@ -22,7 +22,9 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
-    config.include Devise::TestHelpers
+    config.include Devise::TestHelpers, type: :view
+    config.include Devise::TestHelpers, type: :controller
+
     config.render_views
     # ## Mock Framework
     #
