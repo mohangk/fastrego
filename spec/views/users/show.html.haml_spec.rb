@@ -18,19 +18,22 @@ describe "users/show.html.haml" do
 
     it "is closed by default" do
       render
-      rendered.should have_content('Registration is currently closed.')
+      rendered.should have_content('Registration is currently closed')
     end
 
     context('when when the system setting "enable_pre_registration" is enabled') do
-      it "will not  tell the team manager that registration is closed" do
-        Setting.stub!(:key).and_return(true)
+      before(:each) do
+        Setting.stub!(:key).and_return('True')
         render
+      end
+
+      it "will not  tell the team manager that registration is closed" do
         rendered.should_not have_content('Registration is currently closed.')
       end
       it "will provide 3 text boxes to fill in the team managers  requests" do
-        rendered.should have_css('input[type="text"][name="registration[requested_debate_teams"]')
-        rendered.should have_css('input[type="text"][name="registration[requested_adjudicators"]')
-        rendered.should have_css('input[type="text"][name="registration[requested_observers"]')
+        rendered.should have_css('input#registration_debate_team_requested')
+        rendered.should have_css('input#registration_adjudicators_requested')
+        rendered.should have_css('input#registration_observers_requested')
       end
     end
 
