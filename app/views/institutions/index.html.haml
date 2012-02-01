@@ -6,7 +6,7 @@
     %th Abbreviation
     %th Website
     %th Country
-    %th
+    %th Team manager
 
   - @institutions.each do |institution|
     %tr
@@ -15,6 +15,8 @@
       %td= institution.website
       %td= institution.country
       %td
+        - if institution.user.nil?
+          =link_to 'Add team manager', "/users/sign_up?insititution_id=#{institution.id}"
 
 %br
 
