@@ -7,12 +7,11 @@ UadcRego::Application.routes.draw do
   devise_for :users
 
   resources :institutions, except: [:delete]
-  match "profile" => "users#show", as: :profile
+  match "profile" => "users#show", as: :profile, via: :get
+  match "users/registration" => "users#registration", as: :registration, via: :post
+  match "users/registration" => redirect('/profile'), via: :get
 
   root :to => "users#show"
-
-  #resources :registrations
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
