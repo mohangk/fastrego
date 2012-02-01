@@ -8,7 +8,7 @@ UadcRego::Application.routes.draw do
 
   resources :institutions, except: [:delete]
   match "profile" => "users#show", as: :profile, via: :get
-  match "users/registration" => "users#registration", as: :registration, via: :post
+  match "users/registration" => "users#registration", via: :post
   match "users/registration" => redirect('/profile'), via: :get
 
   root :to => "users#show"

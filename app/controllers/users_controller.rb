@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    @registration = Registration.new
+    @registration = current_user.registration.nil? ? Registration.new : current_user.registration
   end
 
   def registration
