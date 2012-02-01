@@ -9,4 +9,5 @@ class User < ActiveRecord::Base
   validates :institution_id, presence: true, uniqueness: true
   validates :name, presence: true
   belongs_to :institution
+  has_one :registration, dependent: :destroy
 end

@@ -18,4 +18,11 @@ FactoryGirl.define do
     key 'enable_pre_registration'
     value 'True'
   end
+
+  factory :registration do
+    debate_teams_requested 3
+    adjudicators_requested 1
+    observers_requested 1
+    user
+  end
 end

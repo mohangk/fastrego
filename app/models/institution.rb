@@ -3,5 +3,5 @@ class Institution < ActiveRecord::Base
   validates :abbreviation, presence: true, uniqueness: true
   validates :country, presence: true
 
-  has_one :user
+  has_one :user, dependent: :destroy
 end

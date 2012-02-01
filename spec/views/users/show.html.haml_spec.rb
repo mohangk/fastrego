@@ -27,11 +27,13 @@ describe "users/show.html.haml" do
         render
       end
 
-      it "will not  tell the team manager that registration is closed" do
-        rendered.should_not have_content('Registration is currently closed.')
+      it "will tell the team manager that the registration is open" do
+        rendered.should_not have_content('Registration is currently closed')
+        rendered.should have_content('Registration is open')
+
       end
       it "will provide 3 text boxes to fill in the team managers  requests" do
-        rendered.should have_css('input#registration_debate_team_requested')
+        rendered.should have_css('input#registration_debate_teams_requested')
         rendered.should have_css('input#registration_adjudicators_requested')
         rendered.should have_css('input#registration_observers_requested')
       end
