@@ -64,8 +64,8 @@ UadcRego::Application.configure do
   ActionMailer::Base.smtp_settings = {
       :port => 25,
       :address => 'smtp.mailgun.org',
-      :user_name => 'postmaster@app2735461.mailgun.org',
-      :password => '4a-ppxyc3qe6',
+      :user_name => 'postmaster@uadc2012.mailgun.org',
+      :password => '4la-t22p-116',
       :domain => 'uadc2012.heroku.com',
       :authentication => :plain,
   }
