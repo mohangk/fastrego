@@ -16,7 +16,7 @@
       %td= institution.country
       %td
         - if institution.user.nil?
-          =link_to 'Add team manager', new_user_registration_path(institution_id: institution.id)
+          =link_to 'Add team manager', new_user_registration_path(institution_id: institution.id), id: "add_team_manager_institution_#{institution.id}"
         - else
           = institution.user.name
 %br
