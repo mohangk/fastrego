@@ -5,7 +5,7 @@ UadcRego::Application.configure do
   config.cache_classes = true
 
   # Full error reports are disabled and caching is turned on
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
@@ -59,7 +59,17 @@ UadcRego::Application.configure do
   config.active_support.deprecation = :notify
 
   config.assets.precompile += %w[active_admin.css active_admin.js]
-  config.action_mailer.default_url_options = { :host => 'uadc2012.heroku.com' }
+  config.action_mailer.default_url_options = {:host => 'uadc2012.heroku.com'}
+  config.action_mailer.raise_delivery_errors = true
+  ActionMailer::Base.smtp_settings = {
+      :port => ENV['MAILGUN_SMTP_PORT'],
+      :address => 'smtp.mailgun.org',
+      :user_name => 'postmaster@app2735461.mailgun.org',
+      :password => '4a-ppxyc3qe6',
+      :domain => 'uadc2012.heroku.com',
+      :authentication => :plain,
+  }
+  ActionMailer::Base.delivery_method = :smtp
 
 
 end
