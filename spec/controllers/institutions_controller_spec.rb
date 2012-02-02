@@ -4,9 +4,6 @@ require 'spec_helper'
 
 describe InstitutionsController do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Institution. As you add validations to Institution, be sure to
-  # update the return value of this method accordingly.
   def valid_attributes
     { name: 'test name',
       abbreviation: 'test abbreviation',

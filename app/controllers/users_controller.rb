@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   def registration
     @registration = Registration.new(params[:registration])
     @registration.user = current_user
+    @registration.requested_at = Time.now
 
     if @registration.save
       redirect_to profile_url, notice: 'Registration was successful.'

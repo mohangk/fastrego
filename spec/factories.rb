@@ -23,6 +23,7 @@ FactoryGirl.define do
     debate_teams_requested 3
     adjudicators_requested 1
     observers_requested 1
+    requested_at '2011-01-01 01:01:01'
     user
   end
 end

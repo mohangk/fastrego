@@ -28,6 +28,7 @@ group :development, :test do
   gem 'factory_girl_rails', :require => false
   gem 'spork', '~> 0.9.0.rc'
   gem 'shoulda'
+  gem 'timecop'
 end
 
 # To use ActiveModel has_secure_password

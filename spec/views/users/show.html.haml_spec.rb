@@ -34,7 +34,6 @@ describe "users/show.html.haml" do
         it "will tell the team manager that the registration is open" do
           rendered.should_not have_content('Registration is currently closed')
           rendered.should have_content('Registration is open')
-
         end
         it "will provide 3 text boxes to fill in the team managers  requests" do
           rendered.should have_css('input#registration_debate_teams_requested')
@@ -54,6 +53,11 @@ describe "users/show.html.haml" do
         it 'will not provide the registration form' do
           rendered.should_not have_css('form#new_registration')
         end
+
+        it 'will display the datetime that the registration was requested' do
+          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 UTC and requested the following slots')
+        end
+
         it 'will display the registration details' do
           rendered.should have_content('3 debate teams')
           rendered.should have_content('1 adjudicator')
