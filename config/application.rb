@@ -52,5 +52,6 @@ module UadcRego
     config.assets.version = '1.0'
 
     config.sass.preferred_syntax = :sass
+    config.assets.initialize_on_precompile = false
   end
 end
