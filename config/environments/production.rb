@@ -59,5 +59,7 @@ UadcRego::Application.configure do
   config.active_support.deprecation = :notify
 
   config.assets.precompile += %w[active_admin.css active_admin.js]
+  config.action_mailer.default_url_options = { :host => 'uadc2012.heroku.com' }
+
 
 end
