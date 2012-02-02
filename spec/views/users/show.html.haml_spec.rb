@@ -6,6 +6,7 @@ describe "users/show.html.haml" do
     Factory(:user)
   end
   before(:each) do
+    user.confirm!
     sign_in user
     @registration = Registration.new
   end
@@ -45,6 +46,7 @@ describe "users/show.html.haml" do
       context('after the team manager has submitted his registration') do
         let(:user) do
           user = Factory(:user)
+          user.confirm!
           registration = Factory(:registration, user: user)
           user.registration = registration
           user

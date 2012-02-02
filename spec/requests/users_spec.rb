@@ -19,14 +19,21 @@ describe "Users" do
       fill_in 'Phone number', with: '012123123123'
       click_button 'Sign up'
       page.should_not have_content 'error'
-      page.should have_content 'signed up successfully'
-      page.current_path.should == profile_path
+      #we do this because we are using :confirmable module in devise
+      User.first.confirm!
+      page.should have_content 'You need to sign in'
+      fill_in 'Email', with: 'test@test.com'
+      fill_in 'Password', with: 'password'
+      click_button 'Sign in'
+      page.should have_content 'Signed in successfully'
+      page.current_path.should == root_path
     end
   end
 
   describe 'profile' do
     before :each do
-      Factory(:user)
+      user = Factory(:user)
+      user.confirm!
       Factory(:institution, name: 'Universiti Teknologi', abbreviation: 'UTM')
     end
 
