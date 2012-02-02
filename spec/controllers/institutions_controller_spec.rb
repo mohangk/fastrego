@@ -26,26 +26,10 @@ describe InstitutionsController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested institution as @institution" do
-      institution = Institution.create! valid_attributes
-      get :show, {:id => institution.to_param}, valid_session
-      assigns(:institution).should eq(institution)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new institution as @institution" do
       get :new, {}, valid_session
       assigns(:institution).should be_a_new(Institution)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested institution as @institution" do
-      institution = Institution.create! valid_attributes
-      get :edit, {:id => institution.to_param}, valid_session
-      assigns(:institution).should eq(institution)
     end
   end
 
@@ -86,48 +70,5 @@ describe InstitutionsController do
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested institution" do
-        institution = Institution.create! valid_attributes
-        # Assuming there are no other institutions in the database, this
-        # specifies that the Institution created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Institution.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => institution.to_param, :institution => {'these' => 'params'}}, valid_session
-      end
-
-      it "assigns the requested institution as @institution" do
-        institution = Institution.create! valid_attributes
-        put :update, {:id => institution.to_param, :institution => valid_attributes}, valid_session
-        assigns(:institution).should eq(institution)
-      end
-
-      it "redirects to the institution" do
-        institution = Institution.create! valid_attributes
-        put :update, {:id => institution.to_param, :institution => valid_attributes}, valid_session
-        response.should redirect_to(institution)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the institution as @institution" do
-        institution = Institution.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Institution.any_instance.stub(:save).and_return(false)
-        put :update, {:id => institution.to_param, :institution => {}}, valid_session
-        assigns(:institution).should eq(institution)
-      end
-
-      it "re-renders the 'edit' template" do
-        institution = Institution.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Institution.any_instance.stub(:save).and_return(false)
-        put :update, {:id => institution.to_param, :institution => {}}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
 
 end
