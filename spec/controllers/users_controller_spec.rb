@@ -31,7 +31,7 @@ describe UsersController do
       end
 
       it "assigns a newly created registration as @registration" do
-        Timecop.freeze
+        Timecop.freeze(Time.now)
         post :registration, {:registration => valid_attributes}
         assigns(:registration).should be_a(Registration)
         assigns(:registration).requested_at.should eq(Time.zone.now)
