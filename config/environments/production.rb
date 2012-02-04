@@ -63,10 +63,10 @@ UadcRego::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   ActionMailer::Base.smtp_settings = {
       :port => 25,
-      :address => 'smtp.mailgun.org',
-      :user_name => 'postmaster@uadc2012.mailgun.org',
-      :password => '4la-t22p-116',
-      :domain => 'uadc2012.heroku.com',
+      :address => ENV['MAILGUN_SMTP_PORT'],
+      :user_name => ENV['MAILGUN_SMTP_SERVER'],
+      :password => ENV['MAILGUN_SMTP_PASSWORD'],
+      :domain => 'uadc2012.herokuapp.com',
       :authentication => :plain,
   }
   ActionMailer::Base.delivery_method = :smtp
