@@ -1,21 +1,35 @@
 !!!
 %html
   %head
-    %title= UadcRego
+    %title UADC 2012 Registration
+    /[if lt IE 9]
+    %script{src: 'http://html5shim.googlecode.com/svn/trunk/html5.js'}
+    /[endif]
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    %section.header
-      %div#menu
-      - unless current_user.nil?
-        = link_to 'Edit profile', edit_user_registration_path
-        = link_to 'Logout', destroy_user_session_path, method: :delete
-      %div#messages
-        %p{:class => "notice" }
-          = notice
-        %p{:class => "alert" }
-          = alert
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          /%a.btn.btn-navbar{data-toggle: 'collapse', data-target: '.nav-collapse'}
+          %a.brand
+            UADC 2012 Registration
+          .nav-collapse
+            %ul.nav
+              %li
+                %a{href: '/'} Profile
+              %li
+                %a{href: '/institutions'} Institutions
+              - unless current_user.nil?
+                %li
+                  =link_to 'Edit profile', edit_user_registration_path
+                %li
+                  =link_to 'Logout', destroy_user_session_path, method: :delete
+    .container
+      %p{:class => "notice" }
+        = notice
+      %p{:class => "alert" }
+        = alert
 
-    %section.main
       = yield
