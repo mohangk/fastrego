@@ -1,12 +1,13 @@
 %h1 Registered institutions
 
-%table
-  %tr
-    %th Name
-    %th Abbreviation
-    %th Website
-    %th Country
-    %th Team manager
+%table.table.table-striped.table-bordered.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th Abbreviation
+      %th Website
+      %th Country
+      %th Team manager
 
   - @institutions.each do |institution|
     %tr
