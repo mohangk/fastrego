@@ -27,9 +27,8 @@
                 %li
                   =link_to 'Logout', destroy_user_session_path, method: :delete
     .container
-      %p{:class => "notice" }
+      .alert.alert-info
         = notice
-      %p{:class => "alert" }
+      .alert.alert-error
         = alert
-
       = yield
