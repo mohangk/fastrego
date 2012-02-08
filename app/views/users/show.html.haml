@@ -12,14 +12,14 @@
     %b Phone number:
     = current_user.phone_number
 %section#registration
-  - if not Setting.key('enable_pre_registration') == 'True'
+  - if not Setting.key('enable_pre_registration') == 'True' and current_user.registration.nil?
     %p
       %b Registration is currently closed
   - elsif Setting.key('enable_pre_registration') == 'True' and current_user.registration.nil?
     %p
       %b Registration is open
     = render 'registration_form'
-  - elsif Setting.key('enable_pre_registration') == 'True' and not current_user.registration.nil?
+  - elsif not current_user.registration.nil?
     %p
       %b You completed pre-registration at #{current_user.registration.requested_at} and requested the following slots
       %ul
