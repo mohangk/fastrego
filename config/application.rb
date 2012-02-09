@@ -53,5 +53,6 @@ module UadcRego
 
     config.sass.preferred_syntax = :sass
     config.assets.initialize_on_precompile = false
+    config.time_zone = 'Kuala Lumpur'
   end
 end
