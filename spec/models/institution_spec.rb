@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Institution do
   subject { Factory(:institution) }
+  it { should ensure_length_of(:abbreviation).is_at_most(10) }
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:abbreviation) }
   it { should validate_presence_of(:country) }
