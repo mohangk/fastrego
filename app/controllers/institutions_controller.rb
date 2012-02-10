@@ -2,7 +2,7 @@ class InstitutionsController < ApplicationController
   # GET /institutions
   # GET /institutions.json
   def index
-    @institutions = Institution.all
+    @institutions = Institution.alphabetically
 
     respond_to do |format|
       format.html # index.html.erb
