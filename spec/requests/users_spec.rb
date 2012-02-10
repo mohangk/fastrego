@@ -5,7 +5,7 @@ describe "Users" do
     before do
       Factory(:institution)
     end
-    it 'provides a form for users to sign up and then forward them to the profile page', do
+    it 'provides a form for users to sign up and then forward them to the profile page' do
       visit profile_path
       page.should have_content 'You need to sign in'
       page.should have_link 'Sign up'

@@ -6,7 +6,7 @@ describe InstitutionsController do
 
   def valid_attributes
     { name: 'test name',
-      abbreviation: 'test abbreviation',
+      abbreviation: 'testabrev',
       country: 'Malaysia'
     }
   end

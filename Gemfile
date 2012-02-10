@@ -20,6 +20,7 @@ gem 'jquery-rails'
 gem 'haml-rails'
 gem 'devise'
 gem 'activeadmin'
+gem "strip_attributes", "~> 1.0"
 gem 'meta_search', '>= 1.1.0.pre'
 #gem 'country-select' - using http://github.com/rails/iso-3166-country-select instead as this did not seem to work
 
@@ -30,6 +31,7 @@ group :development, :test do
   gem 'spork', '~> 0.9.0.rc'
   gem 'shoulda'
   gem 'timecop'
+  gem 'ruby-debug19', :require => 'ruby-debug'
 end
 
 # To use ActiveModel has_secure_password

@@ -57,7 +57,7 @@ describe "users/show.html.haml" do
         end
 
         it 'will display the datetime that the registration was requested' do
-          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 UTC and requested the following slots')
+          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 +0800 and requested the following slots')
         end
 
         it 'will display the registration details' do
@@ -99,7 +99,7 @@ describe "users/show.html.haml" do
         end
 
         it 'will display the datetime that the registration was requested' do
-          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 UTC and requested the following slots')
+          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 +0800 and requested the following slots')
         end
 
         it 'will display the registration details' do

@@ -9,5 +9,8 @@ describe Institution do
   it { should validate_uniqueness_of(:name) }
   it { should validate_uniqueness_of(:abbreviation) }
 
-  pending 'how to handle dependent object in the case of a deletion of an institution'
+  it "should strip attributes with whitespaces" do
+    subject
+    lambda {Institution.create!(abbreviation: 'MMU ', name: 'Fake MMU', country: 'Test')}.should raise_error ActiveRecord::RecordInvalid
+  end
 end

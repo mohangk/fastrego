@@ -1,4 +1,5 @@
 class Institution < ActiveRecord::Base
+  strip_attributes
   validates :name, presence: true, uniqueness: true
   validates :abbreviation, presence: true, uniqueness: true, length: {maximum: 10}
   validates :country, presence: true

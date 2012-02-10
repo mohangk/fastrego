@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Institutions" do
   describe "list" do
-    it "provides a list of institutions with a link to create a team manager  or ", do
+    it "provides a list of institutions with a link to create a team manager  or " do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       dum = FactoryGirl.create(:institution, name: 'Dummy institution', abbreviation: 'DUM')
       mmu = FactoryGirl.create(:institution)
