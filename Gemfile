@@ -19,7 +19,8 @@ end
 gem 'jquery-rails'
 gem 'haml-rails'
 gem 'devise'
-gem 'activeadmin'
+# need this fix https://github.com/gregbell/active_admin/pull/623
+gem 'activeadmin' , :git => 'git://github.com/gregbell/active_admin.git'
 gem "strip_attributes", "~> 1.0"
 gem 'meta_search', '>= 1.1.0.pre'
 gem 'newrelic_rpm'
