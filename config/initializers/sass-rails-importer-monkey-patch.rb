@@ -1,3 +1,4 @@
+#This works around an issues with sass-rails that results in import having issues with nesting - https://gist.github.com/1343402
 require 'sass/rails/importer'
 if defined?(Sass::Rails::VERSION) && Sass::Rails::VERSION[0..3] >= '3.1.'
   Rails.logger.warn ' == MONKEY == Patching sass-rails: https://github.com/rails/sass-rails/pull/70'
