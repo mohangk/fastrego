@@ -14,7 +14,7 @@ describe Institution do
     lambda {Institution.create!(abbreviation: 'MMU ', name: 'Fake MMU', country: 'Test')}.should raise_error ActiveRecord::RecordInvalid
   end
 
-  it "should list institution alphabetically" do
+  it "should list institutions alphabetically" do
     Factory(:institution, name: 'Zztop', abbreviation: 'zz')
     Factory(:institution)
     Factory(:institution, name: 'Aatop', abbreviation: 'aa')
