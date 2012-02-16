@@ -14,6 +14,21 @@ FactoryGirl.define do
     institution
   end
 
+  factory :debate_team_fees, :class => Setting do
+    key 'debate_team_fees'
+    value '200'
+  end
+
+  factory :adjudicator_fees, :class => Setting do
+    key 'adjudicator_fees'
+    value '100'
+  end
+
+  factory :observer_fees, :class => Setting do
+    key 'observer_fees'
+    value '100'
+  end
+
   factory :enable_pre_registration, :class => Setting do
     key 'enable_pre_registration'
     value 'True'
