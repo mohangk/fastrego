@@ -12,19 +12,27 @@
     %b Phone number:
     = current_user.phone_number
 %section#registration
-  - if not Setting.key('enable_pre_registration') == 'True' and current_user.registration.nil?
+  - if not Setting.key('enable_pre_registration') == 'True' and not current_user.registered?
     %p
       %b Registration is currently closed
-  - elsif Setting.key('enable_pre_registration') == 'True' and current_user.registration.nil?
+  - elsif Setting.key('enable_pre_registration') == 'True' and not current_user.registered?
     %p
       %b Registration is open
     = render 'registration_form'
-  - elsif not current_user.registration.nil?
+  - elsif current_user.registered?
     %p
       %b You completed pre-registration at #{current_user.registration.requested_at} and requested the following slots
       %ul
         %li #{ pluralize current_user.registration.debate_teams_requested, 'debate team' }
         %li #{ pluralize current_user.registration.adjudicators_requested, 'adjudicator' }
         %li #{ pluralize current_user.registration.observers_requested, 'observer' }
+  - if current_user.registered? and current_user.registration.granted?
+    %hr
+    %p
+      %b You have been granted the following slots
+      %ul
+        %li #{ pluralize current_user.registration.debate_teams_granted, 'debate team' }
+        %li #{ pluralize current_user.registration.adjudicators_granted, 'adjudicator' }
+        %li #{ pluralize current_user.registration.observers_granted, 'observer' }
 
 

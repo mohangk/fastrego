@@ -112,5 +112,31 @@ describe "users/show.html.haml" do
 
   end
 
+  describe "granted slots section" do
+
+    let(:user) do
+      user = Factory(:user)
+      user.confirm!
+
+      user
+    end
+
+    it "is closed by default" do
+      render
+      rendered.should_not have_content('You have been granted the following slots')
+    end
+
+    it "is displayed when the registration has been granted slots closed by default" do
+      registration = Factory(:registration, user: user)
+      registration.debate_teams_granted = 1
+      user.registration = registration
+      render
+      rendered.should have_content('You have been granted the following slots')
+      rendered.should have_content('1 debate team')
+
+    end
+
+  end
+
 
 end

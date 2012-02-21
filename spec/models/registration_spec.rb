@@ -41,12 +41,20 @@ describe Registration do
       end
     end
     context  "fee not set" do
-      it "should calculate the fees" do
+      it "should calculate the fees if fees param not passed in" do
         r.grant_slots(1,1,1)
-        r = Registration.first
+        r.reload
         r.fees.should == 400
+      end
 
+      it "should calculate fees if blank string passed in as fees param" do
         r.grant_slots(1,1,0,'')
+        r = Registration.first
+        r.fees.should == 300
+      end
+
+      it 'should calculate fees if any of the granted values is an empty string or nil' do
+        r.grant_slots(1,1,nil)
         r = Registration.first
         r.fees.should == 300
       end

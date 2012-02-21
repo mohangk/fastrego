@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  default_scope :include => :registration
   strip_attributes
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable,  :lockable, :timeoutable and :omniauthable
@@ -11,4 +12,13 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   belongs_to :institution
   has_one :registration, dependent: :destroy
+
+  #def after_initialize
+  #  self.registration ||= Registration.new
+  #end
+
+  def registered?
+    !self.registration.nil?
+    #!self.registration.new_record?
+  end
 end
