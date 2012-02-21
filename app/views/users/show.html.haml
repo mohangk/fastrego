@@ -34,5 +34,8 @@
         %li #{ pluralize current_user.registration.debate_teams_granted, 'debate team' }
         %li #{ pluralize current_user.registration.adjudicators_granted, 'adjudicator' }
         %li #{ pluralize current_user.registration.observers_granted, 'observer' }
-
+  - if current_user.registered? and not current_user.registration.fees.blank?
+    %hr
+    %p
+      %b Total registration fees due USD #{current_user.registration.fees}
 
