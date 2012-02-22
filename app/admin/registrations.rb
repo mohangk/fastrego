@@ -26,8 +26,17 @@ ActiveAdmin.register Registration do
     column('Req at') do |r|
       r.requested_at.strftime("%d/%m %H:%M:%S")
     end
-    column('Inst') do |r|
+    column('Inst name') do |r|
+      r.user.institution.name
+    end
+    column('Inst abbr') do |r|
       r.user.institution.abbreviation
+    end
+    column('Email') do |r|
+      r.user.email
+    end
+    column('TM name') do |r|
+      r.user.name
     end
     column('DT Rq') { |r| r.debate_teams_requested }
     column('Adj Rq') { |r| r.adjudicators_requested }
