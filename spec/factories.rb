@@ -1,4 +1,5 @@
 FactoryGirl.define do
+
   factory :institution do
     abbreviation 'MMU'
     name 'Multimedia University'
@@ -40,5 +41,16 @@ FactoryGirl.define do
     observers_requested 1
     requested_at '2011-01-01 01:01:01'
     user
+  end
+
+  factory :payment do
+    account_number 'AB1231234'
+    amount_sent 12000
+    date_sent '2011-12-12'
+    comments 'Total payment - arriba!'
+    amount_received nil
+    admin_comment nil
+    scanned_proof { Rack::Test::UploadedFile.new(File.join(Rails.root,'spec','uploaded_files','test_image.jpg'), 'image/png')  }
+    registration
   end
 end

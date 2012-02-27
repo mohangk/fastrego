@@ -1,8 +1,12 @@
 class Registration < ActiveRecord::Base
   strip_attributes
-  attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested
-  validates :user_id, presence: true, uniqueness: true
+
   belongs_to :user
+  has_many :payments
+
+  attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested
+
+  validates :user_id, presence: true, uniqueness: true
   validates :debate_teams_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }
   validates :adjudicators_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }
   validates :observers_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }

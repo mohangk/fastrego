@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120214105433) do
+ActiveRecord::Schema.define(:version => 20120227015021) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -53,6 +53,22 @@ ActiveRecord::Schema.define(:version => 20120214105433) do
     t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "payments", :force => true do |t|
+    t.string   "account_number"
+    t.integer  "amount_sent"
+    t.date     "date_sent"
+    t.text     "comments"
+    t.integer  "amount_received"
+    t.text     "admin_comment"
+    t.integer  "registration_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "scanned_proof_file_name"
+    t.string   "scanned_proof_content_type"
+    t.integer  "scanned_proof_file_size"
+    t.datetime "scanned_proof_updated_at"
   end
 
   create_table "registrations", :force => true do |t|

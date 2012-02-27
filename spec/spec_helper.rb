@@ -1,4 +1,5 @@
 require 'spork'
+
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -16,6 +17,8 @@ Spork.prefork do
   require 'capybara/rspec'
   require 'capybara/rails'
 
+# Paperclip matchers
+  require "paperclip/matchers"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -24,6 +27,7 @@ Spork.prefork do
   RSpec.configure do |config|
     config.include Devise::TestHelpers, type: :view
     config.include Devise::TestHelpers, type: :controller
+    config.include Paperclip::Shoulda::Matchers
 
     config.render_views
     # ## Mock Framework
