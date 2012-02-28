@@ -1,0 +1,25 @@
+- unless current_user.registration.payments.empty?
+  %table.table.table-striped.table-bordered.table-condensed
+    %thead
+      %tr
+        %th Date
+        %th A/C #
+        %th RM sent
+        %th Comments
+        %th Proof
+        %th RM received
+        %th Our comments
+
+    - current_user.registration.payments.each do |p|
+      %tr
+        %td= p.date_sent
+        %td= p.account_number
+        %td= p.amount_sent
+        %td= p.comments
+        %td
+          =link_to 'View', p.scanned_proof.url, 'data-popup' => true
+        %td= p.amount_received
+        %td= p.admin_comment
+
+  :javascript
+    $('a[data-popup]').live('click', function(e) { window.open($(this).attr('href')); e.preventDefault(); });

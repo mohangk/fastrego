@@ -141,6 +141,7 @@ describe "Users" do
             select '10'
             fill_in 'A/C #', with: 'ABC123'
             fill_in 'RM', with: 1000
+            fill_in 'Comments', with: 'This is a slightly longer comment then usual'
             attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
             click_button 'Add payment'
           end

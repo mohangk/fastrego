@@ -11,6 +11,8 @@ body {
 
 .payment_form div {
     display: inline;
+    line-height: 1em;
+    vertical-align: middle;
 }
 
 .payment_form div#error_explanation {
@@ -29,6 +31,19 @@ body {
     margin-top: 0.5em;
     display: block;
 }
+
+.payment_form input[type="file"] {
+    width: 310px;
+}
+
+.payment_form label[for="payment_comments"], .payment_form input[name="payment[comments]"]  {
+    margin-top: 0.5em;
+}
+
+.payment_form input[name="payment[comments]"]  {
+   width: 50em;
+}
+
 
 .field_with_errors label, #error_explanation, #error_explanation h4 {
     color: red;

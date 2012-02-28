@@ -11,6 +11,7 @@ UadcRego::Application.routes.draw do
   match "users/registration" => "users#registration", via: :post
   match "users/payments" => "users#payments", via: :post
   match "users/registration" => redirect('/profile'), via: :get
+  match "users/payments" => redirect('/profile'), via: :get
 
   root :to => "users#show"
 

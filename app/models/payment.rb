@@ -1,8 +1,14 @@
 class Payment < ActiveRecord::Base
   belongs_to :registration
-  has_attached_file :scanned_proof
+  has_attached_file :scanned_proof,
+    :storage => :s3,
+    :bucket => 'uadc2012-fastrego',
+    :s3_credentials => {
+      :access_key_id => 'AKIAJ6NN5SPTK2YGH6WQ',
+      :secret_access_key => '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'
+    }
   validates_attachment_presence :scanned_proof, message: ' must be provided. Please scan the physical transfer document receipt or create a screen capture of electronic transfers and include as proof'
-  validates_attachment_size :scanned_proof, less_than: 3.megabytes
+  validates_attachment_size :scanned_proof, less_than: 3.megabytes, message: ' file size must be less then 3 megabytes'
   validates_attachment_content_type :scanned_proof, content_type: %w(image/jpg image/png image/gif application/pdf), message: 'file type must be of an image (GIF/JPG/PNG) or PDF'
   validates :registration, presence: true
   validates :account_number, presence: { message: "can't be blank. Please key in the account this transfer was made from"}
@@ -17,11 +23,11 @@ class Payment < ActiveRecord::Base
     amount_sent: 'RM',
     account_number: 'A/C #',
     scanned_proof: 'Proof of transfer',
-    #TODO - Below is ugly partial workaround for double error message due to  validates_attachment_presence - must check
-    scanned_proof_file_name: 'Proof of transfer',
     scanned_proof_content_type: 'Proof of transfer',
-    date_sent: 'Date'
-
+    scanned_proof_file_size: 'Proof of transfer',
+    date_sent: 'Date',
+    #TODO - Below is ugly partial workaround for double error message due to  validates_attachment_presence - must check
+    scanned_proof_file_name: 'Proof of transfer'
   }
 
   def self.human_attribute_name(attr, options={})

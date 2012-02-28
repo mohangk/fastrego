@@ -40,5 +40,6 @@
     %hr
     %p
       %b Total registration fees due RM #{current_user.registration.fees}. Make payment via the form below
+      = render 'payment_table'
       = render 'payment_form'
 

@@ -9,7 +9,7 @@ gem 'pg'
 gem 'thin'
 gem 'sass-rails',   '~> 3.1.5'
 gem 'paperclip', '~> 2.0'
-
+gem 'aws-sdk', '~> 1.3.4'
 
 # Gems used only for assets and not required
 # in production environments by default.
