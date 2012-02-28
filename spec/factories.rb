@@ -8,11 +8,11 @@ FactoryGirl.define do
   end
 
   factory :user do
-    name 'Suthen Thomas'
-    email 'suthen.thomas@gmail.com'
-    password 'password'
-    phone_number '123123123123'
-    institution
+      name 'Suthen Thomas'
+      email 'suthen.thomas@gmail.com'
+      password 'password'
+      phone_number '123123123123'
+      institution
   end
 
   factory :debate_team_fees, :class => Setting do
@@ -48,8 +48,6 @@ FactoryGirl.define do
     amount_sent 12000
     date_sent '2011-12-12'
     comments 'Total payment - arriba!'
-    amount_received nil
-    admin_comment nil
     scanned_proof { Rack::Test::UploadedFile.new(File.join(Rails.root,'spec','uploaded_files','test_image.jpg'), 'image/png')  }
     registration
   end

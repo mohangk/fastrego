@@ -8,3 +8,30 @@
 body {
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
+
+.payment_form div {
+    display: inline;
+}
+
+.payment_form div#error_explanation {
+    padding-bottom: 1em;
+}
+
+.payment_form input[type="text"], .payment_form input[type="number"] {
+    width: 6em;
+}
+
+.payment_form select {
+    width: 5em;
+}
+
+.payment_form input[type="submit"] {
+    margin-top: 0.5em;
+    display: block;
+}
+
+.field_with_errors label, #error_explanation, #error_explanation h4 {
+    color: red;
+
+}
+

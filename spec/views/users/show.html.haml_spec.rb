@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "users/show.html.haml" do
 
   let(:user) do
-    Factory(:user)
+    FactoryGirl.create(:user)
   end
   before(:each) do
     user.confirm!
@@ -45,9 +45,9 @@ describe "users/show.html.haml" do
 
       context('after the team manager has submitted his registration ') do
         let(:user) do
-          user = Factory(:user)
+          user = FactoryGirl.create(:user)
           user.confirm!
-          registration = Factory(:registration, user: user)
+          registration = FactoryGirl.create(:registration, user: user)
           user.registration = registration
           user
         end
@@ -87,9 +87,9 @@ describe "users/show.html.haml" do
 
       context('after the team manager has submitted his registration ') do
         let(:user) do
-          user = Factory(:user)
+          user = FactoryGirl.create(:user)
           user.confirm!
-          registration = Factory(:registration, user: user)
+          registration = FactoryGirl.create(:registration, user: user)
           user.registration = registration
           user
         end
@@ -115,7 +115,7 @@ describe "users/show.html.haml" do
   describe "granted slots section" do
 
     let(:user) do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       user.confirm!
 
       user
@@ -127,13 +127,32 @@ describe "users/show.html.haml" do
     end
 
     it "is displayed when the registration has been granted slots closed by default" do
-      registration = Factory(:registration, user: user)
+      registration = FactoryGirl.create(:registration, user: user)
       registration.debate_teams_granted = 1
       user.registration = registration
       render
       rendered.should have_content('You have been granted the following slots')
       rendered.should have_content('1 debate team')
 
+    end
+
+  end
+
+  describe "payment section" do
+
+    it "is closed by default" do
+      render
+      rendered.should_not have_content('Total registration fees due')
+      rendered.should_not have_css('form#new_payment')
+    end
+
+    it "is displayed when the registration has a fees associated with it" do
+      registration = FactoryGirl.create(:registration, user: user, fees: 1000)
+      user.registration = registration
+      @payment = Payment.new
+      render
+      rendered.should have_content('Total registration fees due RM 1000')
+      rendered.should have_css('form#new_payment')
     end
 
   end

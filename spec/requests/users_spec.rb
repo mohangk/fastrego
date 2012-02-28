@@ -31,9 +31,14 @@ describe "Users" do
   end
 
   describe 'profile' do
-    before :each do
+
+    let!(:user) do
       user = Factory(:user)
       user.confirm!
+      user
+    end
+
+    before :each do
       Factory(:institution, name: 'Universiti Teknologi', abbreviation: 'UTM')
     end
 
@@ -101,7 +106,7 @@ describe "Users" do
         end
       end
 
-      describe 'rest of page' do
+      describe 'submitting pre-registration' do
         context 'once pre-registration is open' do
           before :each do
             Factory(:enable_pre_registration)
@@ -113,14 +118,36 @@ describe "Users" do
             fill_in 'Adjudicators requested', with: 2
             fill_in 'Observers requested', with: 0
             click_button 'Save'
-            page.should have_content('Registration was successful')
+            page.should have_content 'Registration was successful'
           end
         end
       end
 
+      describe 'submitting payment information' do
+        context 'once relevant slots have been granted' do
+          let!(:user) do
+            user = FactoryGirl.create(:registration, debate_teams_granted: 1, fees: 1000).user
+            user.confirm!
+            user
+          end
+
+          it "will show the pre-registration form" do
+            page.should have_content 'Total registration fees due RM'
+          end
+
+          it "will allow creating a payment" do
+            select '2012'
+            select 'Feb'
+            select '10'
+            fill_in 'A/C #', with: 'ABC123'
+            fill_in 'RM', with: 1000
+            attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
+            click_button 'Add payment'
+          end
+        end
+      end
 
     end
-
 
   end
 end

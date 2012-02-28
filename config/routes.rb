@@ -9,6 +9,7 @@ UadcRego::Application.routes.draw do
   resources :institutions, only: [:new, :create, :index]
   match "profile" => "users#show", as: :profile, via: :get
   match "users/registration" => "users#registration", via: :post
+  match "users/payments" => "users#payments", via: :post
   match "users/registration" => redirect('/profile'), via: :get
 
   root :to => "users#show"

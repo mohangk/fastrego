@@ -34,8 +34,11 @@
         %li #{ pluralize current_user.registration.debate_teams_granted, 'debate team' }
         %li #{ pluralize current_user.registration.adjudicators_granted, 'adjudicator' }
         %li #{ pluralize current_user.registration.observers_granted, 'observer' }
+
+%section#payment
   - if current_user.registered? and not current_user.registration.fees.blank?
     %hr
     %p
-      %b Total registration fees due RM #{current_user.registration.fees}
+      %b Total registration fees due RM #{current_user.registration.fees}. Make payment via the form below
+      = render 'payment_form'
 

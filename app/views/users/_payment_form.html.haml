@@ -1,0 +1,17 @@
+= form_for @payment,  url: users_payments_path, html: { class: 'payment_form form-search' } do |f|
+  -if @payment.errors.any?
+    #error_explanation
+      %h4= "#{pluralize(@payment.errors.count, "error")} prohibited this payment from being saved:"
+      %ul
+        - @payment.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.label :date_sent, 'Date'
+  = f.date_select :date_sent, use_short_month: true
+  = f.label :account_number, 'A/C #'
+  = f.number_field :account_number
+  = f.label :amount_sent, 'RM'
+  = f.number_field :amount_sent
+  = f.label :amount_sent, 'Upload proof of transfer'
+  = f.file_field :scanned_proof
+  = f.submit 'Add payment'
