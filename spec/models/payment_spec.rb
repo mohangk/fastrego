@@ -13,7 +13,7 @@ describe Payment do
   it { should have_attached_file(:scanned_proof) }
   it { should validate_attachment_presence(:scanned_proof) }
   it { should validate_attachment_content_type(:scanned_proof).
-                  allowing('image/png', 'image/gif','image/jpg', 'application/pdf') }
+                  allowing('image/png', 'image/gif','image/jpeg', 'application/pdf') }
   it { should validate_attachment_size(:scanned_proof).
                   less_than(3.megabytes) }
  it { should_not allow_mass_assignment_of(:amount_received)}

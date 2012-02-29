@@ -144,6 +144,13 @@ describe "Users" do
             fill_in 'Comments', with: 'This is a slightly longer comment then usual'
             attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
             click_button 'Add payment'
+            page.current_path.should == profile_path
+            page.should have_content 'Payment was successfully recorded.'
+            page.should have_content '2012-02-10'
+            page.should have_content 'ABC123'
+            page.should have_content '1000'
+            page.should have_content 'This is a slightly longer comment then usual'
+            page.should have_css "a[href*='test_image.jpg']"
           end
         end
       end

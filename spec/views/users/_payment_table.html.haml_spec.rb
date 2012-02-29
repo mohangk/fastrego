@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe 'users/_payment_table' do
   context 'when there are no payments' do
+    before :each do
+      user = FactoryGirl.create(:registration).user
+      user.confirm!
+      sign_in user
+    end
     it 'should be empty' do
       render
       should_not have_css('table')

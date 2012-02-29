@@ -1,7 +1,6 @@
 TODO.txt
 
 User
-- replace hard coded keys with hash
 - complete request specs for add payment
 - implement delete for payment - checking if delete should be available based amount_received, admin_comment columns
 - show pending fees based on admin updates
@@ -12,4 +11,6 @@ Admin
 
 Email
 - email when admin updates the information
+
+Fix assets precompile issue
 
