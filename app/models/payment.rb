@@ -1,12 +1,7 @@
 class Payment < ActiveRecord::Base
   belongs_to :registration
-  has_attached_file :scanned_proof,
-    :storage => :s3,
-    :bucket => 'uadc2012-fastrego',
-    :s3_credentials => {
-      :access_key_id => 'AKIAJ6NN5SPTK2YGH6WQ',
-      :secret_access_key => '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'
-    }
+  has_attached_file :scanned_proof
+
   validates_attachment_presence :scanned_proof, message: ' must be provided. Please scan the physical transfer document receipt or create a screen capture of electronic transfers and include as proof'
   validates_attachment_size :scanned_proof, less_than: 3.megabytes, message: ' file size must be less then 3 megabytes'
   validates_attachment_content_type :scanned_proof, content_type: %w(image/jpeg image/png image/gif application/pdf), message: 'file type must be of an image (GIF/JPG/PNG) or PDF'

@@ -61,6 +61,18 @@ UadcRego::Application.configure do
   config.assets.precompile += %w[admin/active_admin.css admin/active_admin.js]
   config.action_mailer.default_url_options = {:host => 'uadc2012.heroku.com'}
   config.action_mailer.raise_delivery_errors = true
+
+
+  Paperclip::Attachment.default_options.merge!({
+    :storage => :s3,
+    :bucket => ENV['S3_PRODUCTION_BUCKET'],
+    :s3_credentials => {
+      :access_key_id => ENV['S3_ACCESS_KEY_ID'],
+      :secret_access_key => ENV['S3_SECRET_KEY']
+    }
+  })
+
+
   ActionMailer::Base.smtp_settings = {
       :port => ENV['MAILGUN_SMTP_PORT'],
       :address =>  ENV['MAILGUN_SMTP_SERVER'],
