@@ -28,4 +28,8 @@ class Payment < ActiveRecord::Base
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
+
+  def confirmed?
+    !(self.amount_received.blank? and self.admin_comment.blank?)
+  end
 end

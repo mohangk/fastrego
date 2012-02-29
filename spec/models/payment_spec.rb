@@ -19,4 +19,13 @@ describe Payment do
  it { should_not allow_mass_assignment_of(:amount_received)}
  it { should_not allow_mass_assignment_of(:admin_comment)}
  it { should_not allow_mass_assignment_of(:registration_id)}
+
+  it 'is confirmed if either the amount_received or admin_comment is set' do
+    subject.amount_received = 1000
+    subject.confirmed?.should == true
+
+    subject.amount_received = nil
+    subject.admin_comment = 'test comment'
+    subject.confirmed?.should == true
+  end
 end

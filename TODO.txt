@@ -1,13 +1,15 @@
 TODO.txt
 
 User
-- complete request specs for add payment
 - implement delete for payment - checking if delete should be available based amount_received, admin_comment columns
-- show pending fees based on admin updates
+- implment controller specs for delete payment
+- complete view specs for payment_table
 
 Admin
 - allow for admin to key in data that is required
 - allow for images or links to be viewed inline/ clicked from edit/view payment page
+
+- show pending fees based on admin updates
 
 Email
 - email when admin updates the information

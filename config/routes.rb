@@ -10,6 +10,7 @@ UadcRego::Application.routes.draw do
   match "profile" => "users#show", as: :profile, via: :get
   match "users/registration" => "users#registration", via: :post
   match "users/payments" => "users#payments", via: :post
+  match "users/payments/:id" => "users#destroy_payments", via: :delete, as: 'delete_payments'
   match "users/registration" => redirect('/profile'), via: :get
   match "users/payments" => redirect('/profile'), via: :get
 
