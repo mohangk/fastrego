@@ -5,7 +5,7 @@ ActiveAdmin.register Payment do
   config.sort_order = "instituion.id desc , payments.id desc"
 
   index do
-    column 'Inst' do |p|
+    column 'Inst', sortable: 'institutions.abbreviation' do |p|
       link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
     end
     column 'Date', :date_sent

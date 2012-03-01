@@ -1,12 +1,14 @@
 ActiveAdmin.register Registration do
-
+  scope :all, :default => true do |p|
+    p.includes [ :user => :institution ]
+  end
   config.sort_order = "requested_at_asc"
 
   index do
     column 'Req at', sortable: :requested_at do |r|
       r.requested_at.strftime("%d/%m %H:%M:%S")
     end
-    column 'Inst' do |r|
+    column 'Inst',sortable: 'institutions.abbreviation' do |r|
         link_to r.user.institution.abbreviation, admin_institution_path(r.user.institution)
     end
     column 'DT Rq', :debate_teams_requested
