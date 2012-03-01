@@ -151,7 +151,7 @@ describe "users/show.html.haml" do
       user.registration = registration
       @payment = Payment.new
       render
-      rendered.should have_content('Total registration fees due RM 1000')
+      rendered.should have_content('Total registration fees due RM1,000.00')
       rendered.should have_css('form#new_payment')
     end
 
