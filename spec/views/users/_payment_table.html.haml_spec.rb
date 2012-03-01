@@ -27,7 +27,7 @@ describe 'users/_payment_table' do
         render
         rendered.should have_css('table')
         rendered.should have_css('td', text: 'AB1231234', count:1)
-        rendered.should have_css('td', text: '12000', count:1)
+        rendered.should have_css('td', text: 'RM12,000.00', count:1)
         rendered.should have_css('td', text: '2011-12-12', count:1)
         rendered.should have_css('td', text: 'Total payment - arriba!', count:1)
         rendered.should have_css("td a[href*='test_image.jpg']", text: 'View', count:1)

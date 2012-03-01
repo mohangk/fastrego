@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
 
-  scope :joined, :default => true do |users|
+  scope :all, :default => true do |users|
     users.includes [:institution]
   end
 

@@ -15,4 +15,5 @@ Email
 - email when admin updates the information
 
 Fix assets precompile issue
+Make payments a nested controller of users and clean up the routes
 

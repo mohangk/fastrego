@@ -32,4 +32,8 @@ class Payment < ActiveRecord::Base
   def confirmed?
     !(self.amount_received.blank? and self.admin_comment.blank?)
   end
+
+  def institution_name
+    self.registration.user.institution.name
+  end
 end

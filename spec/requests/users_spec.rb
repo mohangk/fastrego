@@ -140,7 +140,7 @@ describe "Users" do
             select 'Feb'
             select '10'
             fill_in 'A/C #', with: 'ABC123'
-            fill_in 'RM', with: 1000
+            fill_in 'RM', with: 1000.50
             fill_in 'Comments', with: 'This is a slightly longer comment then usual'
             attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
             click_button 'Add payment'
@@ -148,7 +148,7 @@ describe "Users" do
             page.should have_content 'Payment was successfully recorded.'
             page.should have_content '2012-02-10'
             page.should have_content 'ABC123'
-            page.should have_content '1000'
+            page.should have_content 'RM1,000.50'
             page.should have_content 'This is a slightly longer comment then usual'
             page.should have_css "a[href*='test_image.jpg']"
           end

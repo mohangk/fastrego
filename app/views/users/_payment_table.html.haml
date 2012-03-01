@@ -4,22 +4,22 @@
       %tr
         %th Date
         %th A/C #
-        %th RM sent
+        %th Amount sent
         %th Comments
         %th Proof
-        %th RM received
+        %th Amount received
         %th Our comments
         %th
 
     - current_user.registration.payments.each do |p|
       %tr
         %td= p.date_sent
-        %td= p.account_number
-        %td= p.amount_sent
+        %td=  p.account_number
+        %td= number_to_currency p.amount_sent, unit: 'RM'
         %td= p.comments
         %td
           =link_to 'View', p.scanned_proof.url, 'data-popup' => true
-        %td= p.amount_received
+        %td= number_to_currency p.amount_received, unit: 'RM'
         %td= p.admin_comment
         %td
           -unless p.confirmed?
