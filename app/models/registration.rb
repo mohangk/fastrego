@@ -38,19 +38,19 @@ class Registration < ActiveRecord::Base
   end
 
   def total_confirmed_payments
-    self.payments.inject(BigDecimal(0)) do |total, p|
+    self.payments.inject(BigDecimal('0')) do |total, p|
       p.amount_received.nil? ? total : total + p.amount_received
     end
   end
 
   def total_unconfirmed_payments
-    self.payments.inject(BigDecimal(0)) do |total,p|
+    self.payments.inject(BigDecimal('0')) do |total,p|
       p.confirmed? ? total : total + p.amount_sent
     end
   end
 
   def balance_fees
-    fees.nil? ? BigDecimal.new(0) : (fees - total_confirmed_payments)
+    fees.nil? ? BigDecimal.new('0') : (fees - total_confirmed_payments)
   end
 
 end
