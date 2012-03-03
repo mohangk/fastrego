@@ -83,4 +83,26 @@ describe Registration do
     end
   end
 
+  describe 'payment related methods' do
+
+    before :each do
+      FactoryGirl.create_list(:payment, 5, registration: r, amount_received: 10000)
+      #set one payment as unconfirmed
+      r.reload.payments[4].amount_received = nil
+      r.payments[4].save
+    end
+
+    describe '#total_confirmed_payments' do
+
+      it 'will sum up all amount_received of confirmed payments' do
+        r.total_confirmed_payments.should == BigDecimal.new('40000')
+      end
+    end
+
+    describe '#total_unconfirmed_payments' do
+        it 'will sum up the amount_sent columns for unconfirmed payments' do
+          r.total_unconfirmed_payments.should == BigDecimal.new('12000')
+        end
+    end
+  end
 end

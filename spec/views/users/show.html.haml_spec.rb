@@ -147,11 +147,16 @@ describe "users/show.html.haml" do
     end
 
     it "is displayed when the registration has a fees associated with it" do
-      registration = FactoryGirl.create(:registration, user: user, fees: 1000)
-      user.registration = registration
+      registration = FactoryGirl.create(:registration, user: user, fees:2000)
+      payment = FactoryGirl.create(:payment, amount_sent: 1000, amount_received: 999.48, registration: registration)
+      #required by _form_payment.html.haml
       @payment = Payment.new
+      user.reload
       render
-      rendered.should have_content('Total registration fees due RM1,000.00')
+      rendered.should have_content('Total registration fees due RM2,000.00')
+      rendered.should have_content('Total confirmed payments RM999.48')
+      rendered.should have_content('Balance fees due RM1,000.52')
+      rendered.should have_content('Total unconfirmed payments RM0.00')
       rendered.should have_css('form#new_payment')
     end
 

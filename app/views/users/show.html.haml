@@ -39,7 +39,15 @@
   - if current_user.registered? and not current_user.registration.fees.blank?
     %hr
     %p
-      %b Total registration fees due  #{number_to_currency current_user.registration.fees, unit: 'RM' }. Make payment via the form below
+      %b Total registration fees due  #{number_to_currency current_user.registration.fees, unit: 'RM' }.
+    %p
+      %b Total confirmed payments  #{number_to_currency current_user.registration.total_confirmed_payments, unit: 'RM' }.
+    %p
+      %b Balance fees due  #{number_to_currency current_user.registration.balance_fees, unit: 'RM' }.
+    %p
+      %b Total unconfirmed payments  #{number_to_currency current_user.registration.total_unconfirmed_payments, unit: 'RM' }.
+    %p
+      Make payment via the form below
       = render 'payment_table'
       = render 'payment_form'
 
