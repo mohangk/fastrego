@@ -28,4 +28,11 @@ describe Payment do
     subject.admin_comment = 'test comment'
     subject.confirmed?.should == true
   end
+
+  describe '#send_payment_notification' do
+    it 'will send an email with latest payment details' do
+      subject.send_payment_notification
+      ActionMailer::Base.deliveries.last.to.should == [subject.registration.user.email]
+    end
+  end
 end

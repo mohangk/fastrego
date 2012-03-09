@@ -45,6 +45,7 @@ ActiveAdmin.register Payment do
       @payment.admin_comment = params[:payment][:admin_comment]
 
       if @payment.save
+        @payment.send_payment_notification
         redirect_to admin_payments_path, notice: 'Payment was successfully updated.'
       else
         render action: "edit"

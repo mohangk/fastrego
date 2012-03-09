@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %meta{content: "text/html; charset=UTF-8", httpequiv: "Content-Type" }
+  %body
+    %h1
+      Payment update notification for #{@payment.registration.user.name}
+    %p Your payment details have been updated as follows:
+    %table
+      %tr
+        %td Date
+        %td= @payment.date_sent
+      %tr
+        %td A/C No.
+        %td= @payment.account_number
+      %tr
+        %td Amount sent
+        %td= @payment.amount_sent
+      %tr
+        %td Comments
+        %td= @payment.comments
+      %tr
+        %td Amount received
+        %td= @payment.amount_received
+      %tr
+        %td Our comments
+        %td= @payment.admin_comment
+

@@ -1,0 +1,12 @@
+Payment update notification for <%= @payment.registration.user.name %>
+=====================================================================
+
+Your payment details have been updated as follows:
+
+Date: <%= @payment.date_sent %>
+A/C No.: <%= @payment.account_number %>
+Amount sent: <%=  @payment.amount_sent  %>
+Comments: <%=  @payment.comments   %>
+Amount received: <%= @payment.amount_received  %>
+Our comments: <%= @payment.admin_comment   %>
+

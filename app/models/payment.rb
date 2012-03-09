@@ -36,4 +36,8 @@ class Payment < ActiveRecord::Base
   def institution_name
     self.registration.user.institution.name
   end
+
+  def send_payment_notification
+    PaymentMailer.update_notification(self).deliver
+  end
 end
