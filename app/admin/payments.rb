@@ -52,5 +52,12 @@ ActiveAdmin.register Payment do
       end
     end
   end
-  
+
+  filter :registration_user_name, as: :select, collection: User.order(:name).all.map(&:name)
+  filter :registration_user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
+  filter :date_sent
+  filter :amount_sent
+  filter :comments
+  filter :amount_received
+  filter :admin_comment
 end

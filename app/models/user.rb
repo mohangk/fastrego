@@ -13,12 +13,8 @@ class User < ActiveRecord::Base
   belongs_to :institution
   has_one :registration, dependent: :destroy
 
-  #def after_initialize
-  #  self.registration ||= Registration.new
-  #end
 
   def registered?
     !self.registration.nil?
-    #!self.registration.new_record?
   end
 end

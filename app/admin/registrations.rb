@@ -1,6 +1,6 @@
 ActiveAdmin.register Registration do
-  scope :all, :default => true do |p|
-    p.includes [ :user => :institution ]
+  scope :all, :default => true do |r|
+    r.includes [ :user => :institution ]
   end
   config.sort_order = "requested_at_asc"
 
@@ -53,21 +53,33 @@ ActiveAdmin.register Registration do
   end
 
   form do |f|
-    f.inputs do
+    f.inputs 'Request details' do
       f.input :user, :input_html => { :disabled => true }
       f.input :requested_at, :input_html => { :disabled => true }
       f.input :debate_teams_requested, :input_html => { :disabled => true }
       f.input :adjudicators_requested, :input_html => { :disabled => true }
       f.input :observers_requested, :input_html => { :disabled => true }
+    end
+
+    f.inputs 'Grant slots' do
       f.input :debate_teams_granted
       f.input :adjudicators_granted
       f.input :observers_granted
+    end
+
+    f.inputs 'Override system computed fees' do
+      f.input :override_fees, as: :boolean,
+              label: 'Select to enable fees field',
+              input_html: { onclick: "$('#registration_override_fees').is(':checked') ? $('#registration_fees').removeAttr('disabled') :$('#registration_fees').attr('disabled','disabled');" }
+      f.input :fees, :input_html => { :disabled => true }
+    end
+
+    f.inputs 'Confirmed slots' do
       f.input :debate_teams_confirmed
       f.input :adjudicators_confirmed
       f.input :observers_confirmed
-      f.input :fees
-      f.buttons
     end
+    f.buttons
   end
 
   controller do
@@ -85,4 +97,17 @@ ActiveAdmin.register Registration do
     end
   end
 
+  filter :user_id, collection: User.order(:name).all.map(&:name)
+  filter :user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
+  filter :requested_at
+  filter :fees
+  filter :debate_teams_requested
+  filter :adjudicators_requested
+  filter :observers_requested
+  filter :debate_teams_granted
+  filter :adjudicators_granted
+  filter :observers_granted
+  filter :debate_teams_confirmed
+  filter :adjudicators_confirmed
+  filter :observers_confirmed
 end

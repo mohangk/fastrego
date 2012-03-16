@@ -4,6 +4,7 @@ class Registration < ActiveRecord::Base
   belongs_to :user
   has_many :payments
 
+  attr_accessor :override_fees
   attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested
 
   validates :user_id, presence: true, uniqueness: true
