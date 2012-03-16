@@ -21,6 +21,8 @@ ActiveAdmin.register Registration do
     column 'Adj Cnf', :adjudicators_confirmed
     column 'Obs Cnf', :observers_confirmed
     column :fees
+    column 'Conf', :total_confirmed_payments
+    column 'Bal', :balance_fees
     default_actions
   end
 
@@ -89,7 +91,9 @@ ActiveAdmin.register Registration do
       if @registration.grant_slots(params[:registration][:debate_teams_granted],
                                    params[:registration][:adjudicators_granted],
                                    params[:registration][:observers_granted],
-                                   params[:registration][:fees])
+                                   params[:registration][:fees]) && @registration.confirm_slots(params[:registration][:debate_teams_confirmed],
+                                   params[:registration][:adjudicators_confirmed],
+                                   params[:registration][:observers_confirmed])
         redirect_to admin_registrations_path, notice: 'Registration was successfully updated.'
       else
         render action: "edit"

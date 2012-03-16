@@ -54,4 +54,12 @@ class Registration < ActiveRecord::Base
     fees.nil? ? BigDecimal.new('0') : (fees - total_confirmed_payments)
   end
 
+  def confirm_slots(debate_teams_confirmed=nil, adjudicators_confirmed=nil, observers_confirmed=nil)
+    self.debate_teams_confirmed = debate_teams_confirmed.to_i
+    self.adjudicators_confirmed = adjudicators_confirmed.to_i
+    self.observers_confirmed = observers_confirmed.to_i
+
+    self.save
+  end
+
 end

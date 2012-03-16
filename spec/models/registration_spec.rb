@@ -35,7 +35,7 @@ describe Registration do
     context "granting 1 dt, 1 adj, 1 obs" do
      it "should set all values" do
         r.grant_slots(1,1,1)
-        r .reload
+        r.reload
         r.debate_teams_granted.should == 1
         r.adjudicators_granted.should == 1
         r.observers_granted.should == 1
@@ -105,4 +105,24 @@ describe Registration do
         end
     end
   end
+
+  describe '#confirm_slots' do
+    context 'nothing confirmed' do
+      it "should not set any values but still return true" do
+        r.confirm_slots(nil, nil, nil).should == true
+        r.reload
+        r.debate_teams_confirmed.should == 0
+        r.adjudicators_confirmed.should == 0
+        r.observers_confirmed.should == 0
+      end
+      it "should only set the values that were passed in" do
+        r.confirm_slots('', '12', nil).should == true
+        r.reload
+        r.debate_teams_confirmed.should == 0
+        r.adjudicators_confirmed.should == 12
+        r.observers_confirmed.should == 0
+      end
+    end
+  end
+
 end
