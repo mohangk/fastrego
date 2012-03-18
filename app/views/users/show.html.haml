@@ -37,4 +37,13 @@
       Make payment via the form below
       = render 'payment_table'
       = render 'payment_form'
+%section#confirmed_slots
+  - if current_user.registered? and current_user.registration.confirmed?
+    %hr
+    %p
+      %b You have been confirmed the following slots
+      %ul
+        %li #{ pluralize current_user.registration.debate_teams_confirmed, 'debate team' }
+        %li #{ pluralize current_user.registration.adjudicators_confirmed, 'adjudicator' }
+        %li #{ pluralize current_user.registration.observers_confirmed, 'observer' }      
 

@@ -87,7 +87,6 @@ ActiveAdmin.register Registration do
   controller do
     def update
       @registration = Registration.find(params[:id])
-
       if @registration.grant_slots(params[:registration][:debate_teams_granted],
                                    params[:registration][:adjudicators_granted],
                                    params[:registration][:observers_granted],

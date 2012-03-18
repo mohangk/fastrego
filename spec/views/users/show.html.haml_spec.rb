@@ -11,8 +11,6 @@ describe "users/show.html.haml" do
     @registration = Registration.new
   end
 
-
-
   describe "registration section" do
 
     it "is closed by default" do
@@ -155,25 +153,23 @@ describe "users/show.html.haml" do
     end
   end
 
-  # describe "confirmed slot section" do
+  describe "confirmed slot section" do
 
-  #   it "is closed by default" do
-  #     render
-  #     rendered.should_not have_content('The following slots are confirmed.')
-  #   end
+    it "is closed by default" do
+      render
+      rendered.should_not have_content('The following slots are confirmed.')
+    end
 
-  #   it "is displayed when the registration returns true for #confirmed?" do
-  #     r = FactoryGirl.create(:registration, user: user, fees:2000)
-  #     @payment = Payment.new
-  #     r.confirm_slots(1,1,1)
-  #     user.reload
-  #     render
-  #     # rendered.should have_content('Total registration fees due RM2,000.00')
-  #     # rendered.should have_content('Total confirmed payments RM999.48')
-  #     # rendered.should have_content('Balance fees due RM1,000.52')
-  #     # rendered.should have_content('Total unconfirmed payments RM0.00')
-  #     # rendered.should have_css('form#new_payment')
-  #   end
-  # end
+    it "is displayed when the registration returns true for #confirmed?" do
+      r = FactoryGirl.create(:registration, user: user, fees:2000)
+      @payment = Payment.new
+      r.confirm_slots(9,9,9)
+      user.reload
+      render
+      rendered.should have_content('9 debate teams')
+      rendered.should have_content('9 adjudicators')
+      rendered.should have_content('9 observers')
+    end
+  end
 
 end

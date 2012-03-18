@@ -31,7 +31,20 @@ describe Registration do
   it { should validate_numericality_of(:fees)}
 
   describe "#grant_slots" do
-
+    context 'nothing set' do
+      it 'should not set any values' do
+        r.grant_slots(nil,nil,nil)
+        r.debate_teams_granted.should == nil
+        r.adjudicators_granted.should == nil
+        r.observers_granted.should == nil
+      end
+      it 'should not set any values' do
+        r.grant_slots('','','')
+        r.debate_teams_granted.should == nil
+        r.adjudicators_granted.should == nil
+        r.observers_granted.should == nil
+      end
+    end
     context "granting 1 dt, 1 adj, 1 obs" do
      it "should set all values" do
         r.grant_slots(1,1,1)
@@ -111,10 +124,19 @@ describe Registration do
       it "should not set any values but still return true" do
         r.confirm_slots(nil, nil, nil).should == true
         r.reload
-        r.debate_teams_confirmed.should == 0
-        r.adjudicators_confirmed.should == 0
-        r.observers_confirmed.should == 0
+        r.debate_teams_confirmed.should == nil
+        r.adjudicators_confirmed.should == nil
+        r.observers_confirmed.should == nil
       end
+      it "should not set any values but still return true" do
+        r.confirm_slots('', '', '').should == true
+        r.reload
+        r.debate_teams_confirmed.should == nil
+        r.adjudicators_confirmed.should == nil
+        r.observers_confirmed.should == nil
+      end
+    end
+    context 'something confirmed' do
       it "should only set the values that were passed in" do
         r.confirm_slots('', '12', nil).should == true
         r.reload
@@ -125,7 +147,7 @@ describe Registration do
     end
   end
 
-  describe '#confirmed' do
+  describe '#confirmed?' do
     it 'will return true if any of the *_granted values are set else false' do
       r.confirmed?.should == false
       r.confirm_slots(0,1,0)
