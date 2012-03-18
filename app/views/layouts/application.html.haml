@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title UADC 2012 Registration
+    %title UADC 2012 
     /[if lt IE 9]
     %script{src: 'http://html5shim.googlecode.com/svn/trunk/html5.js'}
     /[endif]
@@ -14,18 +14,24 @@
         .container
           /%a.btn.btn-navbar{data-toggle: 'collapse', data-target: '.nav-collapse'}
           %a.brand
-            UADC 2012 Registration
+            UADC 2012 
           .nav-collapse
             %ul.nav
               %li
-                %a{href: '/'} Profile
+                %a{href: '/'} Registration details
               %li
                 %a{href: '/institutions'} Institutions
-              - unless current_user.nil?
-                %li
-                  =link_to 'Edit profile', edit_user_registration_path
-                %li
-                  =link_to 'Logout', destroy_user_session_path, method: :delete
+            - unless current_user.nil?
+              %ul.nav.pull-right  
+                %li.dropdown 
+                  %a{href:'#', class: 'dropdown-toggle', 'data-toggle'=>'dropdown'} 
+                    #{current_user.name} - #{current_user.institution.abbreviation}
+                    %b.caret
+                  %ul.dropdown-menu    
+                    %li
+                      =link_to 'Edit profile', edit_user_registration_path
+                    %li
+                      =link_to 'Logout', destroy_user_session_path, method: :delete
     .container
       -unless notice.nil?
         .alert.alert-info

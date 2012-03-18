@@ -1,19 +1,36 @@
 TODO.txt
 
 User
-- implement delete for payment - checking if delete should be available based amount_received, admin_comment columns
 - implment controller specs for delete payment
 - complete view specs for payment_table
 
-Admin
-- allow for admin to key in data that is required
-- allow for images or links to be viewed inline/ clicked from edit/view payment page
-
-- show pending fees based on admin updates
-
-Email
-- email when admin updates the information
-
 Fix assets precompile issue
-Make payments a nested controller of users and clean up the routes
+Make payments a nested controller of users and clean up the routes\
 
+
+#Confirmation flow
+
+
+1. Admin will be able to see "Fees", "Confimed paid", "Balance"  in the pre_registration list view (done)
+2. Admin will be able to key in comments and key in confirmed values for "Debate teams", "Adjudicator" and "Observer" (done)
+3. The confirmed_values will be available in the Team manager profile page. 
+4. The system will send an email to the Team manager when the confirmed_values are set by the Admin.
+5. The profile page will also provide forms to key in "Debater", "Adjudicatory" and "Observer" details. There will be as many forms available in the profile page based as per the confirmed_values.
+
+
+1. First Name
+2. Last Name
+3. Email
+4. Date of Birth
+5. Phone number
+6. Nationality
+7. Dietary Requirements (Halal, Vegetarian, Lactose intolerant etc)
+8. Medical Requirements (known allergies, mobility issues etc)
+
+9. My status (perhaps a drop down list with Team 1, Team 2, Judge - based on what they requested and what slots are available?)
+10. EFL? (good idea to get an estimate. Will need to put up EFL criteria on website)
+
+OPTIONAL
+11. T-shirt sizes (are you selling? They can pre-book and pay on arrival. Make it cheaper to pre-book. Radio button with different sizes to choose from. Design can be on website. If no confirmed design yet, scrap this)
+12. Room sharing, choose two roomates (easiest is to assign a set of rooms to each institution and then let them sort it out. Complication arise when different institutions will have to share rooms though. If you want, we can ask them who their preferred roommate is - they just write a name. You need to manually figure out how to match them though. Benefit is less independent room switching, easier to assign blame with rooms fucked up)
+13. Arrival/Departure time (are you doing airport shuttles? If yes, this is useful. If not, ditch this)

@@ -62,4 +62,8 @@ class Registration < ActiveRecord::Base
     self.save
   end
 
+  def confirmed?
+    (not self.debate_teams_confirmed.blank?) or (not self.adjudicators_confirmed.blank?) or (not self.observers_confirmed.blank?)
+  end
+
 end

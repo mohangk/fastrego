@@ -73,9 +73,9 @@ describe "Users" do
         it 'will display the users information' do
           visit profile_path
           page.should have_content 'Suthen Thomas'
-          page.should have_content 'suthen.thomas@gmail.com'
-          page.should have_content 'Multimedia University'
-          page.should have_content '123123123123'
+          #page.should have_content 'suthen.thomas@gmail.com'
+          page.should have_content 'MMU'
+          #page.should have_content '123123123123'
         end
 
         it 'will have an "Edit profile" link that provides a user with a form to edit their user details' do
@@ -93,9 +93,7 @@ describe "Users" do
           click_button 'Update'
           page.current_path.should == root_path
           page.should have_content 'Alex Yoong'
-          page.should have_content 'test2@test.com'
-          page.should have_content 'Universiti Teknologi'
-          page.should have_content '99999999'
+          page.should have_content 'UTM'
           click_link 'Logout'
           page.should have_content 'You need to sign in'
           fill_in 'Email', with: 'test2@test.com'

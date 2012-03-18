@@ -125,4 +125,12 @@ describe Registration do
     end
   end
 
+  describe '#confirmed' do
+    it 'will return true if any of the *_granted values are set else false' do
+      r.confirmed?.should == false
+      r.confirm_slots(0,1,0)
+      r.confirmed?.should == true
+    end
+  end
+
 end
