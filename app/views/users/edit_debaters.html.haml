@@ -1,8 +1,10 @@
-= form_for @registration, url: '/users/debaters' do |form|
+%h1 Debaters
+= form_for @registration, url: '/users/debaters', html: { class: 'form-horizontal edit_debaters' } do |form|
   - @registration.debate_teams.each_with_index do |team, index|
-    = "#{@registration.user.institution.abbreviation} #{index+1}"
+    %h2 #{@registration.user.institution.abbreviation} #{index+1}
     - team.each do |debater|
-      = "Speaker #{debater.speaker_number}"
+      %legend Speaker #{debater.speaker_number}
       = form.fields_for :debaters, debater do |f|
         = render partial: 'debater_form', locals: {f: f, debater: debater} 
+      %hr
   = form.submit 'Update'
