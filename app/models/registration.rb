@@ -3,6 +3,10 @@ class Registration < ActiveRecord::Base
 
   belongs_to :user
   has_many :payments
+  has_many :debaters
+  accepts_nested_attributes_for :debaters
+  has_many :adjudicators
+  has_many :observers
 
   attr_accessor :override_fees
   attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested
@@ -77,6 +81,21 @@ class Registration < ActiveRecord::Base
 
   def confirmed?
     (not self.debate_teams_confirmed.blank?) or (not self.adjudicators_confirmed.blank?) or (not self.observers_confirmed.blank?)
+  end
+
+  def debate_teams
+    debate_teams = []
+    (1..self.debate_teams_confirmed).each do |debate_team_count|
+      debate_teams[debate_team_count-1] = []
+      (1..Setting.key('debate_team_size').to_i).each do |speaker_number|
+        debater = self.debaters.where(team_number: debate_team_count, speaker_number: speaker_number).first
+        if debater.nil?
+          debater = Debater.new(team_number: debate_team_count, speaker_number: speaker_number)
+        end
+        debate_teams[debate_team_count-1] << debater
+      end
+    end
+    return debate_teams
   end
 
 end

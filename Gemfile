@@ -31,7 +31,7 @@ gem 'newrelic_rpm'
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'factory_girl_rails', :require => false
+  gem 'factory_girl_rails'#, require: false
   gem 'spork', '~> 0.9.0.rc'
   gem 'shoulda'
   gem 'timecop'

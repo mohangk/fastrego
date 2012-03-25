@@ -30,13 +30,17 @@ class UsersController < ApplicationController
 
   def destroy_payments
     payment = Payment.find_by_id(params[:id])
-
     if !payment.nil? and current_user.registration == payment.registration and not payment.confirmed?
       payment.destroy
       redirect_to profile_url, notice: 'Payment was removed.'
     else
       redirect_to profile_url, alert: 'Unauthorised access.'
     end
-
   end
+
+  def edit_debaters
+    @registration = current_user.registration
+  end
+
+
 end

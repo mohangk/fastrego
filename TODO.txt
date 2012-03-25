@@ -13,9 +13,13 @@ Make payments a nested controller of users and clean up the routes\
 
 1. Admin will be able to see "Fees", "Confimed paid", "Balance"  in the pre_registration list view (done)
 2. Admin will be able to key in comments and key in confirmed values for "Debate teams", "Adjudicator" and "Observer" (done)
-3. The confirmed_values will be available in the Team manager profile page. 
+3. The confirmed_values will be available in the Team manager profile page. (done)
 4. The system will send an email to the Team manager when the confirmed_values are set by the Admin.
-5. The profile page will also provide forms to key in "Debater", "Adjudicatory" and "Observer" details. There will be as many forms available in the profile page based as per the confirmed_values.
+
+5. The profile page will also provide forms to key in "Debater", "Adjudicatory" and "Observer" details. There 
+will be as many forms available in the profile page based as per the confirmed_values.
+
+* How do we handle cases where the user has already keyed in participants but the amount of participants are changed in the backend?
 
 
 1. First Name
@@ -34,3 +38,28 @@ OPTIONAL
 11. T-shirt sizes (are you selling? They can pre-book and pay on arrival. Make it cheaper to pre-book. Radio button with different sizes to choose from. Design can be on website. If no confirmed design yet, scrap this)
 12. Room sharing, choose two roomates (easiest is to assign a set of rooms to each institution and then let them sort it out. Complication arise when different institutions will have to share rooms though. If you want, we can ask them who their preferred roommate is - they just write a name. You need to manually figure out how to match them though. Benefit is less independent room switching, easier to assign blame with rooms fucked up)
 13. Arrival/Departure time (are you doing airport shuttles? If yes, this is useful. If not, ditch this)
+
+
+1. Institution: ie: Multimedia University
+2. Institution abbreviation: MMU
+3. Team: ie: MMU 1/ MMU 2
+4. Participants:
+    i. Debater 1:
+            a. First name
+            b. Middle name
+            c. Last name
+            d. Gender
+            e. Passport number
+            f. Dietary requirement
+                   -halal, vegetarian, allergies (please specify)
+             g. Arrival date
+             h. Arrival time
+              i. Airport: KLIA/LCCT
+             j. Emergency contact person:
+             k. Emergency contact person's number: (please include area code)
+             l. Preferred roommate
+             m. Preferred roommate's institution
+     ii. Debater 2
+     iii. Debater 3
+     iv. Adjudicator
+      v. Observer (if any)

@@ -1,0 +1,36 @@
+-if debater.errors.any?
+  #error_explanation
+    %h4= "#{pluralize(debater.errors.count, "error")} prohibited this debater profile from being saved:"
+    %ul
+      - debater.errors.full_messages.each do |msg| 
+        %li= msg
+%span Speaker number #{debater.speaker_number}
+= f.label :name, 'Name'
+= f.text_field :name
+= f.label :gender, 'Gender'
+= f.radio_button :gender, 'Male'
+= f.radio_button :gender, 'Female'
+= f.label :email, 'Email'
+= f.text_field :email
+= f.label :dietary_requirement, 'Dietary requirement'
+= f.radio_button :dietary_requirement, 'Normal'
+= f.radio_button :dietary_requirement, 'Halal'
+= f.radio_button :dietary_requirement, 'Vegetarian'
+= f.label :allergies, 'Allergies'
+= f.text_field :allergies
+= f.label :arrival_at, 'Arrival at'
+= f.datetime_select :arrival_at, use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year
+= f.label :departure_at, 'Departure at'
+= f.datetime_select :departure_at, use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year
+= f.label :airport
+= f.text_field :airport
+= f.label :emergency_contact_person
+= f.text_field :emergency_contact_person
+= f.label :emergency_contact_number
+= f.text_field :emergency_contact_number
+= f.label :preffered_roomate
+= f.text_field :preferred_roomate
+= f.label :preferred_roomate_institution
+= f.text_field :preferred_roomate_institution
+
+

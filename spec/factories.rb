@@ -35,6 +35,11 @@ FactoryGirl.define do
     value 'True'
   end
 
+  factory :debate_team_size, class: Setting do
+    key 'debate_team_size'
+    value 3
+  end
+
   factory :registration do
     debate_teams_requested 3
     adjudicators_requested 1
@@ -49,6 +54,19 @@ FactoryGirl.define do
     date_sent '2011-12-12'
     comments 'Total payment - arriba!'
     scanned_proof { Rack::Test::UploadedFile.new(File.join(Rails.root,'spec','uploaded_files','test_image.jpg'), 'image/png')  }
+    registration
+  end
+
+  factory :debater do
+    name 'Jack Nostrum'
+    gender 'Male'
+    email 'test@test.com'
+    dietary_requirement 'Normal'
+    airport 'KLIA'
+    emergency_contact_person 'Jason Statham'
+    emergency_contact_number '123123123123'
+    speaker_number 1
+    team_number 1
     registration
   end
 end

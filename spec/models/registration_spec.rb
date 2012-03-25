@@ -4,13 +4,17 @@ describe Registration do
   let(:r) {Registration.first}
 
   before :each do
-    Factory(:registration)
-    Factory(:debate_team_fees)
-    Factory(:adjudicator_fees)
-    Factory(:observer_fees)
+    FactoryGirl.create(:registration)
+    FactoryGirl.create(:debate_team_fees)
+    FactoryGirl.create(:adjudicator_fees)
+    FactoryGirl.create(:observer_fees)
+    FactoryGirl.create(:debate_team_size)
   end
   it { should belong_to :user }
   it { should have_many :payments }
+  it { should have_many :debaters }
+  it { should have_many :adjudicators }
+  it { should have_many :observers }
   it { should validate_uniqueness_of :user_id }
   it { should validate_presence_of :user_id}
   it { should validate_numericality_of(:debate_teams_requested)}
@@ -154,5 +158,64 @@ describe Registration do
       r.confirmed?.should == true
     end
   end
+
+  describe '#debate_teams' do
+
+    before :each do
+      r.debate_teams_confirmed = 2
+    end
+    
+    context 'no debaters created' do
+      it 'returns an array of array of new debaters' do
+        r.debate_teams.count.should == 2
+        r.debate_teams.each_with_index { |team, index|
+          team.each do |d|
+            d.team_number.should == index + 1
+            d.should be_an_instance_of(Debater)
+            d.persisted?.should == false
+          end
+        }        
+      end
+    end
+
+
+    context '2nd speaker team 1 and 1st and 3rd speaker team 2 created' do
+      before :each do
+        @second_t2 = FactoryGirl.create(:debater, registration: r, name: '2nd speaker team 2', speaker_number: 2, team_number: 2)
+        @first_t2 = FactoryGirl.create(:debater, registration: r, name: '1st speaker team 2', speaker_number: 1, team_number: 2)
+        @third_t1 = FactoryGirl.create(:debater, registration: r, name: '3rd speaker team 1', speaker_number: 3, team_number: 1)
+      end
+
+      it 'returns 2 teams' do
+         r.debate_teams.length.should == 2
+      end
+
+      it 'contains the relevant team_number and speaker_number' do
+        r.debate_teams[0].each_with_index do |d, index|
+          d.team_number.should == 1
+          d.speaker_number.should == index+1
+        end
+
+        r.debate_teams[1].each_with_index do |d, index|
+          d.team_number.should == 2
+          d.speaker_number.should == index +1
+        end
+      end
+
+      it 'contains the persisted 3rd speaker of team1' do
+        r.debate_teams[0].length.should == 3
+        r.debate_teams[0].should include @third_t1
+      end
+
+      it 'contains the persisted 1st and 2nd speaker of team2' do
+        r.debate_teams[1].length.should == 3
+        r.debate_teams[1].should include @first_t2, @second_t2
+      end
+
+    end
+
+  end
+
+  pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
 
 end

@@ -154,7 +154,6 @@ describe "users/show.html.haml" do
   end
 
   describe "confirmed slot section" do
-
     it "is closed by default" do
       render
       rendered.should_not have_content('The following slots are confirmed.')

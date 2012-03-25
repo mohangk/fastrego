@@ -91,5 +91,21 @@ describe UsersController do
     end
   end
 
+  describe 'GET edit_debaters' do
 
+    before :each do
+      FactoryGirl.create(:debate_team_size)
+      get :edit_debaters
+    end
+
+    let(:user) do
+      FactoryGirl.create(:registration, debate_teams_confirmed: 3).user
+    end
+
+    context 'no debaters created yet' do
+      it 'assigns the current_users registration as @registration' do
+        assigns(:registration).should == user.registration
+      end
+    end
+  end
 end
