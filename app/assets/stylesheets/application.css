@@ -44,9 +44,12 @@ body {
    width: 50em;
 }
 
+.field_with_errors {
+    display: inline;
+}
 
 .field_with_errors label, #error_explanation, #error_explanation h4 {
-    color: red;
+    color: #B94A48;
 
 }
 

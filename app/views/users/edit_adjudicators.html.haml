@@ -1,0 +1,16 @@
+%h1 Adjudicators
+= form_for @registration, url: users_adjudicators_path, html: { class: 'form-horizontal edit_adjudicators' } do |form|
+  -if @registration.errors.any?
+    #error_explanation
+      %h4= "#{pluralize(@registration.errors.count, "error")} prohibited these adjudicator profiles from being saved:"
+      %ul
+        - @registration.errors.full_messages.each do |msg| 
+          %li= msg
+
+  - i = 0
+  = form.fields_for :adjudicators do |f|
+    - i += 1
+    %legend Adjudicator #{i}
+    = render partial: 'participant_form', locals: {f: f} 
+    %hr
+  = form.submit 'Update'

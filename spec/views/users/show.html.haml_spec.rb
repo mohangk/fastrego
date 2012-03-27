@@ -159,16 +159,40 @@ describe "users/show.html.haml" do
       rendered.should_not have_content('The following slots are confirmed.')
     end
 
-    it "is displayed when the registration returns true for #confirmed?" do
-      r = FactoryGirl.create(:registration, user: user, fees:2000)
-      @payment = Payment.new
-      r.confirm_slots(9,9,9)
-      user.reload
-      render
-      rendered.should have_content('9 debate teams')
-      rendered.should have_content('9 adjudicators')
-      rendered.should have_content('9 observers')
+    context 'when debaters, adjudicators and observers are confirmed' do
+      it "displays the confirmed amounts and links to add the details" do
+        r = FactoryGirl.create(:registration, user: user, fees:2000)
+        @payment = Payment.new
+        r.confirm_slots(9,9,9)
+        user.reload
+        render
+        rendered.should have_content('9 debate teams')
+        rendered.should have_content('9 adjudicators')
+        rendered.should have_content('9 observers')
+        rendered.should have_link('Add debate team details')
+        rendered.should have_link('Add adjudicator details')
+        rendered.should have_link('Add observer details')
+      end
     end
-  end
 
+    context 'when only debaters are confirmed' do
+      it "only displays the confirmed and links to add details for debaters " do
+        r = FactoryGirl.create(:registration, user: user, fees:2000)
+        @payment = Payment.new
+        r.confirm_slots(9,nil,nil)
+        user.reload
+        render
+        Capybara.string(rendered).find('section#confirmed_slots').tap do |confirmed_slots|
+          confirmed_slots.should have_content('9 debate teams')
+          confirmed_slots.should have_content('0 adjudicators')
+          confirmed_slots.should have_content('0 observers')
+          confirmed_slots.should have_link('Add debate team details')
+          confirmed_slots.should_not have_link('Add adjudicator details')
+          confirmed_slots.should_not have_link('Add observer details')
+        end
+      end
+    end
+
+    pending 'should change Add XXX details to Manage XXX details if data has already been saved'
+  end
 end

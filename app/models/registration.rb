@@ -4,12 +4,15 @@ class Registration < ActiveRecord::Base
   belongs_to :user
   has_many :payments
   has_many :debaters
-  accepts_nested_attributes_for :debaters
   has_many :adjudicators
   has_many :observers
+  accepts_nested_attributes_for :debaters
+  accepts_nested_attributes_for :adjudicators
+  accepts_nested_attributes_for :observers
+
 
   attr_accessor :override_fees
-  attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested
+  attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested, :debaters_attributes, :adjudicators_attributes, :observers_attributes
 
   validates :user_id, presence: true, uniqueness: true
   validates :debate_teams_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }
@@ -85,16 +88,19 @@ class Registration < ActiveRecord::Base
 
   def debate_teams
     debate_teams = []
-    (1..self.debate_teams_confirmed).each do |debate_team_count|
-      debate_teams[debate_team_count-1] = []
+    self.debate_teams_confirmed.times {debate_teams << []}
+    self.debaters.each do |debater|
+      debate_teams[debater.team_number-1][debater.speaker_number-1] = debater
+    end
+
+    (1..self.debate_teams_confirmed).each do |debate_team_number|
       (1..Setting.key('debate_team_size').to_i).each do |speaker_number|
-        debater = self.debaters.where(team_number: debate_team_count, speaker_number: speaker_number).first
-        if debater.nil?
-          debater = Debater.new(team_number: debate_team_count, speaker_number: speaker_number)
+        if debate_teams[debate_team_number - 1][speaker_number-1].nil?
+          debate_teams[debate_team_number-1][speaker_number-1]  = self.debaters.build(team_number: debate_team_number, speaker_number: speaker_number)
         end
-        debate_teams[debate_team_count-1] << debater
       end
     end
+
     return debate_teams
   end
 

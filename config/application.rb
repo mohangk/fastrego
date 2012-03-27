@@ -54,5 +54,8 @@ module UadcRego
     config.sass.preferred_syntax = :sass
     config.assets.initialize_on_precompile = false
     config.time_zone = 'Kuala Lumpur'
+
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| "<div class=\"field_with_errors control-group error\">#{html_tag}</div>".html_safe }
+
   end
 end

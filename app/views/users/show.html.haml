@@ -43,9 +43,18 @@
     %p
       %b You have been confirmed the following slots. Please click on the links to populate the relavant participant details.
       %ul
-        %li #{ pluralize current_user.registration.debate_teams_confirmed, 'debate team' } #{link_to 'Debater details form', users_debaters_path}
-        %li #{ pluralize current_user.registration.adjudicators_confirmed, 'adjudicator' }
-        %li #{ pluralize current_user.registration.observers_confirmed, 'observer' } 
+        %li 
+          #{ pluralize current_user.registration.debate_teams_confirmed, 'debate team' }
+          - if current_user.registration.debate_teams_confirmed > 0 
+            #{link_to 'Add debate team details', users_debaters_path}
+        %li 
+          #{ pluralize current_user.registration.adjudicators_confirmed, 'adjudicator' }
+          - if current_user.registration.adjudicators_confirmed > 0 
+            #{link_to 'Add adjudicator details', users_adjudicators_path}
+        %li 
+          #{ pluralize current_user.registration.observers_confirmed, 'observer' } 
+          - if current_user.registration.observers_confirmed > 0  
+            #{link_to 'Add observer details', users_observers_path}
 
        
 
