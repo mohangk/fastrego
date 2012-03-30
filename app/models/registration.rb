@@ -89,8 +89,11 @@ class Registration < ActiveRecord::Base
   def debate_teams
     debate_teams = []
     self.debate_teams_confirmed.times {debate_teams << []}
+   
     self.debaters.each do |debater|
-      debate_teams[debater.team_number-1][debater.speaker_number-1] = debater
+      #if the team_number or speaker_number is empty we create a fresh debater record
+      # this should only happen in tests as we always set the hidden values in the form 
+      debate_teams[debater.team_number-1][debater.speaker_number-1] = debater if debater.team_number.present? and debater.speaker_number.present?
     end
 
     (1..self.debate_teams_confirmed).each do |debate_team_number|

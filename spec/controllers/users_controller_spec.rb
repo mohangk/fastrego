@@ -148,6 +148,7 @@ describe UsersController do
     end
 
     context 'with invalid parameters' do
+
       let(:request) { put :update_debaters, {registration: {debaters_attributes: [FactoryGirl.attributes_for(:debater), name:'']}} }
       it 'does not create a new debater' do
         expect {

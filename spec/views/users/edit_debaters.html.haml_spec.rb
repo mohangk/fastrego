@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'users/debaters.html.haml' do
+describe 'users/edit_debaters.html.haml' do
 
 
   let(:registration) do
