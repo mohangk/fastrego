@@ -20,7 +20,7 @@ ActiveAdmin.register Registration do
     column 'DT Cnf', :debate_teams_confirmed
     column 'Adj Cnf', :adjudicators_confirmed
     column 'Obs Cnf', :observers_confirmed
-    column :fees
+    column 'Override fees', :fees
     column 'Conf', :total_confirmed_payments
     column 'Bal', :balance_fees
     default_actions
@@ -71,7 +71,7 @@ ActiveAdmin.register Registration do
 
     f.inputs 'Override system computed fees' do
       f.input :override_fees, as: :boolean,
-              label: 'Select to enable fees field',
+              label: 'Select this checkbox if you want to provide a different fee than the system generated fee',
               input_html: { onclick: "$('#registration_override_fees').is(':checked') ? $('#registration_fees').removeAttr('disabled') :$('#registration_fees').attr('disabled','disabled');" }
       f.input :fees, :input_html => { :disabled => true }
     end
