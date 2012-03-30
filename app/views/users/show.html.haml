@@ -46,15 +46,15 @@
         %li 
           #{ pluralize current_user.registration.debate_teams_confirmed, 'debate team' }
           - if current_user.registration.debate_teams_confirmed > 0 
-            #{link_to 'Add debate team details', users_debaters_path}
+            #{link_to (current_user.registration.debaters.length > 0 ? 'Edit' : 'Add') + ' debate team details', users_debaters_path}
         %li 
           #{ pluralize current_user.registration.adjudicators_confirmed, 'adjudicator' }
           - if current_user.registration.adjudicators_confirmed > 0 
-            #{link_to 'Add adjudicator details', users_adjudicators_path}
+            #{link_to (current_user.registration.adjudicators.length > 0 ? 'Edit' : 'Add') + ' adjudicator details', users_adjudicators_path}
         %li 
           #{ pluralize current_user.registration.observers_confirmed, 'observer' } 
           - if current_user.registration.observers_confirmed > 0  
-            #{link_to 'Add observer details', users_observers_path}
+            #{link_to (current_user.registration.observers.length > 0 ? 'Edit' : 'Add') + ' observer details', users_observers_path}
 
        
 

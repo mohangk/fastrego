@@ -10,6 +10,8 @@ gem 'thin'
 gem 'sass-rails',   '~> 3.1.5'
 gem 'paperclip', '~> 2.0'
 gem 'aws-sdk', '~> 1.3.4'
+#putting this in so I can dupe data on beta-debreg
+gem 'faker'
 
 # Gems used only for assets and not required
 # in production environments by default.
