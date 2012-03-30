@@ -1,9 +1,9 @@
 !!!
 %html
   %head
-    %title UADC 2012 
+    %title Fastrego
     /[if lt IE 9]
-    /%script{src: 'http://html5shim.googlecode.com/svn/trunk/html5.js'}
+    %script{src: 'http://html5shim.googlecode.com/svn/trunk/html5.js'}
     /[endif]
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
@@ -13,8 +13,7 @@
       .navbar-inner
         .container
           /%a.btn.btn-navbar{data-toggle: 'collapse', data-target: '.nav-collapse'}
-          %a.brand
-            UADC 2012 
+          %a.brand{href:'http://www.facebook.com/FastRego',style:'display:inline'} #{image_tag 'fastrego.png', size:'265x27'}
           .nav-collapse
             %ul.nav
               %li
