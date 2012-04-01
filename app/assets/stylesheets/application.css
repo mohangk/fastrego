@@ -54,3 +54,8 @@ body {
 
 }
 
+.navbar a.brand {
+    padding-top: 4px;
+    padding-bottom: 0px;
+}
+

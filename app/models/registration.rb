@@ -2,10 +2,10 @@ class Registration < ActiveRecord::Base
   strip_attributes
 
   belongs_to :user
-  has_many :payments
-  has_many :debaters
-  has_many :adjudicators
-  has_many :observers
+  has_many :payments, dependent: :destroy
+  has_many :debaters, dependent: :destroy
+  has_many :adjudicators, dependent: :destroy
+  has_many :observers, dependent: :destroy
   accepts_nested_attributes_for :debaters
   accepts_nested_attributes_for :adjudicators
   accepts_nested_attributes_for :observers
