@@ -1,25 +1,22 @@
 TODO.txt
 
+bipeds
+
+- deploy site
+ - handle configurations
+  * mailgun
+  * S3
+- add additional fields for profile
+- add emailing on granting, emailing on confirmation 
+
 User
-- implment controller specs for delete payment
+- implment controller specs for delete payment, add debater/observer/adjudicator
 - complete view specs for payment_table
 
 Fix assets precompile issue
 Make payments a nested controller of users and clean up the routes\
 
 
-#Confirmation flow
-
-
-1. Admin will be able to see "Fees", "Confimed paid", "Balance"  in the pre_registration list view (done)
-2. Admin will be able to key in comments and key in confirmed values for "Debate teams", "Adjudicator" and "Observer" (done)
-3. The confirmed_values will be available in the Team manager profile page. (done)
-4. The system will send an email to the Team manager when the confirmed_values are set by the Admin.
-
-5. The profile page will also provide forms to key in "Debater", "Adjudicatory" and "Observer" details. There 
-will be as many forms available in the profile page based as per the confirmed_values.
 
 * How do we handle cases where the user has already keyed in participants but the amount of participants are changed in the backend?
-
-* refactor participant templates
-
+  - implement validation
