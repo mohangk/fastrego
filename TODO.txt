@@ -2,12 +2,30 @@ TODO.txt
 
 bipeds
 
+cream23horse
+
 - deploy site
- - handle configurations
-  * mailgun
+ - setup heroku and push (done)
+ - setup active admin user (done)
+
+- remove hardcoded currency and allow for configuration based currency
+
+- setup configurations
+  * mailgun (add mailgun addon)
   * S3
+  * production.rb
+    - hostnames need to be replaces with env variable 
+- push configurations to site
+- test emailing, upload of images
+
+
 - add additional fields for profile
 - add emailing on granting, emailing on confirmation 
+
+#
+
+- change database.yml to be more generic (like bipeds instance)
+  - to do this must look into renaming uadc2012 instance
 
 User
 - implment controller specs for delete payment, add debater/observer/adjudicator

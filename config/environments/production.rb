@@ -59,7 +59,7 @@ UadcRego::Application.configure do
   config.active_support.deprecation = :notify
 
   config.assets.precompile += %w[admin/active_admin.css admin/active_admin.js]
-  config.action_mailer.default_url_options = {:host => 'uadc2012.heroku.com'}
+  config.action_mailer.default_url_options = {:host => ENV['PRODUCTION_HOSTNAME']}
   config.action_mailer.raise_delivery_errors = true
 
 
@@ -78,7 +78,7 @@ UadcRego::Application.configure do
       :address =>  ENV['MAILGUN_SMTP_SERVER'],
       :user_name => ENV['MAILGUN_SMTP_LOGIN'],
       :password => ENV['MAILGUN_SMTP_PASSWORD'],
-      :domain => 'uadc2012.herokuapp.com',
+      :domain => ENV['PRODUCTION_HOSTNAME'],
       :authentication => :plain,
   }
   ActionMailer::Base.delivery_method = :smtp
