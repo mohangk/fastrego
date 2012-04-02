@@ -1,4 +1,4 @@
-ActiveAdmin.register User do
+ActiveAdmin.register User, as: 'Team manager' do
 
   scope :all, :default => true do |users|
     users.includes [:institution]
