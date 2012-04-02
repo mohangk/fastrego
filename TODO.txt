@@ -1,31 +1,46 @@
 TODO.txt
 
-bipeds
-
-cream23horse
-
 - deploy site
- - setup heroku and push (done)
+ - setup heroku 
+ - push to heroku
  - setup active admin user (done)
+ - add mailgun addon
+ - add S3 bucket
 
-- remove hardcoded currency and allow for configuration based currency
-
-- setup configurations
-  * mailgun (add mailgun addon)
-  * S3
+- setup configuration env
+  * mailgun 
+  * S3 
   * production.rb
     - hostnames need to be replaces with env variable 
 - push configurations to site
 - test emailing, upload of images
 
+-load institutions in
+
+- remove hardcoded currency and allow for configuration based currency
 
 - add additional fields for profile
 - add emailing on granting, emailing on confirmation 
 
-#
+# Generalise following
 
 - change database.yml to be more generic (like bipeds instance)
   - to do this must look into renaming uadc2012 instance
+./config/initializers/session_store.rb:UadcRego:
+./config/application.rb:module UadcRego
+./config/environment.rb:UadcRego::Application.initialize!
+./config/environments/development.rb:UadcRego::Application.configure do
+./config/environments/production.rb:UadcRego::Application.configure do
+./config/environments/staging.rb:UadcRego::Application.configure do
+./config/environments/test.rb:UadcRego::Application.configure do
+./config/initializers/session_store.rb:# UadcRego::Application.config.session_store :active_record_store
+./config/routes.rb:UadcRego::Application.routes.draw do
+./config.ru:run UadcRego::Application
+./config/initializers/secret_token.rb:UadcRego::Application.config.secret_token = ''
+./config/initializers/session_store.rb:UadcRego::Application.config.session_store :cookie_store, key: '_uadc_rego_session'
+
+
+
 
 User
 - implment controller specs for delete payment, add debater/observer/adjudicator

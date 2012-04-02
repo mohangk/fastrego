@@ -1,5 +1,5 @@
 class PaymentMailer < ActionMailer::Base
-  default from: "do-not-reply@uadc2012.mailgun.org"
+  default from: ENV['MAILGUN_SMTP_LOGIN']
 
   def update_notification(payment)
     @payment = payment
