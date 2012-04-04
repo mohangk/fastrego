@@ -10,7 +10,7 @@ class Registration < ActiveRecord::Base
   accepts_nested_attributes_for :adjudicators
   accepts_nested_attributes_for :observers
 
-
+  #added to allow for adding checkbox in activeadmin
   attr_accessor :override_fees
   attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested, :debaters_attributes, :adjudicators_attributes, :observers_attributes
 

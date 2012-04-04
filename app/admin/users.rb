@@ -1,8 +1,10 @@
-ActiveAdmin.register User, as: 'Team manager' do
+ActiveAdmin.register User do
+  menu label: 'Team manager'
 
   scope :all, :default => true do |users|
     users.includes [:institution]
   end
+
 
   index do
     column :id
@@ -21,5 +23,39 @@ ActiveAdmin.register User, as: 'Team manager' do
   filter :email
   filter :name
   filter :phone_number
+
+
+  form do |f|
+    f.inputs "Team manager details" do
+      f.input :institution
+      f.input :name
+      f.input :email
+      f.input :password
+      f.input :password_confirmation
+      f.input :phone_number
+      f.input :send_reset_password_email, as: :boolean, default: true,
+              label: 'Select this checkbox if you would like to send an email to the team manager to reset her account password'
+    end
+    f.buttons
+  end
+
+  controller do
+
+    def create
+      @user = User.new(params[:user])
+      #if the admin creates the user, we skip confirmation and rely 
+      @user.skip_confirmation!
+      @user.send_reset_password_instructions if params[:user][:send_reset_password_email] == '1'
+
+      respond_to do |format|
+        if @user.save
+          format.html { redirect_to admin_users_url, notice: 'Team manager was successfully created.' }
+        else
+          format.html { render action: "new" }
+        end
+      end
+    end
+
+  end
 
 end

@@ -5,7 +5,8 @@ Setting.create(
 		{key: 'observer_fees', value: '100'},
 		{key: 'adjudicator_fees', value: '100'},
 		{key: 'debate_team_fees', value: '200'},
-		{key: 'debate_team_size', value: '3'}
+		{key: 'debate_team_size', value: '3'},
+		{key: 'tournament_name', value: 'Debate tournament name'}
 	])
 
 #Setup default admin user

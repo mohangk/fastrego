@@ -13,6 +13,12 @@ class User < ActiveRecord::Base
   belongs_to :institution
   has_one :registration, dependent: :destroy
 
+  #used to add attribute in activeadmin user form
+  attr_writer :send_reset_password_email
+
+  def send_reset_password_email
+    true if @send_reset_password_email.nil?
+  end
 
   def registered?
     !self.registration.nil?
