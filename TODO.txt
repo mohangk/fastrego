@@ -3,7 +3,7 @@ TODO.txt
 - deploy site
  - setup heroku 
  - push to heroku
- - setup active admin user (done)
+ - setup active admin user 
  - add mailgun addon
  - add S3 bucket
 
