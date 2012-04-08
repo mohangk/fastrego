@@ -6,7 +6,8 @@ Setting.create(
 		{key: 'adjudicator_fees', value: '100'},
 		{key: 'debate_team_fees', value: '200'},
 		{key: 'debate_team_size', value: '3'},
-		{key: 'tournament_name', value: 'Debate tournament name'}
+		{key: 'tournament_name', value: 'Debate tournament name'},
+    {key: 'currency_symbol',  value: 'USD'}
 	])
 
 #Setup default admin user

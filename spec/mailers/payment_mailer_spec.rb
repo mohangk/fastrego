@@ -4,6 +4,11 @@ describe PaymentMailer do
   let(:payment) { FactoryGirl.create(:payment, amount_received: 1000, admin_comment: 'This is a comment' ) }
   let(:mail) { PaymentMailer.update_notification(payment) }
 
+  before do
+    PaymentMailer.default from: 'do-not-reply@uadc2012.mailgun.org'
+  end
+
+
   it "has the right subject" do
     mail.subject.should == 'Payment update notification'
   end

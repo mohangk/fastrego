@@ -1,9 +1,13 @@
 require 'spec_helper'
 
 describe "Users" do
+  before :each do
+    FactoryGirl.create(:currency_symbol)
+  end
+
   describe "sign up" do
     before do
-      Factory(:institution)
+      FactoryGirl.create(:institution)
     end
     it 'provides a form for users to sign up and then forward them to the profile page' do
       visit profile_path

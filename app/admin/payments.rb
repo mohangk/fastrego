@@ -10,7 +10,8 @@ ActiveAdmin.register Payment do
     end
     column 'Date', :date_sent
     column 'Amount sent' do |p|
-      number_to_currency p.amount_sent, unit: 'RM'    end
+      number_to_currency p.amount_sent, unit: Setting.key('currency_symbol')
+    end
     column 'A/C #', :account_number
     column 'Comments', :comments
     column 'Proof'  do |p|
@@ -18,7 +19,7 @@ ActiveAdmin.register Payment do
     end
     column :created_at
     column 'Amount received' do |p|
-        number_to_currency p.amount_received, unit: 'RM'
+        number_to_currency p.amount_received, unit: Setting.key('currency_symbol')    
     end
     column 'Admin comment', :admin_comment
     default_actions

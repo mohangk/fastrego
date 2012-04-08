@@ -40,6 +40,12 @@ FactoryGirl.define do
     value 3
   end
 
+  factory :currency_symbol, :class => Setting do
+    key 'currency_symbol'
+    value 'RM'
+  end
+
+
   factory :registration do
     debate_teams_requested 3
     adjudicators_requested 1

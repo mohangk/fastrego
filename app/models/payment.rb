@@ -15,7 +15,7 @@ class Payment < ActiveRecord::Base
   attr_accessible :account_number, :amount_sent, :date_sent, :comments, :scanned_proof
 
   HUMANIZED_ATTRIBUTES = {
-    amount_sent: 'RM',
+    amount_sent: Setting.key('currency_symbol'),
     account_number: 'A/C #',
     scanned_proof: 'Proof of transfer',
     scanned_proof_content_type: 'Proof of transfer',
