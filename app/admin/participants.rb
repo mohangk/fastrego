@@ -16,7 +16,7 @@ ActiveAdmin.register Participant do
     column 'Spkr no.', :speaker_number
     column 'Team no.', :team_number
     column 'Depature', sortable: 'institutions.abbreviation' do |r|
-    	r.departure_at.strftime("%d/%m %H:%M:%S")
+    	r.departure_at.strftime("%d/%m %H:%M:%S") unless r.departure_at.nil?
     end
     default_actions
   end
