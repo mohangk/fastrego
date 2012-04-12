@@ -141,7 +141,7 @@ describe Registration do
 
       it 'should not send a slots_confirmed_notification' do
         ActionMailer::Base.deliveries = [] 
-        r.confirm_slots(1,1,1)
+        r.confirm_slots(nil,nil,nil)
         ActionMailer::Base.deliveries.last.should == nil
       end
 
