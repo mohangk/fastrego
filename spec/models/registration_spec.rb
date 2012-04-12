@@ -242,7 +242,7 @@ describe Registration do
     end
 
   end
-  peding 'it should validate that the email is only sent if there are changes to the actual quantities'
+  pending 'it should validate that the email is only sent if there are changes to the actual quantities'
   pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
-
+  pending 'debate_teams explodes when the confirmed quantities are not set yet'
 end

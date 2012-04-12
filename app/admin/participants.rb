@@ -7,7 +7,7 @@ ActiveAdmin.register Participant do
   	column 'Diet',:dietary_requirement
   	column :allergies
   	column :email
-  	column :airport
+  	column :point_of_entry
     column 'Arrival', sortable: :requested_at do |r|
       r.arrival_at.strftime("%d/%m %H:%M:%S") unless r.arrival_at.nil?
     end
