@@ -9,7 +9,7 @@ ActiveAdmin.register Participant do
   	column :email
   	column :airport
     column 'Arrival', sortable: :requested_at do |r|
-      r.arrival_at.strftime("%d/%m %H:%M:%S")
+      r.arrival_at.strftime("%d/%m %H:%M:%S") unless r.arrival_at.nil?
     end
     column 'Emer cnt person',:emergency_contact_person
     column 'Emer cnt number',:emergency_contact_number
