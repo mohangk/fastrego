@@ -164,7 +164,7 @@ describe Registration do
       
       it 'should send a slots_granted_notification' do
         ActionMailer::Base.deliveries = [] 
-        r.confirm_slots(1,1,1)
+        r.confirm_slots(2,1,1)
         ActionMailer::Base.deliveries.last.to.should == [r.user.email]
       end
 
@@ -242,7 +242,7 @@ describe Registration do
     end
 
   end
-
+  peding 'it should validate that the email is only sent if there are changes to the actual quantities'
   pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
 
 end
