@@ -162,4 +162,5 @@ describe UsersController do
       end
     end
   end
+  pending 'handle users trying to access the participant forms before the confirmed quantites being set'
 end

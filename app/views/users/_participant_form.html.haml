@@ -13,6 +13,14 @@
         = f.radio_button :gender, 'Female'
         Female
   .control-group
+    = f.label :passport_number, class: 'control-label'
+    .controls
+      = f.text_field :passport_number
+  .control-group
+    = f.label :nationality, 'Nationality', class: 'control-label'
+    .controls
+      = f.text_field :nationality
+  .control-group
     = f.label :email, 'Email', class: 'control-label'
     .controls
       = f.text_field :email
@@ -20,8 +28,8 @@
     = f.label :dietary_requirement, 'Dietary requirement'
     .controls
       %label.radio
-        = f.radio_button :dietary_requirement, 'Normal'
-        Normal
+        = f.radio_button :dietary_requirement, 'No_special_requirements'
+        No special requirements
       %label.radio
         = f.radio_button :dietary_requirement, 'Halal'
         Halal
@@ -41,9 +49,13 @@
     .controls
       = f.datetime_select :departure_at, {use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year}, class: 'span1'
   .control-group
-    = f.label :airport
+    = f.label :transport_number, 'Flight/Bus/Train Number' 
     .controls
-      = f.text_field :airport
+      = f.text_field :transport_number
+  .control-group
+    = f.label :point_of_entry
+    .controls
+      = f.text_field :point_of_entry
   .control-group
     = f.label :emergency_contact_person
     .controls
@@ -53,10 +65,10 @@
     .controls
       = f.text_field :emergency_contact_number
   .control-group
-    = f.label :preferred_roommate
+    = f.label :preferred_roommmate
     .controls
-      = f.text_field :preferred_roomate
+      = f.text_field :preferred_roommate
   .control-group
-    = f.label :preferred_roomate_institution
+    = f.label :preferred_roommate_institution
     .controls
-      = f.text_field :preferred_roomate_institution
+      = f.text_field :preferred_roommate_institution
