@@ -9,6 +9,7 @@ describe "users/show.html.haml" do
     user.confirm!
     sign_in user
     @registration = Registration.new
+    FactoryGirl.create(:currency_symbol)
   end
 
   describe "registration section" do

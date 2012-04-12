@@ -36,6 +36,12 @@ describe Registration do
 
   describe "#grant_slots" do
     context 'nothing set' do
+      it 'should not send a slots_granted_notification' do
+
+        ActionMailer::Base.deliveries = [] 
+        r.grant_slots(nil,nil,nil)
+        ActionMailer::Base.deliveries.last.should == nil
+      end
       it 'should not set any values' do
         r.grant_slots(nil,nil,nil)
         r.debate_teams_granted.should == nil
@@ -50,6 +56,13 @@ describe Registration do
       end
     end
     context "granting 1 dt, 1 adj, 1 obs" do
+
+      it 'should send a slots_granted_notification' do
+        ActionMailer::Base.deliveries = [] 
+        r.grant_slots(1,1,1)
+        ActionMailer::Base.deliveries.last.to.should == [r.user.email]
+      end
+
      it "should set all values" do
         r.grant_slots(1,1,1)
         r.reload
@@ -125,6 +138,13 @@ describe Registration do
 
   describe '#confirm_slots' do
     context 'nothing confirmed' do
+
+      it 'should not send a slots_confirmed_notification' do
+        ActionMailer::Base.deliveries = [] 
+        r.confirm_slots(nil,nil,nil)
+        ActionMailer::Base.deliveries.last.should == nil
+      end
+
       it "should not set any values but still return true" do
         r.confirm_slots(nil, nil, nil).should == true
         r.reload
@@ -141,6 +161,13 @@ describe Registration do
       end
     end
     context 'something confirmed' do
+      
+      it 'should send a slots_granted_notification' do
+        ActionMailer::Base.deliveries = [] 
+        r.confirm_slots(2,1,1)
+        ActionMailer::Base.deliveries.last.to.should == [r.user.email]
+      end
+
       it "should only set the values that were passed in" do
         r.confirm_slots('', '12', nil).should == true
         r.reload
@@ -215,7 +242,7 @@ describe Registration do
     end
 
   end
-
+  peding 'it should validate that the email is only sent if there are changes to the actual quantities'
   pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
 
 end

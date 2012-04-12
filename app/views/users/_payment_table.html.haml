@@ -15,11 +15,11 @@
       %tr
         %td= p.date_sent
         %td=  p.account_number
-        %td= number_to_currency p.amount_sent, unit: 'RM'
+        %td= number_to_currency p.amount_sent, unit: Setting.key('currency_symbol')
         %td= p.comments
         %td
           =link_to 'View', p.scanned_proof.url, 'data-popup' => true
-        %td= number_to_currency p.amount_received, unit: 'RM'
+        %td= number_to_currency p.amount_received, unit: Setting.key('currency_symbol')
         %td= p.admin_comment
         %td
           -unless p.confirmed?

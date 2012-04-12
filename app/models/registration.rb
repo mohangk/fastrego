@@ -36,7 +36,9 @@ class Registration < ActiveRecord::Base
       self.debate_teams_granted = debate_teams_granted.to_i
       self.adjudicators_granted = adjudicators_granted.to_i
       self.observers_granted = observers_granted.to_i
-
+      if [self.debate_teams_granted_changed?, self.adjudicators_granted_changed?, self.observers_granted_changed?].any?
+        RegistrationMailer.slots_granted_notification(self).deliver 
+      end
       if fees.blank?
         self.fees = (self.debate_teams_granted * BigDecimal.new(Setting.key('debate_team_fees')) +
           self.adjudicators_granted * BigDecimal.new(Setting.key('adjudicator_fees')) +
@@ -78,6 +80,9 @@ class Registration < ActiveRecord::Base
       self.debate_teams_confirmed = debate_teams_confirmed.to_i
       self.adjudicators_confirmed = adjudicators_confirmed.to_i
       self.observers_confirmed = observers_confirmed.to_i
+      if [self.debate_teams_confirmed_changed?, self.adjudicators_confirmed_changed?, self.observers_confirmed_changed?].any?
+        RegistrationMailer.slots_confirmed_notification(self).deliver 
+      end
     end
     self.save
   end

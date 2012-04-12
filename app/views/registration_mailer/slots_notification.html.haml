@@ -1,0 +1,18 @@
+!!!
+%html
+  %head
+    %meta{content: "text/html; charset=UTF-8", httpequiv: "Content-Type" }
+  %body
+    %h1
+      Slots #{@notification_type} notification for #{@registration.user.institution.name}
+    %p You have been #{@notification_type} the following slots:
+    %table
+      %tr
+        %td Debate teams 
+        %td= @registration.send("debate_teams_#{@notification_type}")
+      %tr
+        %td Adjudicators
+        %td= @registration.send("adjudicators_#{@notification_type}")
+      %tr
+        %td Observers 
+        %td= @registration.send("observers_#{@notification_type}")

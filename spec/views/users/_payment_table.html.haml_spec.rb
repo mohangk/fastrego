@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'users/_payment_table' do
+  before :each do
+    FactoryGirl.create(:currency_symbol)
+  end
+
   context 'when there are no payments' do
     before :each do
       user = FactoryGirl.create(:registration).user
@@ -13,10 +17,8 @@ describe 'users/_payment_table' do
     end
   end
   context 'when there is a payment' do
-
-
     context 'that is not confirmed' do
-
+      
       before :each do
         user = FactoryGirl.create(:payment).registration.user
         user.confirm!
