@@ -8,6 +8,7 @@ UadcRego::Application.routes.draw do
 
   resources :institutions, only: [:new, :create, :index]
   match "profile" => "users#show", as: :profile, via: :get
+  match "embed_logo" => "pages#embed_logo", as: :embed_logo, via: :get
   match "users/registration" => "users#registration", via: :post
   match "users/debaters" => "users#edit_debaters", via: :get
   match "users/debaters" => "users#update_debaters", via: :put
