@@ -13,19 +13,21 @@ TODO.txt
   * production.rb
     - hostnames need to be replaces with env variable 
 - push configurations to site
+- add db backup support
+  heroku addons:upgrade pgbackups:auto-month 
 - test emailing, upload of images
+- setup configuration options
 
 -load institutions in
 
-- remove hardcoded currency and allow for configuration based currency
 
 - add additional fields for profile
-- add emailing on granting, emailing on confirmation 
 
 # Generalise following
 
 - change database.yml to be more generic (like bipeds instance)
   - to do this must look into renaming uadc2012 instance
+
 ./config/initializers/session_store.rb:UadcRego:
 ./config/application.rb:module UadcRego
 ./config/environment.rb:UadcRego::Application.initialize!
@@ -39,17 +41,12 @@ TODO.txt
 ./config/initializers/secret_token.rb:UadcRego::Application.config.secret_token = ''
 ./config/initializers/session_store.rb:UadcRego::Application.config.session_store :cookie_store, key: '_uadc_rego_session'
 
-
-
-
-User
+#User
 - implment controller specs for delete payment, add debater/observer/adjudicator
 - complete view specs for payment_table
 
-Fix assets precompile issue
-Make payments a nested controller of users and clean up the routes\
+#Fix assets precompile issue
+  Make payments a nested controller of users and clean up the routes\
 
-
-
-* How do we handle cases where the user has already keyed in participants but the amount of participants are changed in the backend?
+#How do we handle cases where the user has already keyed in participants but the amount of participants are changed in the backend?
   - implement validation
