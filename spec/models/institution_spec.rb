@@ -11,12 +11,12 @@ describe Institution do
 
   it "should strip attributes with whitespaces" do
     subject
-    lambda {Institution.create!(abbreviation: 'MMU ', name: 'Fake MMU', country: 'Test')}.should raise_error ActiveRecord::RecordInvalid
+    lambda {Institution.create!(abbreviation: "#{subject.abbreviation} ", name: 'Fake MMU', country: 'Test')}.should raise_error ActiveRecord::RecordInvalid
   end
 
   it "should list institutions alphabetically" do
     Factory(:institution, name: 'Zztop', abbreviation: 'zz')
-    Factory(:institution)
+    Factory(:institution, name: 'Multimedia University')
     Factory(:institution, name: 'Aatop', abbreviation: 'aa')
     Factory(:institution, name: 'Bbtop', abbreviation: 'cc')
 
