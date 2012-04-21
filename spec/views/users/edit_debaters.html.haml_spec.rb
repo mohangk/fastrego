@@ -16,11 +16,11 @@ describe 'users/edit_debaters.html.haml' do
       assign :registration, registration
   	  render
   	  #puts rendered
-  	  rendered.should have_content('MMU 1')
+  	  rendered.should match(/MMU\d* 1/)
   	  rendered.should have_content('Speaker 1')
   	  rendered.should have_content('Speaker 2')
   	  rendered.should have_content('Speaker 3')
-  	  rendered.should have_content('MMU 2')
+  	  rendered.should match(/MMU\d* 2/)
   	  rendered.should have_content('Speaker 1')
   	  rendered.should have_content('Speaker 2')
   	  rendered.should have_content('Speaker 3')
