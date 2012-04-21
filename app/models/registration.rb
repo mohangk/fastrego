@@ -1,6 +1,7 @@
 class Registration < ActiveRecord::Base
   strip_attributes
-
+  
+  #scope :pending_details, where('confirmed')
   belongs_to :user
   has_many :payments, dependent: :destroy
   has_many :debaters, dependent: :destroy

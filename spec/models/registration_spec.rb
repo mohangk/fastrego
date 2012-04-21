@@ -34,6 +34,16 @@ describe Registration do
   it { should_not allow_mass_assignment_of(:observers_confirmed)}
   it { should validate_numericality_of(:fees)}
 
+  #describe "confirmed" do
+    #before :each do
+
+      #FactoryGirl.
+    #end
+    #it "should return registrations that have any one of the confirmed quantities set" do
+
+    #end
+
+  #end
   describe "#grant_slots" do
     context 'nothing set' do
       it 'should not send a slots_granted_notification' do

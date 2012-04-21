@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(:version => 20120412175458) do
     t.string   "emergency_contact_person"
     t.string   "emergency_contact_number"
     t.string   "preferred_roommate"
-    t.string   "preferred_roomate_institution"
+    t.string   "preferred_roommate_institution"
     t.datetime "departure_at"
     t.integer  "speaker_number"
     t.integer  "team_number"

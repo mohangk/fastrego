@@ -58,7 +58,7 @@ describe "Users" do
       before :each do
         visit profile_path
         page.should have_content 'You need to sign in'
-        fill_in 'Email', with: 'suthen.thomas@gmail.com'
+        fill_in 'Email', with: user.email
         fill_in 'Password', with: 'password'
         click_button 'Sign in'
         page.current_path.should == profile_path

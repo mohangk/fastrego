@@ -2,14 +2,6 @@ ActiveAdmin::Dashboards.build do
   # Define your dashboard sections here. Each block will be
   # rendered on the dashboard in the context of the view. So just
   # return the content which you would like to display.
-  #section "Current registration quantities" do
-  #  table_for([ 'debate_teams', 'adjudicators', 'observers' ].each)do |t|
-  #    t.column("Type") { |role| role.titleize }
-  #    t.column("Requested") { |role| Registration.sum("#{role}_requested")}
-  #    t.column("Granted") { |role|   Registration.sum("#{role}_granted")}
-  #    t.column("Confirmed") { |role| Registration.sum("#{role}_confirmed")}
-  #  end
-  #end  
   # == Simple Dashboard Section
   # Here is an example of a simple dashboard section
   #

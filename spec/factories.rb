@@ -1,15 +1,15 @@
 FactoryGirl.define do
 
   factory :institution do
-    abbreviation 'MMU'
-    name 'Multimedia University'
+    sequence(:abbreviation) { |n| "MMU#{n}" }
+    sequence(:name) { |n| "Multimedia University #{n}" }
     website 'http://www.mmu.edu.my'
     country 'Malaysia'
   end
 
   factory :user do
       name 'Suthen Thomas'
-      email 'suthen.thomas@gmail.com'
+      sequence(:email) { |n| "suthen#{n}.thomas@gmail.com" }
       password 'password'
       phone_number '123123123123'
       institution
@@ -67,8 +67,8 @@ FactoryGirl.define do
     name 'Jack Nostrum'
     gender 'Male'
     email 'test@test.com'
-    dietary_requirement 'Normal'
-    airport 'KLIA'
+    dietary_requirement 'Halal'
+    point_of_entry 'KLIA'
     emergency_contact_person 'Jason Statham'
     emergency_contact_number '123123123123'
     speaker_number 1
