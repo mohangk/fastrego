@@ -3,8 +3,6 @@ ActiveAdmin.register Registration do
     r.includes [ :user => :institution ]
   end
   
-  scope :pending_details
-  
   config.sort_order = "requested_at_asc"
 
   index do
