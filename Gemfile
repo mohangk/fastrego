@@ -27,7 +27,8 @@ gem 'activeadmin' , :git => 'git://github.com/gregbell/active_admin.git'
 gem "strip_attributes", "~> 1.0"
 gem 'meta_search', '>= 1.1.0.pre'
 gem 'newrelic_rpm'
-
+gem 'simple_form'
+gem 'country_select'
 #gem 'country-select' - using http://github.com/rails/iso-3166-country-select instead as this did not seem to work
 
 group :development, :test do

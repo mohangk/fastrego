@@ -1,0 +1,23 @@
+-unless flash[:notice]
+  %section#enquiry_form
+    %h2 Use FastRego for your next tournament!
+    %legend  
+    %p Thank you for your interest in FastRego. We'd like as many people as possible to benefit from our system (and the more people who use it, the happier we are!).
+    %p We are currently still in a closed beta and on the lookout for early adopters that could benefit from using FastRego as well as help us improve the system. If you are keen, please fill in the form below and we'll get back to you as soon as we can.
+    %br
+    = simple_form_for @enquiry, url: enquiry_path, method: :post, html: {class: 'form-horizontal'} do |f|
+      = f.input :name
+      = f.input :email
+      = f.input :country
+      = f.input :institution
+      = f.input :phone_number
+      = f.input :tournament
+      = f.input :tournament_url
+      = f.input :tournament_description, as: :text, input_html: { rows: 5, cols: 40 }
+      = f.input :tournament_type, collection: ['Open','Close'], as: :radio_buttons, item_wrapper_class: 'inline'
+      = f.input :expected_teams
+      = f.input :expected_adjudicators
+      = f.input :tournament_registration_start_date, as: :date, start_year: Date.today.year, end_year: Date.today.year + 3, order: [:day, :month, :year]
+      = f.input :tournament_start_date, as: :date, start_year: Date.today.year, end_year: Date.today.year + 3, order: [:day, :month, :year]
+      = f.button :submit, 'Submit'
+
