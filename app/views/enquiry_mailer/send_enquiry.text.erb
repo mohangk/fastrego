@@ -1,0 +1,6 @@
+Enquiry for FastRego  
+====================
+
+<% @enquiry.marshal_dump.each do |key, value|  %>
+  <%= key.to_s.humanize %> : <%= value %>
+<% end %>

@@ -5,7 +5,10 @@
   %body
     %h1
       Slots #{@notification_type} notification for #{@registration.user.institution.name}
-    %p You have been #{@notification_type} the following slots:
+    
+    %p Hello #{@registration.user.name}
+
+    %p There have been changes to your institution registration record for the #{Setting.key('tournament_name')}, specially in terms of how many slots you've been #{@notification_type}. Details as follows : <br/>
     %table
       %tr
         %td Debate teams 
@@ -16,3 +19,9 @@
       %tr
         %td Observers 
         %td= @registration.send("observers_#{@notification_type}")
+
+   
+    %p 
+      This email was sent to you by <a href="http://facebook.com/fastrego"> <img alt=FastRego" src="http://fastrego.herokuapp.com/assets/fastrego_button.png" ></a> <br/>
+      Check us out on <a href="http://www.facebook.com/fastrego">Facebook</a> <br/>
+      To power your tournament with FastRego, register by clicking <a href="http://fastrego.herokuapp.com/enquiry"> here </a> 

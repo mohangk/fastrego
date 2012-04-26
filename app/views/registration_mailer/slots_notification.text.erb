@@ -1,9 +1,17 @@
 Slots <%= @notification_type %> update notification for <%= @registration.user.institution.name %>
 =====================================================================
 
-Your have been <%= @notification_type %> the following slots:
+Hello  <%= @registration.user.name %>
+
+There have been changes to your institution registration record for the 
+<%=Setting.key('tournament_name') %>, specially in terms of how many slots
+you've been <%= @notification_type %> . Details as follows : 
 
 Debate teams: <%= @registration.send("debate_teams_#{@notification_type}") %> 
 Adjudicators: <%= @registration.send("adjudicators_#{@notification_type}") %> 
 Observers: <%=  @registration.send("observers_#{@notification_type}") %> 
 
+Thank you!
+
+This email was sent to you by FastRego. Check us out at http://www.facebook.com/fastrego
+To power your tournament with FastRego, register at http://fastrego.herokuapp.com/enquiry
