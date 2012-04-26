@@ -13,6 +13,6 @@ describe Enquiry do
   it { should validate_presence_of(:expected_adjudicators) }
   #it { should validate_presence_of( :expected_independent_adjudicators }
   #it { should validate_presence_of( :tournament_url }
-  it { should validate_presence_of(:tournament_registration_start_date) }
- it { should validate_presence_of(:tournament_start_date) }
+  #it { should validate_presence_of(:tournament_registration_start_date) }
+  #it { should validate_presence_of(:tournament_start_date) }
 end

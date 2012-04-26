@@ -15,6 +15,10 @@ FactoryGirl.define do
       institution
   end
 
+  factory :tournament_name, class: Setting do
+    key 'tournament_name'
+    value 'Logan\'s Debate Extravaganza'
+  end
   factory :debate_team_fees, :class => Setting do
     key 'debate_team_fees'
     value '200'

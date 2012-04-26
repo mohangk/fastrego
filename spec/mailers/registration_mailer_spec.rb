@@ -11,15 +11,21 @@ describe RegistrationMailer do
                          observers_confirmed: 8) }
   let(:slots_granted_mail) { RegistrationMailer.slots_granted_notification(registration) }
   let(:slots_confirmed_mail) { RegistrationMailer.slots_confirmed_notification(registration) }
-
+  let(:tournament_name_setting) {FactoryGirl.create(:tournament_name)} 
   before do
+    tournament_name_setting 
     RegistrationMailer.default from: 'do-not-reply@uadc2012.mailgun.org'
   end
 
+  describe '.tournament_identifier' do
+    it 'returns the TLD of the default_url_options[:host]' do
+      RegistrationMailer.tournament_identifier.should == 'test'  
+    end
+  end
 
   it "has the right subject" do
-    slots_granted_mail.subject.should == 'Granted slots notification'
-    slots_confirmed_mail.subject.should == 'Confirmed slots notification'
+    slots_granted_mail.subject.should == "[test] Updates to your granted slots!"
+    slots_confirmed_mail.subject.should == "[test] Updates to your confirmed slots!"
   end
 
   it 'renders the receiver email' do
@@ -33,10 +39,19 @@ describe RegistrationMailer do
   end
 
   describe 'email contents' do
+    it 'contains the team managers name' do
+      slots_granted_mail.body.encoded.should match(registration.user.name)
+      slots_confirmed_mail.body.encoded.should match(registration.user.name)
+    end
+
     it 'contains institutions name' do
       slots_granted_mail.body.encoded.should match(registration.user.institution.name)
-
       slots_confirmed_mail.body.encoded.should match(registration.user.institution.name)
+    end
+
+    it 'contains the tournament name' do
+      slots_granted_mail.body.encoded.should match(Setting.key('tournament_name'))
+      slots_confirmed_mail.body.encoded.should match(Setting.key('tournament_name'))
     end
 
     it 'contains registration details' do
@@ -46,7 +61,11 @@ describe RegistrationMailer do
       %w'debate_teams_confirmed adjudicators_confirmed observers_confirmed'.each do |attrib|
         slots_confirmed_mail.body.encoded.should match(registration.send(attrib).to_s)
       end
+    end
 
+    it 'contains our footer' do
+      slots_granted_mail.body.encoded.should match('FastRego')
+      slots_confirmed_mail.body.encoded.should match('FastRego')
     end
   end
 
