@@ -21,7 +21,7 @@ ActiveAdmin.register Registration do
     column 'DT Cnf', :debate_teams_confirmed
     column 'Adj Cnf', :adjudicators_confirmed
     column 'Obs Cnf', :observers_confirmed
-    column 'Override fees', :fees
+    column 'Fees', :fees
     column 'Conf', :total_confirmed_payments
     column 'Bal', :balance_fees
     default_actions

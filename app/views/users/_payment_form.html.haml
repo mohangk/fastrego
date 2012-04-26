@@ -10,7 +10,7 @@
   = f.date_select :date_sent, use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year
   = f.label :account_number, 'A/C #'
   = f.text_field :account_number
-  = f.label :amount_sent, 'RM'
+  = f.label :amount_sent, Setting.key('currency_symbol')
   = f.text_field :amount_sent
   = f.label :amount_sent, 'Proof of transfer'
   = f.file_field :scanned_proof
