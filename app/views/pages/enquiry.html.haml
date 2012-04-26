@@ -11,10 +11,10 @@
       = f.input :country
       = f.input :institution
       = f.input :phone_number
-      = f.input :tournament
+      = f.input :tournament, label: 'Tournament name', hint: 'e.g. Worlds Universities Debating Championship, WUDC'
       = f.input :tournament_url
-      = f.input :tournament_description, as: :text, input_html: { rows: 5, cols: 40 }
-      = f.input :tournament_type, collection: ['Open','Close'], as: :radio_buttons, item_wrapper_class: 'inline'
+      = f.input :tournament_description, as: :text, hint: "Please tell us the format of this tournament, the geographical scope, if it's for middle schools, high schools, universities or open to all, as well as a very brief history of this event", input_html: { rows: 5, cols: 40 }
+      = f.input :tournament_type, collection: ['Open','Inter-institution'], as: :radio_buttons, item_wrapper_class: 'inline', hint: 'Open - teams comprise speakers from different institutions, Inter-institution - teams represent institutions and all speakers are from that institution'
       = f.input :expected_teams
       = f.input :expected_adjudicators
       = f.input :tournament_registration_start_date, as: :date, start_year: Date.today.year, end_year: Date.today.year + 3, order: [:day, :month, :year]
