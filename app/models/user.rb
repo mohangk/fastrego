@@ -23,4 +23,8 @@ class User < ActiveRecord::Base
   def registered?
     !self.registration.nil?
   end
+  
+  def institution_name
+    self.institution && self.institution.name
+  end
 end
