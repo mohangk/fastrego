@@ -27,12 +27,16 @@ ActiveAdmin.register Payment do
 
   form do |f|
     f.inputs do
-      f.input :institution_name , :input_html => { :disabled => true }
-      f.input :date_sent, :input_html => { :disabled => true }
-      f.input :amount_sent, :input_html => { :disabled => true }
-      f.input :account_number, :input_html => { :disabled => true }
-      f.input :comments, :input_html => { :disabled => true }
-      f.input :created_at, :input_html => { :disabled => true }
+      disable_field = true unless f.object.new_record?
+      f.input :registration_id, label: 'Institution', as: :select, collection: Hash[Registration.all.map{ |r| [r.institution_name,r.id]}],:input_html => { :disabled => disable_field }
+      f.input :date_sent, :input_html => { :disabled => disable_field }
+      f.input :amount_sent, as: :string, :input_html => { :disabled => disable_field }
+      f.input :account_number, :input_html => { :disabled => disable_field }
+      f.input :scanned_proof
+      f.input :comments, :input_html => { :disabled => disable_field }
+      if !f.object.new_record?
+        f.input :created_at, :input_html => { :disabled => true }
+      end 
       f.input :amount_received, as: :string
       f.input :admin_comment
       f.buttons
@@ -40,6 +44,19 @@ ActiveAdmin.register Payment do
   end
 
   controller do
+    def create
+      @payment = Payment.new(params[:payment])
+      @payment.registration_id = params[:payment][:registration_id]
+      @payment.amount_received = params[:payment][:amount_received]
+      @payment.admin_comment = params[:payment][:admin_comment]
+      if @payment.save
+        @payment.send_payment_notification
+        redirect_to admin_payments_path, notice: 'Payment was successfully updated.'
+      else
+        render action: "edit"
+      end
+    end
+
     def update
       @payment = Payment.find(params[:id])
       @payment.amount_received = params[:payment][:amount_received]

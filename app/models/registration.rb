@@ -112,5 +112,9 @@ class Registration < ActiveRecord::Base
 
     return debate_teams
   end
+  
+  def institution_name
+    self.user && self.user.institution_name
+  end
 
 end
