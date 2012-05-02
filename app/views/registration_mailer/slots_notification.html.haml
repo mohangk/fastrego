@@ -19,9 +19,4 @@
       %tr
         %td Observers 
         %td= @registration.send("observers_#{@notification_type}")
-
-   
-    %p 
-      This email was sent to you by <a href="http://facebook.com/fastrego"> <img alt=FastRego" src="http://fastrego.herokuapp.com/assets/fastrego_button.png" ></a> <br/>
-      Check us out on <a href="http://www.facebook.com/fastrego">Facebook</a> <br/>
-      To power your tournament with FastRego, register by clicking <a href="http://fastrego.herokuapp.com/enquiry"> here </a> 
+    = render partial: 'layouts/mail_footer'   
