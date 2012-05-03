@@ -56,7 +56,7 @@ module UadcRego
     config.time_zone = 'Kuala Lumpur'
 
     config.gem 'rack-google-analytics', lib: 'rack/google-analytics'
-    config.middleware.use Rack::GoogleAnalytics, tracker: 'UA-31323951-1' , domain: 'herokuapp.com', multiple: true
+    config.middleware.use Rack::GoogleAnalytics, tracker: 'UA-31323951-1' , domain: '.herokuapp.com', multiple: true
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| "<div class=\"field_with_errors control-group error\">#{html_tag}</div>".html_safe }
 
   end
