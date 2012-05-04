@@ -1,5 +1,5 @@
 class RegistrationMailer < ActionMailer::Base
-  default from: ENV['MAILGUN_SMTP_LOGIN']
+  default from: Setting.key('tournament_registration_email')
 
   def self.tournament_identifier
     default_url_options[:host].split('.')[0]

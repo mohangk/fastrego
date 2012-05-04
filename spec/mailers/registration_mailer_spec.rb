@@ -12,9 +12,11 @@ describe RegistrationMailer do
   let(:slots_granted_mail) { RegistrationMailer.slots_granted_notification(registration) }
   let(:slots_confirmed_mail) { RegistrationMailer.slots_confirmed_notification(registration) }
   let(:tournament_name_setting) {FactoryGirl.create(:tournament_name)} 
+
   before do
     tournament_name_setting 
-    RegistrationMailer.default from: 'do-not-reply@uadc2012.mailgun.org'
+    FactoryGirl.create(:tournament_registration_email)
+    RegistrationMailer.default from: Setting.key('tournament_registration_email')
   end
 
   describe '.tournament_identifier' do
@@ -34,8 +36,8 @@ describe RegistrationMailer do
   end
 
   it 'renders the sender email' do
-    slots_granted_mail.from.should == ['do-not-reply@uadc2012.mailgun.org']
-    slots_confirmed_mail.from.should == ['do-not-reply@uadc2012.mailgun.org']
+    slots_granted_mail.from.should == [Setting.key('tournament_registration_email')]
+    slots_confirmed_mail.from.should == [Setting.key('tournament_registration_email')]
   end
 
   describe 'email contents' do

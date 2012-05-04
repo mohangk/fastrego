@@ -1,5 +1,5 @@
 class PaymentMailer < ActionMailer::Base
-  default from: ENV['MAILGUN_SMTP_LOGIN']
+  default from: Setting.key('tournament_registration_email')
 
   def update_notification(payment)
     @payment = payment
