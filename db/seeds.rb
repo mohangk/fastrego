@@ -7,7 +7,8 @@ Setting.create(
 		{key: 'debate_team_fees', value: '200'},
 		{key: 'debate_team_size', value: '3'},
 		{key: 'tournament_name', value: 'Debate tournament name'},
-    {key: 'currency_symbol',  value: 'USD'}
+    {key: 'currency_symbol',  value: 'USD'},
+    {key: 'tournament_registration_email',  value: 'registration_email@test.com'}
 	])
 
 #Setup default admin user
