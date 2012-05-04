@@ -1,6 +1,6 @@
 class AddRegistrationEmailToSettings < ActiveRecord::Migration
   def change
-    registration_email = case ENV['production_hostname']
+    registration_email = case ENV['PRODUCTION_HOSTNAME']
           when 'uadc2012.herokuapp.com'
             'registration@mmuuadc2012.org'
           when 'wudcberlin.herokuapp.com'
