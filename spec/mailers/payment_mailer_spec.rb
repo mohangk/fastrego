@@ -5,7 +5,8 @@ describe PaymentMailer do
   let(:mail) { PaymentMailer.update_notification(payment) }
 
   before do
-    PaymentMailer.default from: 'do-not-reply@uadc2012.mailgun.org'
+    FactoryGirl.create :tournament_registration_email
+    PaymentMailer.default from: Setting.key('tournament_registration_email')
   end
 
 
@@ -18,7 +19,7 @@ describe PaymentMailer do
   end
 
   it 'renders the sender email' do
-    mail.from.should == ['do-not-reply@uadc2012.mailgun.org']
+    mail.from.should == [Setting.key('tournament_registration_email')]
   end
 
   describe 'email contents' do

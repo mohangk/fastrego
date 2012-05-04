@@ -49,6 +49,10 @@ FactoryGirl.define do
     value 'RM'
   end
 
+  factory :tournament_registration_email, class: Setting do
+    key 'tournament_registration_email'
+    value 'test@test.com'
+  end
 
   factory :registration do
     debate_teams_requested 3
