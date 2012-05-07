@@ -19,7 +19,7 @@ ActiveAdmin.register User do
     default_actions
   end
 
-  filter :institution, collection: Institution.order(:name).all.map(&:name)
+  filter :institution, collection: Institution.order(:name).all
   filter :email
   filter :name
   filter :phone_number
