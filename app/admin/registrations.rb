@@ -22,6 +22,7 @@ ActiveAdmin.register Registration do
     column 'Adj Cnf', :adjudicators_confirmed
     column 'Obs Cnf', :observers_confirmed
     column 'Fees', :fees
+    column 'Unconf', :total_unconfirmed_payments
     column 'Conf', :total_confirmed_payments
     column 'Bal', :balance_fees
     default_actions
