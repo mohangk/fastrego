@@ -45,5 +45,6 @@
       .container
         <div class="fb-like" data-href="http://facebook.com/fastrego" data-send="true" data-width="450" data-show-faces="true"></div>
         #footer-right 
-          %p Use FastRego for tournament today! <a href='mailto:loganimal@gmail.com'> loganimal@gmail.com <a/> today!
+          %p #{Setting.key('tournament_name')} registration is powered by #{link_to 'FastRego', 'http://www.facebook.com/fastrego'} 
+          %p #{link_to 'Planning a tournament? Click here to use FastRego for your tournament!', enquiry_path}
 

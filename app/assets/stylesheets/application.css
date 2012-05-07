@@ -12,7 +12,7 @@ html, body {
 }
 
 footer {
-  color: #666;
+  color: #777;
   background: #222;
   padding: 17px 0 18px 0;
   border-top: 1px solid #000;
@@ -28,17 +28,19 @@ footer a:hover {
 
 footer #footer-right {
   display: inline-block;
+  width: 450px;
   vertical-align: top;
+  text-align: right;
 }
 
 .wrapper {
   min-height: 100%;
   height: auto !important;
   height: 100%;
-  margin: 0 auto -63px;
+  margin: 0 auto -120px;
 }
 .push {
-  height: 63px;
+  height: 120px;
 }
 .wrapper > .container {
   padding-top: 60px;
@@ -92,4 +94,5 @@ footer #footer-right {
     padding-top: 4px;
     padding-bottom: 0px;
 }
+
 
