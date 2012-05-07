@@ -21,8 +21,14 @@ footer {
 footer a {
   color: #999;
 }
+
 footer a:hover {
   color: #efefef;
+}
+
+footer #footer-right {
+  display: inline-block;
+  vertical-align: top;
 }
 
 .wrapper {
