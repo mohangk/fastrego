@@ -56,15 +56,11 @@ class Registration < ActiveRecord::Base
   end
 
   def total_confirmed_payments
-    self.payments.inject(BigDecimal('0')) do |total, p|
-      p.amount_received.nil? ? total : total + p.amount_received
-    end
+    self.payments.confirmed.sum(:amount_received)
   end
 
   def total_unconfirmed_payments
-    self.payments.inject(BigDecimal('0')) do |total,p|
-      p.confirmed? ? total : total + p.amount_sent
-    end
+    self.payments.unconfirmed.sum(:amount_sent)
   end
 
   def balance_fees

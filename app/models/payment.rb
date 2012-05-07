@@ -29,8 +29,12 @@ class Payment < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
 
-  def confirmed?
-    !(self.amount_received.blank? and self.admin_comment.blank?)
+  def self.confirmed
+    where("amount_received is not null")
+  end
+
+  def self.unconfirmed
+    where("amount_received is null")
   end
 
   def institution_name
