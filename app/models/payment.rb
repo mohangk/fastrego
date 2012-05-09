@@ -25,6 +25,10 @@ class Payment < ActiveRecord::Base
     scanned_proof_file_name: 'Proof of transfer'
   }
 
+  def confirmed?
+    !(self.amount_received.blank? and self.admin_comment.blank?)
+  end
+
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
