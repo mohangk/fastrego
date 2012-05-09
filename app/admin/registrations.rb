@@ -22,9 +22,9 @@ ActiveAdmin.register Registration do
     column 'Adj Cnf', :adjudicators_confirmed
     column 'Obs Cnf', :observers_confirmed
     column 'Fees', :fees
-    column 'Unconf', :total_unconfirmed_payments
-    column 'Conf', :total_confirmed_payments
-    column 'Bal', :balance_fees
+    column 'Unconf', :total_unconfirmed_payments, sortable: false
+    column 'Conf', :total_confirmed_payments, sortable: false
+    column 'Bal', :balance_fees, sortable: false
     default_actions
   end
 
@@ -54,6 +54,9 @@ ActiveAdmin.register Registration do
     column('Adj Cnf') { |r| r.adjudicators_confirmed }
     column('Obs Cnf') { |r| r.observers_confirmed }
     column :fees
+    column('Unconf') { |r| r.total_unconfirmed_payments }
+    column('Conf') { |r| r.total_confirmed_payments }
+    column('Bal') { |r| r.balance_fees }
   end
 
   form do |f|
