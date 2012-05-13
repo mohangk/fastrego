@@ -60,12 +60,13 @@ ActiveAdmin.register Registration do
   end
 
   form do |f|
+    disable_field = true unless f.object.new_record?
     f.inputs 'Request details' do
-      f.input :user, :input_html => { :disabled => true }
-      f.input :requested_at, :input_html => { :disabled => true }
-      f.input :debate_teams_requested, :input_html => { :disabled => true }
-      f.input :adjudicators_requested, :input_html => { :disabled => true }
-      f.input :observers_requested, :input_html => { :disabled => true }
+      f.input :user, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
+      f.input :requested_at, as: :datetime, include_seconds: true, :input_html => { :disabled => disable_field , :include_seconds => true}
+      f.input :debate_teams_requested, :input_html => { :disabled => disable_field }
+      f.input :adjudicators_requested, :input_html => { :disabled => disable_field }
+      f.input :observers_requested, :input_html => { :disabled => disable_field }
     end
 
     f.inputs 'Grant slots' do
@@ -90,6 +91,19 @@ ActiveAdmin.register Registration do
   end
 
   controller do
+    def create
+      r =  params[:registration]
+      @registration = Registration.new(r)
+      @registration.user_id = r[:user_id]
+      requested_at =Time.local(r[:'requested_at(1i)'], r[:'requested_at(2i)'],r[:'requested_at(3i)'], r[:'requested_at(4i)'], r[:'requested_at(5i)'], r[:'requested_at(6i)'])
+      @registration.requested_at = requested_at
+      if @registration.save
+        redirect_to admin_registrations_path, notice: 'Registration was successfully created'
+      else 
+        render action: "edit"
+      end
+    end
+
     def update
       @registration = Registration.find(params[:id])
       if @registration.grant_slots(params[:registration][:debate_teams_granted],
