@@ -26,6 +26,7 @@ class Registration < ActiveRecord::Base
   validates :adjudicators_confirmed, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :observers_confirmed, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :fees, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
+  validates :requested_at, presence: true
 
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
     #if nothing was set, we assume the granted values are not being set 
