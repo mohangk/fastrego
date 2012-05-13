@@ -119,7 +119,7 @@ ActiveAdmin.register Registration do
     end
   end
 
-  filter :user_id, collection: User.order(:name).all.map(&:name)
+  filter :user_id, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }]  
   filter :user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
   filter :requested_at
   filter :fees
