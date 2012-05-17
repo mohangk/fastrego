@@ -6,7 +6,7 @@ gem 'rails', '3.1.3'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem 'thin'
+gem 'unicorn'
 gem 'sass-rails',   '~> 3.1.5'
 gem 'paperclip', '~> 2.0'
 gem 'aws-sdk', '~> 1.3.4'
