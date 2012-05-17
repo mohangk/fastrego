@@ -35,7 +35,7 @@ UadcRego::Application.configure do
 
   # Use a different logger for distributed setups
   config.logger = Logger.new(STDOUT)
-  config.logger.level = Loger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
+  config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
