@@ -39,16 +39,31 @@ ActiveAdmin.register Participant do
   	column :allergies
   	column :email
   	column :point_of_entry
-    column 'Arrival' do |p| 
+    column :arrival_at do |p| 
       p.arrival_at.strftime("%d/%m %H:%M:%S") unless p.arrival_at.nil?
     end
     column :emergency_contact_person
     column :emergency_contact_number
     column :speaker_number
     column :team_number
-    column sortable: 'institutions.abbreviation' do |r|
+    column :departure_at do |r|
     	r.departure_at.strftime("%d/%m %H:%M:%S") unless r.departure_at.nil?
     end
   end
   
+  filter :registration_user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
+  filter :name
+  filter :gender
+  filter :type
+  filter :dietary_requirement
+  filter :allergies
+  filter :email
+  filter :point_of_entry
+  filter :arrival_at
+  filter :emergency_contact_person
+  filter :emergency_contact_number
+  filter :speaker_number
+  filter :team_number
+  filter :departure_at
+
 end
