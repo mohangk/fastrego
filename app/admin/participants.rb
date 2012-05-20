@@ -27,7 +27,9 @@ ActiveAdmin.register Participant do
     column 'Depature', sortable: :departure_at do |r|
     	r.departure_at.strftime("%d/%m %H:%M:%S") unless r.departure_at.nil?
     end
-
+    column :nationality
+    column :passport_number
+    column :transport_number
     default_actions
   end
 
@@ -55,6 +57,9 @@ ActiveAdmin.register Participant do
     column :departure_at do |r|
     	r.departure_at.strftime("%d/%m %H:%M:%S") unless r.departure_at.nil?
     end
+    column :nationality
+    column :passport_number
+    column :transport_number
   end
   
   filter :registration_user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
@@ -73,5 +78,7 @@ ActiveAdmin.register Participant do
   filter :speaker_number
   filter :team_number
   filter :departure_at
-
+  filter :nationality
+  filter :passport_number
+  filter :transport_number
 end
