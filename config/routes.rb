@@ -23,7 +23,10 @@ UadcRego::Application.routes.draw do
   match "users/registration" => redirect('/profile'), via: :get
   match "users/payments" => redirect('/profile'), via: :get
   root :to => "users#show"
-
+  match "export/institution" => "export#institution", via: :get
+  match "export/adjudicator" => "export#adjudicator", via: :get
+  match "export/team" => "export#team", via: :get
+  match "export/debater" => "export#debater", via: :get
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
