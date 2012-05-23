@@ -34,7 +34,7 @@
     %p
       %b Total unconfirmed payments  #{number_to_currency current_user.registration.total_unconfirmed_payments, unit: Setting.key('currency_symbol') }.
     %p
-      Make payment via the form below. Please make sure that the size of your payment proof is less then 2 megabytes (2MB).
+      Make payment via the form below. Please make sure that the size of your <b>proof of transfer</b> is less then <b>2 megabytes (2MB)<b/>.
       = render 'payment_table'
       = render 'payment_form'
 %section#confirmed_slots
