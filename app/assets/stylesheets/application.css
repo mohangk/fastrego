@@ -4,7 +4,7 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  * http://www.colourlovers.com/palette/148712/Gamebookers
  *= require_self
- *= require_directory .
+ *= require bootstrap.css
 
  */
 html, body {

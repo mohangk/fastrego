@@ -27,7 +27,7 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs "Team manager details" do
-      f.input :institution
+      f.input :institution, collection: Institution.order(:name)
       f.input :name
       f.input :email
       f.input :password

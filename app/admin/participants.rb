@@ -1,4 +1,5 @@
 ActiveAdmin.register Participant do
+  actions :all, :except => [:new, :edit]
   scope :all, default: true do |r|
     r.includes [ :registration => [ :user => :institution ]]
   end

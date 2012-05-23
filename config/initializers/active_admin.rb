@@ -88,7 +88,7 @@ ActiveAdmin.setup do |config|
   #
   # config.before_filter :do_something_awesome
 
-
+  config.batch_actions = true
   # == Register Stylesheets & Javascripts
   #
   # We recommend using the built in Active Admin layout and loading
@@ -96,10 +96,10 @@ ActiveAdmin.setup do |config|
   # and feel.
   #
   # To load a stylesheet:
-    config.clear_stylesheets!
-    config.register_stylesheet 'admin/active_admin.css'
-  #
+  #config.clear_stylesheets!
+  #config.register_stylesheet 'admin/active_admin.css'
+   
   # To load a javascript file:
-    config.clear_javascripts!
-    config.register_javascript 'admin/active_admin.js'
+  #config.clear_javascripts!
+  #config.register_javascript 'admin/active_admin.js'
 end
