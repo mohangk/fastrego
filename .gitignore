@@ -21,3 +21,5 @@
 
 #heroku config
 /.env
+
+/*.bz2
