@@ -11,10 +11,11 @@ describe Registration do
     FactoryGirl.create(:debate_team_size)
   end
   it { should belong_to :user }
-  it { should have_many :payments }
-  it { should have_many :debaters }
-  it { should have_many :adjudicators }
-  it { should have_many :observers }
+  it { should have_many(:payments).dependent(:destroy) }
+  it { should have_many(:debaters).dependent(:destroy) }
+  it { should have_many(:adjudicators).dependent(:destroy) }
+  it { should have_many(:observers).dependent(:destroy) }
+  it { should have_many(:participants).dependent(:destroy)}
   it { should validate_uniqueness_of :user_id }
   it { should validate_presence_of :user_id}
   it { should validate_numericality_of(:debate_teams_requested)}
