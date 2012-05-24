@@ -1,10 +1,13 @@
 ActiveAdmin.register Participant do
   actions :all, :except => [:new, :edit]
+
+
   scope :all, default: true do |r|
     r.includes [ :registration => [ :user => :institution ]]
   end
 
   index do
+    selectable_column
     column :id
     column 'Inst',sortable: 'institutions.abbreviation' do |p|
         link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
