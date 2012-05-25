@@ -7,7 +7,7 @@ class Payment < ActiveRecord::Base
   validates_attachment_content_type :scanned_proof, content_type: %w(image/jpeg image/png image/gif application/pdf), message: 'file type must be of an image (GIF/JPG/PNG) or PDF'
   validates :registration, presence: true
   validates :account_number, presence: { message: "can't be blank. Please key in the account this transfer was made from"}
-  validates :amount_sent, presence: { message: "can't be blank. Please key in the amount in #{Setting.key('currency_symbol')} that you have transfered"}, numericality: {  greater_than_or_equal_to: 0, if: Proc.new { |p| not p.amount_sent.blank? } }
+  validates :amount_sent, presence: { message: "can't be blank. Please key in the amount in #{Setting.key('currency_symbol') if Setting.table_exists?} that you have transfered"}, numericality: {  greater_than_or_equal_to: 0, if: Proc.new { |p| not p.amount_sent.blank? } }
   validates :amount_received, numericality: { greater_than_or_equal_to: 0 } , allow_blank: true
 
   validates :date_sent, presence: true
@@ -15,7 +15,7 @@ class Payment < ActiveRecord::Base
   attr_accessible :account_number, :amount_sent, :date_sent, :comments, :scanned_proof
 
   HUMANIZED_ATTRIBUTES = {
-    amount_sent: Setting.key('currency_symbol'),
+    amount_sent: (Setting.table_exists? ? Setting.key('currency_symbol') : 'USD'),
     account_number: 'A/C #',
     scanned_proof: 'Proof of transfer',
     scanned_proof_content_type: 'Proof of transfer',

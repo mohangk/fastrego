@@ -19,7 +19,7 @@ ActiveAdmin.register User do
     default_actions
   end
 
-  filter :institution, collection: Institution.order(:name).all
+  filter :institution, collection: proc { Institution.order(:name).all }
   filter :email
   filter :name
   filter :phone_number
@@ -27,7 +27,7 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs "Team manager details" do
-      f.input :institution, collection: Institution.order(:name)
+      f.input :institution, collection: proc { Institution.order(:name) }
       f.input :name
       f.input :email
       f.input :password

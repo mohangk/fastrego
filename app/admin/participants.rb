@@ -66,7 +66,7 @@ ActiveAdmin.register Participant do
     column :transport_number
   end
   
-  filter :registration_user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
+  filter :registration_user_institution_name, as: :select, collection: proc { Institution.order(:name).all.map(&:name) }
   filter :name
   filter :gender, as: :check_boxes, collection: ['Male', 'Female'] 
   filter :type, as: :check_boxes, collection: ['Debater', 'Adjudicator', 'Observer'] 

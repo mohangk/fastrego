@@ -10,7 +10,7 @@ ActiveAdmin.register Payment do
     end
     column 'Date', :date_sent
     column 'Amount sent' do |p|
-      number_to_currency p.amount_sent, unit: Setting.key('currency_symbol')
+      number_to_currency p.amount_sent, unit: (Setting.table_exists? ? Setting.key('currency_symbol') : 'RM')
     end
     column 'A/C #', :account_number
     column 'Comments', :comments
@@ -19,8 +19,7 @@ ActiveAdmin.register Payment do
     end
     column :created_at
     column 'Amount received' do |p|
-        number_to_currency p.amount_received, unit: Setting.key('currency_symbol')    
-    end
+        number_to_currency p.amount_received, (Setting.table_exists? ? Setting.key('currency_symbol') : 'RM')    end
     column 'Admin comment', :admin_comment
     default_actions
   end
@@ -71,8 +70,8 @@ ActiveAdmin.register Payment do
     end
   end
 
-  filter :registration_user_name, as: :select, collection: User.order(:name).all.map(&:name)
-  filter :registration_user_institution_name, as: :select, collection: Institution.order(:name).all.map(&:name)
+  filter :registration_user_name, as: :select, collection: proc { User.order(:name).all.map(&:name) }
+  filter :registration_user_institution_name, as: :select, collection: proc {Institution.order(:name).all.map(&:name)}
   filter :date_sent
   filter :amount_sent
   filter :comments

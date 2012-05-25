@@ -40,7 +40,7 @@ group :development, :test do
   gem 'spork', '~> 0.9.0.rc'
   gem 'shoulda'
   gem 'timecop'
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'debugger'
 end
 
 # To use ActiveModel has_secure_password
