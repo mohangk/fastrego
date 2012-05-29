@@ -19,7 +19,7 @@ ActiveAdmin.register Payment do
     end
     column :created_at
     column 'Amount received' do |p|
-        number_to_currency p.amount_received, (Setting.table_exists? ? Setting.key('currency_symbol') : 'RM')    end
+        number_to_currency p.amount_received, unit: (Setting.table_exists? ? Setting.key('currency_symbol') : 'RM')    end
     column 'Admin comment', :admin_comment
     default_actions
   end
