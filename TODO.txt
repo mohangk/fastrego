@@ -1,41 +1,28 @@
 TODO.txt
 
-cd ~/Projects/
+cd ~/Projects/fastrego
 git clone git@github.com:mohangk/uadc_rego.git wudcberlin_fastrego
 cd wudcberlin_fastrego/
-vim config/database.yml 
-git commit -am 'generic database config'
 heroku login
-heroku create wudcberlin_fastrego --stack cedar
+heroku create wudcberlin --stack cedar
 git push heroku master
 
 heroku addons:add pgbackups:auto-month 
 heroku addons:add mailgun:starter
-#cant do db:migrate due to issue with the models being called at initialization ?
-rvm list
-rvm use ruby-1.9.2-p290
-heroku db:push postgres://127.0.0.1/uadc_rego_development?encoding=utf8
+heroku addons:add logentries:tryit
+# automate setting up of alerts
+
+heroku run rake db:schema:load
+
 #heroku console
-  AdminUser.update_attributes(:email => 'test@gmail.com', :password => 'password', :password_confirmation => 'password')
-  Payment.delete_all
-  Institution.destroy_all
+  AdminUser.create(:email => 'test@gmail.com', :password => 'password', :password_confirmation => 'password')
 #setup mailgun
+- setup custom domain name
 #setup S3
+- look at scripting bucket creation ?
+# push envvars
+- looks at way of setting heroku configs from file ? 
 
-- deploy site
- - setup heroku 
- - push to heroku
- - setup active admin user 
- - add mailgun addon
- - add S3 bucket
-
-- setup configuration env
-  * mailgun 
-  * S3 
-  * production.rb
-    - hostnames need to be replaces with env variable 
-- push configurations to site
-- add db backup support
 - test emailing, upload of images
 - setup configuration options
 

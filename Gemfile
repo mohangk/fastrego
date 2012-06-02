@@ -1,22 +1,22 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.5'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
 gem 'unicorn'
-gem 'sass-rails',   '~> 3.1.5'
-gem 'paperclip', '~> 2.0'
-gem 'aws-sdk', '~> 1.3.4'
+gem 'sass-rails'
+gem 'paperclip'
+gem 'aws-sdk'
 #putting this in so I can dupe data on beta-debreg
 gem 'faker'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier'
   gem 'coffee-rails'
 end
 
@@ -25,8 +25,8 @@ gem 'haml-rails'
 gem 'devise'
 # need this fix https://github.com/gregbell/active_admin/pull/623
 gem 'activeadmin' , :git => 'git://github.com/gregbell/active_admin.git'
-gem "strip_attributes", "~> 1.0"
-gem 'meta_search', '>= 1.1.0.pre'
+gem "strip_attributes"
+gem 'meta_search'
 gem 'newrelic_rpm'
 gem 'simple_form'
 gem 'country_select'
@@ -34,10 +34,12 @@ gem 'country_select'
 gem 'rack-google-analytics', :require => 'rack/google-analytics'
 
 group :development, :test do
+  gem 'sextant'
+  gem 'foreman'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'factory_girl_rails'#, require: false
-  gem 'spork', '~> 0.9.0.rc'
+  gem 'spork'
   gem 'shoulda'
   gem 'timecop'
   gem 'debugger'

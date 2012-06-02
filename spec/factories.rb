@@ -7,6 +7,11 @@ FactoryGirl.define do
     country 'Malaysia'
   end
 
+  factory :admin_user do
+    email 'admin@test.com'
+    password 'password'
+  end
+
   factory :user do
       name 'Suthen Thomas'
       sequence(:email) { |n| "suthen#{n}.thomas@gmail.com" }
