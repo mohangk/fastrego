@@ -19,6 +19,8 @@ describe Payment do
  it { should_not allow_mass_assignment_of(:amount_received)}
  it { should_not allow_mass_assignment_of(:admin_comment)}
  it { should_not allow_mass_assignment_of(:registration_id)}
+ it { should have_db_column(:amount_received).of_type(:decimal).with_options(precision: 14, scale:2) }
+ it { should have_db_column(:amount_sent).of_type(:decimal).with_options(precision: 14, scale:2) }
 
   it 'is confirmed if either the amount_received or admin_comment is set' do
     subject.amount_received = 1000

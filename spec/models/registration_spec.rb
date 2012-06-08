@@ -34,7 +34,7 @@ describe Registration do
   it { should_not allow_mass_assignment_of(:adjudicators_confirmed)}
   it { should_not allow_mass_assignment_of(:observers_confirmed)}
   it { should validate_numericality_of(:fees)}
-
+  it { should have_db_column(:fees).of_type(:decimal).with_options(precision:14, scale:2) }
   #describe "confirmed" do
     #before :each do
 
