@@ -6,6 +6,7 @@ gem 'rails', '3.2.5'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'activerecord-postgres-hstore'
 gem 'unicorn'
 gem 'sass-rails'
 gem 'paperclip'
@@ -40,7 +41,7 @@ group :development, :test do
   gem 'capybara'
   gem 'factory_girl_rails'#, require: false
   gem 'spork'
-  gem 'shoulda'
+  gem 'shoulda-matchers'
   gem 'timecop'
   gem 'debugger'
 end

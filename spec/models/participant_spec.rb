@@ -9,6 +9,7 @@ describe Participant do
   it { should validate_presence_of :dietary_requirement }
   it { should validate_presence_of :emergency_contact_person }
   it { should validate_presence_of :emergency_contact_number }
+  it { should have_db_column(:data).of_type(:hstore) }
 end
 
 
