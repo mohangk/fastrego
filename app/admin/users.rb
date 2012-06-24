@@ -24,10 +24,10 @@ ActiveAdmin.register User do
   filter :name
   filter :phone_number
 
-
+  #TODO: not putting the collection value into a proc might result in the "table not found" issue
   form do |f|
     f.inputs "Team manager details" do
-      f.input :institution, collection: proc { Institution.order(:name) }
+      f.input :institution, collection:  Institution.order(:name).all 
       f.input :name
       f.input :email
       f.input :password
