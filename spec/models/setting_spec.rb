@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Setting do
   before do
-    Factory(:enable_pre_registration)
+    FactoryGirl.create(:enable_pre_registration)
   end
   it { should validate_presence_of :key }
   it { should validate_uniqueness_of :key }

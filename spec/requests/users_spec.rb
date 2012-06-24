@@ -37,13 +37,13 @@ describe "Users" do
   describe 'profile' do
 
     let!(:user) do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       user.confirm!
       user
     end
 
     before :each do
-      Factory(:institution, name: 'Universiti Teknologi', abbreviation: 'UTM')
+      FactoryGirl.create(:institution, name: 'Universiti Teknologi', abbreviation: 'UTM')
     end
 
     context 'before the user is logged in' do
@@ -111,7 +111,7 @@ describe "Users" do
       describe 'submitting pre-registration' do
         context 'once pre-registration is open' do
           before :each do
-            Factory(:enable_pre_registration)
+            FactoryGirl.create(:enable_pre_registration)
           end
           it "will show the pre-registration form which when submitted will save the requested values from the team manager" do
             visit profile_path

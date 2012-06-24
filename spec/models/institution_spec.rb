@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Institution do
-  subject { Factory(:institution) }
+  subject { FactoryGirl.create(:institution) }
   it { should ensure_length_of(:abbreviation).is_at_most(10) }
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:abbreviation) }
@@ -15,10 +15,10 @@ describe Institution do
   end
 
   it "should list institutions alphabetically" do
-    Factory(:institution, name: 'Zztop', abbreviation: 'zz')
-    Factory(:institution, name: 'Multimedia University')
-    Factory(:institution, name: 'Aatop', abbreviation: 'aa')
-    Factory(:institution, name: 'Bbtop', abbreviation: 'cc')
+    FactoryGirl.create(:institution, name: 'Zztop', abbreviation: 'zz')
+    FactoryGirl.create(:institution, name: 'Multimedia University')
+    FactoryGirl.create(:institution, name: 'Aatop', abbreviation: 'aa')
+    FactoryGirl.create(:institution, name: 'Bbtop', abbreviation: 'cc')
 
     institutions = Institution.alphabetically
     institutions[0].name.should == 'Aatop'

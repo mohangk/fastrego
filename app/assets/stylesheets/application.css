@@ -95,4 +95,6 @@ footer #footer-right {
     padding-bottom: 0px;
 }
 
-
+.edit_debaters select, .edit_adjudicators select, .edit_observers select {
+  width: 5em;
+}

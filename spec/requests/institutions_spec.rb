@@ -18,7 +18,7 @@ describe "Institutions" do
     end
 
     it "displays the name of a team manager if already exists" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       visit institutions_path
       page.should_not have_css("a[href='/users/sign_up?institution_id=#{user.institution.id}']")
       page.should have_content('Suthen Thomas')
