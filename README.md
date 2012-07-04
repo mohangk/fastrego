@@ -32,13 +32,16 @@ For more information on setting up RVM, please refer to the [RVM install guide](
 
     bundle install
 
-5. Setup the database. Make changes to config/databases.yml to reflect your local postgres authorization setup.
+5. Create a config/database.yml from config/databases.yml.sample and make changes to config/databases.yml to reflect your local postgres authorization setup.
 
+   cp config/databases.yml.sample config/databases.yml
+
+6. Setup the database. 
     rake db:create
     rake fastrego:add_hstore
     rake db:schema:load 
     rake db:seed
 
-6. Start the app
+7. Start the app
 
     rails s
