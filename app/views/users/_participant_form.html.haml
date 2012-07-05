@@ -13,3 +13,5 @@
 = f.input :emergency_contact_number
 = f.input :preferred_roommate
 = f.input :preferred_roommate_institution
+- Participant.custom_fields.each do | field|
+  = f.input field.to_sym

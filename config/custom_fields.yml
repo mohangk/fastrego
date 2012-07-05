@@ -1,0 +1,7 @@
+development:
+
+production:
+
+test:
+  - debate_experience
+  - tshirt_size

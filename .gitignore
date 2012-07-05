@@ -25,3 +25,6 @@
 /*.bz2
 
 /db_dumps
+config/database.yml
+Vagrantfile
+.vagrant
