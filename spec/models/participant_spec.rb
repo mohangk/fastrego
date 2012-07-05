@@ -61,6 +61,7 @@ describe Participant do
       o = Observer.find(observer_id)
       o.debate_experience.should == 'lots of experience'
     end
+
   end
 end
 
