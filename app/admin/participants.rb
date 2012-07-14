@@ -34,6 +34,11 @@ ActiveAdmin.register Participant do
     column :nationality
     column :passport_number
     column :transport_number
+
+    Participant.custom_fields.each do | field|
+      column field.to_sym, sortable: false 
+    end 
+
     default_actions
   end
 
@@ -64,8 +69,67 @@ ActiveAdmin.register Participant do
     column :nationality
     column :passport_number
     column :transport_number
+    Participant.custom_fields.each do | field|
+      column field.to_sym
+    end
   end
-  
+
+  show do |p|
+    attributes_table do 
+      row :id
+      row 'Inst' do 
+          link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
+      end
+      row :name
+      row :gender
+      row :type
+      row :dietary_requirement
+      row :allergies
+      row :email
+      row :point_of_entry
+      row 'Arrival' do
+        p.arrival_at.strftime("%d/%m %H:%M:%S") unless p.arrival_at.nil?
+      end
+
+      row 'Emer cnt person' do
+        p.emergency_contact_person
+      end
+
+      row 'Emer cnt number'do 
+        p.emergency_contact_number
+      end
+
+      row 'Pref roommate'do 
+        p.preferred_roommate
+      end
+
+      row 'Pref roomate institution'do 
+        p.preferred_roommate_institution
+      end
+
+      row 'Spkr no.'do 
+        p.speaker_number
+      end
+
+      row 'Team no.'do 
+        p.team_number
+      end
+
+      row 'Depature'  do 
+        p.departure_at.strftime("%d/%m %H:%M:%S") unless p.departure_at.nil?
+      end
+
+      row :nationality
+      row :passport_number
+      row :transport_number
+
+      Participant.custom_fields.each do | field|
+        row field.to_sym
+      end 
+    end
+    active_admin_comments
+  end  
+
   filter :registration_user_institution_name, as: :select, collection: proc { Institution.order(:name).all.map(&:name) }
   filter :name
   filter :gender, as: :check_boxes, collection: ['Male', 'Female'] 
@@ -85,4 +149,5 @@ ActiveAdmin.register Participant do
   filter :nationality
   filter :passport_number
   filter :transport_number
+
 end
