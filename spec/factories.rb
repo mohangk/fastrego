@@ -75,8 +75,8 @@ FactoryGirl.define do
     scanned_proof { Rack::Test::UploadedFile.new(File.join(Rails.root,'spec','uploaded_files','test_image.jpg'), 'image/png')  }
     registration
   end
-  
-  factory :observer do
+ 
+  factory :observer, class: Observer do
     name 'Jack Observer'
     gender 'Male'
     email 'test@test.com'
@@ -85,7 +85,13 @@ FactoryGirl.define do
     emergency_contact_person 'Jason Statham'
     emergency_contact_number '123123123123'
     registration
+
+    factory :custom_field_observer do
+      debate_experience 5
+      tshirt_size 'small'
+    end
   end
+
 
   factory :debater do
     name 'Jack Nostrum'

@@ -1,5 +1,5 @@
 class Participant < ActiveRecord::Base
-
+  serialize :data, ActiveRecord::Coders::Hstore
   CUSTOM_FIELDS = UadcRego::Application.config.custom_fields || []
 
   belongs_to :registration
