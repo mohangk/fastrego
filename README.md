@@ -14,7 +14,7 @@ If you would like to use FastRego but not go through the process of setting up, 
   * build-essentials
   * libxml2-dev
   * libxslt1-dev
-  * libq-dev
+  * libpq-dev
   * nodejs
 
 2. Ensure that you have a working Ruby running on your machine, ideally setup via RVM. On Mac OS X or Linux, the following should set you up fine
@@ -37,11 +37,31 @@ For more information on setting up RVM, please refer to the [RVM install guide](
    cp config/databases.yml.sample config/databases.yml
 
 6. Setup the database. 
+
     rake db:create
+
     rake fastrego:add_hstore
+
     rake db:schema:load 
+
     rake db:seed
 
 7. Start the app
 
     rails s
+
+## License
+
+   Copyright 2012 Mohan Krishnan & Logan Balavijendran
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
