@@ -60,10 +60,14 @@ ActiveAdmin.register Registration do
   end
 
   form do |f|
-    disable_field = true unless f.object.new_record?
+    if f.object.new_record? and f.object.requested_at.nil?
+      f.object.requested_at = Time.now
+    elsif not f.object.new_record?
+      disable_field = true 
+    end
     f.inputs 'Request details' do
       f.input :user, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
-      f.input :requested_at, as: :datetime, include_seconds: true, :input_html => { :disabled => disable_field , :include_seconds => true}
+      f.input :requested_at, as: :datetime, include_seconds: true, :input_html => {  :disabled => disable_field , :include_seconds => true}
       f.input :debate_teams_requested, :input_html => { :disabled => disable_field }
       f.input :adjudicators_requested, :input_html => { :disabled => disable_field }
       f.input :observers_requested, :input_html => { :disabled => disable_field }
@@ -95,23 +99,27 @@ ActiveAdmin.register Registration do
       r =  params[:registration]
       @registration = Registration.new(r)
       @registration.user_id = r[:user_id]
-      requested_at =Time.local(r[:'requested_at(1i)'], r[:'requested_at(2i)'],r[:'requested_at(3i)'], r[:'requested_at(4i)'], r[:'requested_at(5i)'], r[:'requested_at(6i)'])
+      requested_at = Time.local(r[:'requested_at(1i)'], r[:'requested_at(2i)'],r[:'requested_at(3i)'], r[:'requested_at(4i)'], r[:'requested_at(5i)'], r[:'requested_at(6i)'])
       @registration.requested_at = requested_at
-      if @registration.save
+      if @registration.save and grant_and_confirm(@registration)
         redirect_to admin_registrations_path, notice: 'Registration was successfully created'
       else 
         render action: "edit"
       end
     end
 
-    def update
-      @registration = Registration.find(params[:id])
-      if @registration.grant_slots(params[:registration][:debate_teams_granted],
+    def grant_and_confirm(registration)
+      return registration.grant_slots(params[:registration][:debate_teams_granted],
                                    params[:registration][:adjudicators_granted],
                                    params[:registration][:observers_granted],
-                                   params[:registration][:fees]) && @registration.confirm_slots(params[:registration][:debate_teams_confirmed],
+                                   params[:registration][:fees]) && registration.confirm_slots(params[:registration][:debate_teams_confirmed],
                                    params[:registration][:adjudicators_confirmed],
                                    params[:registration][:observers_confirmed])
+    end
+
+    def update
+      @registration = Registration.find(params[:id])
+      if grant_and_confirm(@registration)
         redirect_to admin_registrations_path, notice: 'Registration was successfully updated.'
       else
         render action: "edit"

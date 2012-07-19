@@ -17,9 +17,9 @@ class Registration < ActiveRecord::Base
   attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested, :debaters_attributes, :adjudicators_attributes, :observers_attributes
 
   validates :user_id, presence: true, uniqueness: true
-  validates :debate_teams_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }
-  validates :adjudicators_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }
-  validates :observers_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 7 }
+  validates :debate_teams_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 10 }
+  validates :adjudicators_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 10 }
+  validates :observers_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 10 }
   validates :debate_teams_granted, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :adjudicators_granted, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :observers_granted, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
@@ -43,9 +43,9 @@ class Registration < ActiveRecord::Base
         RegistrationMailer.slots_granted_notification(self).deliver 
       end
       if fees.blank?
-        self.fees = (self.debate_teams_granted * BigDecimal.new(Setting.key('debate_team_fees')) +
-          self.adjudicators_granted * BigDecimal.new(Setting.key('adjudicator_fees')) +
-          self.observers_granted * BigDecimal.new(Setting.key('observer_fees')))
+        self.fees = (self.debate_teams_granted * BigDecimal.new(Setting.key('debate_team_fees') || 0) +
+          self.adjudicators_granted * BigDecimal.new(Setting.key('adjudicator_fees') || 0) +
+          self.observers_granted * BigDecimal.new(Setting.key('observer_fees') || 0))
       else
         self.fees = fees
       end

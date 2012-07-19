@@ -105,4 +105,5 @@ FactoryGirl.define do
     team_number 1
     registration
   end
+
 end
