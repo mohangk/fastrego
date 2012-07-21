@@ -16,7 +16,7 @@ If you would like to use FastRego but not go through the process of setting up, 
   * libxslt1-dev
   * libpq-dev
   * nodejs
-  * phantomjs ( Refer to [poltergeist Github page](https://github.com/jonleighton/poltergeist#installing-phantomjs) for installation instructions.
+  * phantomjs - Refer to [poltergeist Github page](https://github.com/jonleighton/poltergeist#installing-phantomjs) for installation instructions.
 
 2. Ensure that you have a working Ruby running on your machine, ideally setup via RVM. On Mac OS X or Linux, the following should set you up fine
 
