@@ -44,6 +44,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'timecop'
   gem 'debugger'
+  gem 'poltergeist', git: 'https://github.com/jonleighton/poltergeist.git'
 end
 
 # To use ActiveModel has_secure_password

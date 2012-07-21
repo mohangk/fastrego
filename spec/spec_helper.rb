@@ -22,10 +22,10 @@ Spork.each_run do
 # Add this to load Capybara integration:
   require 'capybara/rspec'
   require 'capybara/rails'
-
+  require 'capybara/poltergeist'
  #in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
+  Capybara.javascript_driver = :poltergeist
   RSpec.configure do |config|
     config.include Devise::TestHelpers, type: :view
     config.include Devise::TestHelpers, type: :controller

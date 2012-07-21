@@ -21,10 +21,18 @@ ActiveAdmin.register Registration do
     column 'DT Cnf', :debate_teams_confirmed
     column 'Adj Cnf', :adjudicators_confirmed
     column 'Obs Cnf', :observers_confirmed
-    column 'Fees', :fees
-    column 'Unconf', :total_unconfirmed_payments, sortable: false
-    column 'Conf', :total_confirmed_payments, sortable: false
-    column 'Bal', :balance_fees, sortable: false
+    column 'Fees', :fees do |r|
+      number_to_currency r.fees, unit: ''
+    end
+    column 'Unconf', :total_unconfirmed_payments, sortable: false do |r|
+      number_to_currency r.total_unconfirmed_payments, unit: ''
+    end
+    column 'Conf', :total_confirmed_payments, sortable: false do |r|
+      number_to_currency r.total_confirmed_payments, unit: ''
+    end
+    column 'Bal', :balance_fees, sortable: false do |r|
+      number_to_currency r.balance_fees, unit: '' 
+    end
     default_actions
   end
 

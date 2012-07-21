@@ -8,7 +8,9 @@ describe 'AdminInstitution' do
 
     let!(:team_manager) { FactoryGirl.create :user}
 
-    it 'allows for a team manager to be created and edited' do
+    it 'allows for a registration to be created and edited', js: true do
+      FactoryGirl.create :debate_team_fees
+      
       login
       visit admin_registrations_path
       page.should have_content 'Registration'
@@ -42,9 +44,13 @@ describe 'AdminInstitution' do
       page.should have_field 'Debate teams confirmed', with: '3'
       page.should have_field 'Adjudicators confirmed', with: '2'
       page.should have_field 'Observers confirmed', with: '1'
+      page.find('input#registration_fees')['value'].should == '1200.00' 
+      check 'registration_override_fees'
 
+      fill_in 'Fees' , with: '639.00'
       click_button 'Update Registration'
       visit admin_registrations_path
+      page.should have_content '639.00'
     end
   end
 end
