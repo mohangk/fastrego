@@ -1,8 +1,8 @@
 # FastRego
 
-FastRego is a an Rails application that helps you run your debate tournamentregistration. To find out more details about its feature checkout the [FastRego facebook page](http://www.facebook.com/fastrego).
+FastRego is a web application that helps you run your debate tournament registration. To find out more details about its feature checkout the [FastRego facebook page](http://www.facebook.com/fastrego).
 
-If you would like to use FastRego but not go through the process of setting up, get in touch with us via our [enquiry form](http://fastrego.herokuapp.com/enquiry) and we will set up an account for you.
+If you would like to use FastRego but not go through the process of setting it up, get in touch with us via our [enquiry form](http://fastrego.herokuapp.com/enquiry) and we will set up an account for you.
 
 ## Installation
 

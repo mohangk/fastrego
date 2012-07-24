@@ -11,7 +11,7 @@ describe PaymentMailer do
 
 
   it "has the right subject" do
-    mail.subject.should == 'Payment update notification'
+    mail.subject.should == "[#{PaymentMailer.tournament_identifier}] Payment update notification"
   end
 
   it 'renders the receiver email' do
