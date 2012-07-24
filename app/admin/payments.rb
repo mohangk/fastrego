@@ -9,8 +9,8 @@ ActiveAdmin.register Payment do
       link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
     end
     column 'Date', :date_sent
-    column 'Amount sent' do |p|
-      number_to_currency p.amount_sent, unit: (Setting.table_exists? ? Setting.key('currency_symbol') : 'RM')
+    column "Amount sent" do |p|
+      number_to_currency p.amount_sent, unit: ''
     end
     column 'A/C #', :account_number
     column 'Comments', :comments
@@ -18,16 +18,20 @@ ActiveAdmin.register Payment do
       link_to 'View', p.scanned_proof.url
     end
     column :created_at
-    column 'Amount received' do |p|
-        number_to_currency p.amount_received, unit: (Setting.table_exists? ? Setting.key('currency_symbol') : 'RM')    end
+    column "Amount received" do |p|
+      number_to_currency p.amount_received, unit: ''
+    end
     column 'Admin comment', :admin_comment
     default_actions
   end
 
   form do |f|
+    if f.object.new_record? and f.object.date_sent.nil?
+      f.object.date_sent = Date.today
+    end
     f.inputs do
       disable_field = true unless f.object.new_record?
-      f.input :registration_id, label: 'Institution', as: :select, collection: Hash[Registration.all.map{ |r| [r.institution_name,r.id]}],:input_html => { :disabled => disable_field }
+      f.input :registration, label: 'Institution', as: :select, collection: Hash[Registration.all.map{ |r| [r.institution_name,r.id]}],:input_html => { :disabled => disable_field }
       f.input :date_sent, :input_html => { :disabled => disable_field }
       f.input :amount_sent, as: :string, :input_html => { :disabled => disable_field }
       f.input :account_number, :input_html => { :disabled => disable_field }
@@ -52,6 +56,7 @@ ActiveAdmin.register Payment do
         @payment.send_payment_notification
         redirect_to admin_payments_path, notice: 'Payment was successfully updated.'
       else
+        #raise @payment.errors.inspect
         render action: "edit"
       end
     end
