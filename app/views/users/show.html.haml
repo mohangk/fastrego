@@ -41,7 +41,7 @@
   - if current_user.registered? and current_user.registration.confirmed?
     %hr
     %p
-      %b You have been confirmed the following slots. Please click on the links to populate the relavant participant details.
+      %b You have been confirmed the following slots. Please click on the links to populate the relevant participant details.
       %ul
         %li 
           #{ pluralize current_user.registration.debate_teams_confirmed, 'debate team' }
