@@ -50,11 +50,16 @@ Broke into phases
 - Host granting slots
   - This would work exactly as how it does today
 
-- Team manager adding participants against  hist confirmed slots 
-  - Team manager will be able to key in email of participant, if the email already exists in the system the participants details are pulled up and only the tournament specific details are keyed in 
-    - DISCUSS, do we do this whether or not the participants account has been "enabled" ?
+- Team manager adding participants against his confirmed slots 
+  - Team manager will be able to key in email of participant
+    - If the email already exists in the system the participants details are pulled up and only the tournament specific details are keyed in 
+      - DISCUSS, do we do this whether or not the participants account has been "enabled" ?
+      - We will send them an email informing of the fact that the team manager has assigned to the Tournament as a participant representing Institution
   - If participant does not exist, team manager can key in participants details as per usual and participant will be sent an email to "enable" their fastrego account
-    - What if participant does not "enable" account, do we care ?
+  
+  - DISCUSS What if participant does not "enable" account, do we care ?
+  - DISCUSS If participant already exists, we will send them an email inforing of the fact that the team manager has assigned to the Tournament as a participant representing Institution
+
   - DISCUSS, Institutions are associated to participants via the registration which is created by a team manager, in other words, institution is not a participant attribute
   - DISCUSS, for existing participants will participant fields be copied over and overidable by team managers or are participant fields just whatever they are 
 
@@ -88,7 +93,8 @@ Broke into phases
   * speaker_number 
   * team_number
 
-
+- Participant enabling account
+  - Upon a team manager 
 
 ## Phase 1 changes required
 
