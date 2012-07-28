@@ -5,6 +5,7 @@ class Participant < ActiveRecord::Base
   belongs_to :registration
 
 	validates_presence_of :name, :gender, :email, :dietary_requirement, :emergency_contact_person, :emergency_contact_number, :registration
+  validates_uniqueness_of :email
 
   #TODO: Figure out why after_initialize is not being called when Participant is a nested attribute
   after_initialize :setup_hstore
