@@ -5,6 +5,7 @@ describe Setting do
   before do
     FactoryGirl.create(:enable_pre_registration)
   end
+  it { should belong_to(:tournament) }
   it { should validate_presence_of :key }
   it { should validate_uniqueness_of :key }
   context 'key' do

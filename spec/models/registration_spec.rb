@@ -10,6 +10,7 @@ describe Registration do
     FactoryGirl.create(:observer_fees)
     FactoryGirl.create(:debate_team_size)
   end
+  it { should belong_to(:tournament) }
   it { should belong_to :user }
   it { should have_many(:payments).dependent(:destroy) }
   it { should have_many(:debaters).dependent(:destroy) }

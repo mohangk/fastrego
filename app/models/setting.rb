@@ -1,5 +1,7 @@
 class Setting < ActiveRecord::Base
   validates :key, presence: true, uniqueness: true
+  belongs_to :tournament
+
 
   def self.currency_symbol
     Setting.key('currency_symbol') ? Setting.key('currency_symbol') : 'USD'

@@ -3,6 +3,7 @@ class Registration < ActiveRecord::Base
   
   #scope :pending_details, where('confirmed')
   belongs_to :user
+  belongs_to :tournament
   has_many :payments, dependent: :destroy
   has_many :debaters, dependent: :destroy
   has_many :adjudicators, dependent: :destroy
