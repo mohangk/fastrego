@@ -9,6 +9,8 @@ describe 'AdminInstitution' do
     let!(:institution) { FactoryGirl.create :institution }
 
     it 'allows for a team manager to be created and edited' do
+      t1 = FactoryGirl.create(:t1_tournament)
+      set_subdomain 't1'
       login
       visit admin_users_path
       page.should have_content 'Team manager'

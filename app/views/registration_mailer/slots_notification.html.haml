@@ -4,11 +4,11 @@
     %meta{content: "text/html; charset=UTF-8", httpequiv: "Content-Type" }
   %body
     %h1
-      Slots #{@notification_type} notification for #{@registration.user.institution.name}
+      Slots #{@notification_type} notification for #{@registration.institution.name}
     
-    %p Hello #{@registration.user.name}
+    %p Hello #{@registration.team_manager.name}
 
-    %p There have been changes to your institution registration record for the #{Setting.key('tournament_name')}, specially in terms of how many slots you've been #{@notification_type}. Details as follows : <br/>
+    %p There have been changes to your institution registration record for the #{Setting.key(@registration.tournament, 'tournament_name')}, specially in terms of how many slots you've been #{@notification_type}. Details as follows : <br/>
     %table
       %tr
         %td Debate teams 

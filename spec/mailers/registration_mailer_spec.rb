@@ -31,8 +31,8 @@ describe RegistrationMailer do
   end
 
   it 'renders the receiver email' do
-    slots_granted_mail.to.should == [registration.user.email]
-    slots_confirmed_mail.to.should == [registration.user.email]
+    slots_granted_mail.to.should == [registration.team_manager.email]
+    slots_confirmed_mail.to.should == [registration.team_manager.email]
   end
 
   it 'renders the sender email' do
@@ -42,13 +42,13 @@ describe RegistrationMailer do
 
   describe 'email contents' do
     it 'contains the team managers name' do
-      slots_granted_mail.body.encoded.should match(registration.user.name)
-      slots_confirmed_mail.body.encoded.should match(registration.user.name)
+      slots_granted_mail.body.encoded.should match(registration.team_manager.name)
+      slots_confirmed_mail.body.encoded.should match(registration.team_manager.name)
     end
 
     it 'contains institutions name' do
-      slots_granted_mail.body.encoded.should match(registration.user.institution.name)
-      slots_confirmed_mail.body.encoded.should match(registration.user.institution.name)
+      slots_granted_mail.body.encoded.should match(registration.team_manager.institution.name)
+      slots_confirmed_mail.body.encoded.should match(registration.team_manager.institution.name)
     end
 
     it 'contains the tournament name' do

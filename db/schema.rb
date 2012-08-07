@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120804023622) do
+ActiveRecord::Schema.define(:version => 20120808133256) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -106,12 +106,13 @@ ActiveRecord::Schema.define(:version => 20120804023622) do
     t.integer  "debate_teams_confirmed"
     t.integer  "observers_confirmed"
     t.integer  "adjudicators_confirmed"
-    t.integer  "user_id"
+    t.integer  "team_manager_id"
     t.datetime "requested_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "fees",                   :precision => 14, :scale => 2
     t.integer  "tournament_id"
+    t.integer  "institution_id"
   end
 
   create_table "settings", :force => true do |t|
@@ -123,12 +124,10 @@ ActiveRecord::Schema.define(:version => 20120804023622) do
   end
 
   create_table "tournaments", :force => true do |t|
-    t.string   "name"
-    t.boolean  "active",        :default => true
-    t.string   "identifier"
-    t.integer  "admin_user_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.string  "name"
+    t.boolean "active"
+    t.string  "identifier"
+    t.integer "admin_user_id"
   end
 
   create_table "users", :force => true do |t|
@@ -142,7 +141,6 @@ ActiveRecord::Schema.define(:version => 20120804023622) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "institution_id",                                        :null => false
     t.string   "name",                                                  :null => false
     t.string   "phone_number"
     t.datetime "created_at"

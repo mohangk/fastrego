@@ -1,5 +1,5 @@
 class PaymentMailer < ActionMailer::Base
-  default from: Setting.key('tournament_registration_email')
+  #default from: Setting.key('tournament_registration_email')
 
   def self.tournament_identifier
     default_url_options[:host].split('.')[0]
@@ -7,7 +7,7 @@ class PaymentMailer < ActionMailer::Base
 
   def update_notification(payment)
     @payment = payment
-    mail :to => payment.registration.user.email, :subject => "[#{RegistrationMailer.tournament_identifier}] Payment update notification" do |format|
+    mail from: Setting.key(payment.registration.tournament, 'tournament_registration_email'), to: payment.registration.user.email, subject:  "[#{RegistrationMailer.tournament_identifier}] Payment update notification" do |format|
       format.text
       format.html
     end

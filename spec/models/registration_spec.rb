@@ -4,21 +4,26 @@ describe Registration do
   let(:r) {Registration.first}
 
   before :each do
-    FactoryGirl.create(:registration)
-    FactoryGirl.create(:debate_team_fees)
-    FactoryGirl.create(:adjudicator_fees)
-    FactoryGirl.create(:observer_fees)
-    FactoryGirl.create(:debate_team_size)
+    r = FactoryGirl.create(:registration)
+    FactoryGirl.create(:debate_team_fees, tournament: r.tournament)
+    FactoryGirl.create(:adjudicator_fees, tournament: r.tournament)
+    FactoryGirl.create(:observer_fees, tournament: r.tournament)
+    FactoryGirl.create(:debate_team_size, tournament: r.tournament)
   end
+
+  it { should belong_to :institution }
+  it { should validate_presence_of :institution_id }
+  it { should validate_uniqueness_of(:institution_id).scoped_to(:tournament_id) }
   it { should belong_to(:tournament) }
-  it { should belong_to :user }
+  it { should belong_to :team_manager }
+  it { should validate_uniqueness_of(:team_manager_id).scoped_to(:tournament_id) }
+  it { should validate_presence_of :team_manager_id }
+  it { should validate_presence_of :tournament_id }
   it { should have_many(:payments).dependent(:destroy) }
   it { should have_many(:debaters).dependent(:destroy) }
   it { should have_many(:adjudicators).dependent(:destroy) }
   it { should have_many(:observers).dependent(:destroy) }
   it { should have_many(:participants).dependent(:destroy)}
-  it { should validate_uniqueness_of :user_id }
-  it { should validate_presence_of :user_id}
   it { should validate_numericality_of(:debate_teams_requested)}
   it { should validate_numericality_of(:adjudicators_requested)}
   it { should validate_numericality_of(:observers_requested)}
@@ -49,7 +54,6 @@ describe Registration do
   describe "#grant_slots" do
     context 'nothing set' do
       it 'should not send a slots_granted_notification' do
-
         ActionMailer::Base.deliveries = [] 
         r.grant_slots(nil,nil,nil)
         ActionMailer::Base.deliveries.last.should == nil
@@ -67,12 +71,12 @@ describe Registration do
         r.observers_granted.should == nil
       end
     end
-    context "granting 1 dt, 1 adj, 1 obs" do
 
+    context "granting 1 dt, 1 adj, 1 obs" do
       it 'should send a slots_granted_notification' do
         ActionMailer::Base.deliveries = [] 
         r.grant_slots(1,1,1)
-        ActionMailer::Base.deliveries.last.to.should == [r.user.email]
+        ActionMailer::Base.deliveries.last.to.should == [r.team_manager.email]
       end
 
      it "should set all values" do
@@ -83,6 +87,7 @@ describe Registration do
         r.observers_granted.should == 1
       end
     end
+
     context  "fee not set" do
       it "should calculate the fees if fees param not passed in" do
         r.grant_slots(1,1,1)
@@ -103,6 +108,7 @@ describe Registration do
       end
 
     end
+
     context "fee set" do
       it "should set fees based on the fees value" do
         r.grant_slots(1, 1, 1, 100)
@@ -177,7 +183,7 @@ describe Registration do
       it 'should send a slots_granted_notification' do
         ActionMailer::Base.deliveries = [] 
         r.confirm_slots(2,1,1)
-        ActionMailer::Base.deliveries.last.to.should == [r.user.email]
+        ActionMailer::Base.deliveries.last.to.should == [r.team_manager.email]
       end
 
       it "should only set the values that were passed in" do

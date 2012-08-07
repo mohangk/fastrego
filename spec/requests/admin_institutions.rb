@@ -21,5 +21,7 @@ describe 'AdminInstitution' do
       page.has_field? 'Name', with: 'Test institution' 
     end
   end
+
+  it 'does not allow for hosts to edit existing institutions'
 end
 

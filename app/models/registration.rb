@@ -2,8 +2,9 @@ class Registration < ActiveRecord::Base
   strip_attributes
   
   #scope :pending_details, where('confirmed')
-  belongs_to :user
+  belongs_to :team_manager, class_name: 'User'
   belongs_to :tournament
+  belongs_to :institution
   has_many :payments, dependent: :destroy
   has_many :debaters, dependent: :destroy
   has_many :adjudicators, dependent: :destroy
@@ -17,7 +18,6 @@ class Registration < ActiveRecord::Base
   attr_accessor :override_fees
   attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested, :debaters_attributes, :adjudicators_attributes, :observers_attributes
 
-  validates :user_id, presence: true, uniqueness: true
   validates :debate_teams_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 10 }
   validates :adjudicators_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 10 }
   validates :observers_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 10 }
@@ -29,6 +29,11 @@ class Registration < ActiveRecord::Base
   validates :observers_confirmed, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :fees, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :requested_at, presence: true
+  validates :institution_id, presence: true
+  validates :institution_id, uniqueness: { scope: :tournament_id }
+  validates :team_manager_id, presence: true
+  validates :team_manager_id, uniqueness: { scope: :tournament_id }
+  validates :tournament_id, presence: true
 
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
     #if nothing was set, we assume the granted values are not being set 
@@ -44,9 +49,9 @@ class Registration < ActiveRecord::Base
         RegistrationMailer.slots_granted_notification(self).deliver 
       end
       if fees.blank?
-        self.fees = (self.debate_teams_granted * BigDecimal.new(Setting.key('debate_team_fees') || 0) +
-          self.adjudicators_granted * BigDecimal.new(Setting.key('adjudicator_fees') || 0) +
-          self.observers_granted * BigDecimal.new(Setting.key('observer_fees') || 0))
+        self.fees = (self.debate_teams_granted * BigDecimal.new(Setting.key(tournament, 'debate_team_fees') || 0) +
+          self.adjudicators_granted * BigDecimal.new(Setting.key(tournament, 'adjudicator_fees') || 0) +
+          self.observers_granted * BigDecimal.new(Setting.key(tournament, 'observer_fees') || 0))
       else
         self.fees = fees
       end
@@ -102,7 +107,7 @@ class Registration < ActiveRecord::Base
     end
 
     (1..self.debate_teams_confirmed).each do |debate_team_number|
-      (1..Setting.key('debate_team_size').to_i).each do |speaker_number|
+      (1..Setting.key(tournament, 'debate_team_size').to_i).each do |speaker_number|
         if debate_teams[debate_team_number - 1][speaker_number-1].nil?
           debate_teams[debate_team_number-1][speaker_number-1]  = self.debaters.build(team_number: debate_team_number, speaker_number: speaker_number)
         end
@@ -113,7 +118,7 @@ class Registration < ActiveRecord::Base
   end
   
   def institution_name
-    self.user && self.user.institution_name
+    self.institution.name
   end
 
 end

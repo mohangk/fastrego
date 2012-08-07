@@ -86,7 +86,15 @@ ActiveAdmin.setup do |config|
   # You can add before, after and around filters to all of your
   # Active Admin resources from here. 
   #
-  # config.before_filter :do_something_awesome
+  config.before_filter :set_current_subdomain
+
+  def set_current_subdomain
+    Thread.current[:current_subdomain] = request.subdomain 
+  end
+
+  def current_subdomain
+    Thread.current[:current_subdomain]
+  end
 
   config.batch_actions = true
   # == Register Stylesheets & Javascripts

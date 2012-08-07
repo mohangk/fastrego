@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Institution do
   subject { FactoryGirl.create(:institution) }
+  it { should have_many(:registrations).dependent(:nullify) }
   it { should ensure_length_of(:abbreviation).is_at_most(10) }
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:abbreviation) }

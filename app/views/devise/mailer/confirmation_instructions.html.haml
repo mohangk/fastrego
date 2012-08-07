@@ -1,5 +1,5 @@
 %p
-  Thank you for creating your Team Manager account for #{Setting.key('tournament_name')} ! In order to activate your account, you MUST confirm this email address (by clicking the link below).
+  Thank you for creating your Team Manager account! In order to activate your account, you MUST confirm this email address (by clicking the link below).
 
 %p= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
 

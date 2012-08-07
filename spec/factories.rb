@@ -12,51 +12,71 @@ FactoryGirl.define do
     password 'password'
   end
 
+  factory :t2_admin_user, class: AdminUser do
+    email 't2.admin@test.com'
+    password 'password'
+  end
+
   factory :user do
       name 'Suthen Thomas'
       sequence(:email) { |n| "suthen#{n}.thomas@gmail.com" }
       password 'password'
       phone_number '123123123123'
-      institution
+  end
+
+  factory :t1_tournament, class: Tournament do
+    name 'tournament 1'
+    active true
+    identifier 't1'
+    admin_user 
+  end
+
+  factory :t2_tournament, class: Tournament do
+    name 'tournament 2'
+    active true
+    identifier 't2'
+    association :admin_user, factory: :t2_admin_user
   end
 
   factory :tournament_name, class: Setting do
     key 'tournament_name'
     value 'Logan\'s Debate Extravaganza'
-  end
-  factory :debate_team_fees, :class => Setting do
-    key 'debate_team_fees'
-    value '200'
-  end
+    association :tournament, factory: :t1_tournament
 
-  factory :adjudicator_fees, :class => Setting do
-    key 'adjudicator_fees'
-    value '100'
-  end
+    factory :debate_team_fees, :class => Setting do
+      key 'debate_team_fees'
+      value '200'
+    end
 
-  factory :observer_fees, :class => Setting do
-    key 'observer_fees'
-    value '100'
-  end
+    factory :adjudicator_fees, :class => Setting do
+      key 'adjudicator_fees'
+      value '100'
+    end
 
-  factory :enable_pre_registration, :class => Setting do
-    key 'enable_pre_registration'
-    value 'True'
-  end
+    factory :observer_fees, :class => Setting do
+      key 'observer_fees'
+      value '100'
+    end
 
-  factory :debate_team_size, class: Setting do
-    key 'debate_team_size'
-    value 3
-  end
+    factory :enable_pre_registration, :class => Setting do
+      key 'enable_pre_registration'
+      value 'True'
+    end
 
-  factory :currency_symbol, :class => Setting do
-    key 'currency_symbol'
-    value 'RM'
-  end
+    factory :debate_team_size, class: Setting do
+      key 'debate_team_size'
+      value 3
+    end
 
-  factory :tournament_registration_email, class: Setting do
-    key 'tournament_registration_email'
-    value 'test@test.com'
+    factory :currency_symbol, :class => Setting do
+      key 'currency_symbol'
+      value 'RM'
+    end
+
+    factory :tournament_registration_email, class: Setting do
+      key 'tournament_registration_email'
+      value 'test@test.com'
+    end
   end
 
   factory :registration do
@@ -64,7 +84,9 @@ FactoryGirl.define do
     adjudicators_requested 1
     observers_requested 1
     requested_at '2011-01-01 01:01:01'
-    user
+    association :team_manager, factory: :user
+    association :tournament, factory: :t1_tournament
+    institution
   end
 
   factory :payment do

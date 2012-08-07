@@ -1,6 +1,10 @@
 ActiveAdmin.register Registration do
+  scope_to association_method: :call do 
+    lambda {  current_admin_user.registrations.tournament_identifier(current_subdomain) }
+  end
+
   scope :all, :default => true do |r|
-    r.includes [ :user => :institution ]
+    r.includes [ :institution ]
   end
   
   config.sort_order = "requested_at_asc"
@@ -10,7 +14,7 @@ ActiveAdmin.register Registration do
       r.requested_at.strftime("%d/%m %H:%M:%S")
     end
     column 'Inst',sortable: 'institutions.abbreviation' do |r|
-        link_to r.user.institution.abbreviation, admin_institution_path(r.user.institution)
+      link_to r.institution.abbreviation, admin_institution_path(r.institution)
     end
     column 'DT Rq', :debate_teams_requested
     column 'Adj Rq', :adjudicators_requested
@@ -41,16 +45,16 @@ ActiveAdmin.register Registration do
       r.requested_at.strftime("%d/%m %H:%M:%S")
     end
     column('Inst name') do |r|
-      r.user.institution.name
+      r.institution.name
     end
     column('Inst abbr') do |r|
-      r.user.institution.abbreviation
+      r.institution.abbreviation
     end
     column('Email') do |r|
-      r.user.email
+      r.email
     end
     column('TM name') do |r|
-      r.user.name
+      r.team_manager.name
     end
     column('DT Rq') { |r| r.debate_teams_requested }
     column('Adj Rq') { |r| r.adjudicators_requested }
@@ -74,7 +78,7 @@ ActiveAdmin.register Registration do
       disable_field = true 
     end
     f.inputs 'Request details' do
-      f.input :user, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
+      f.input :team_manager, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
       f.input :requested_at, as: :datetime, include_seconds: true, :input_html => {  :disabled => disable_field , :include_seconds => true}
       f.input :debate_teams_requested, :input_html => { :disabled => disable_field }
       f.input :adjudicators_requested, :input_html => { :disabled => disable_field }
@@ -106,7 +110,7 @@ ActiveAdmin.register Registration do
     def create
       r =  params[:registration]
       @registration = Registration.new(r)
-      @registration.user_id = r[:user_id]
+      @registration.team_manager_id = r[:team_manager_id]
       requested_at = Time.local(r[:'requested_at(1i)'], r[:'requested_at(2i)'],r[:'requested_at(3i)'], r[:'requested_at(4i)'], r[:'requested_at(5i)'], r[:'requested_at(6i)'])
       @registration.requested_at = requested_at
       if @registration.save and grant_and_confirm(@registration)
@@ -135,8 +139,8 @@ ActiveAdmin.register Registration do
     end
   end
 
-  filter :user_id, collection: proc { Hash[User.order(:name).all.map{ |u| [u.name, u.id] }] }
-  filter :user_institution_name, as: :select, collection: proc { Institution.order(:name).all.map(&:name) }
+  filter :team_manager_id, collection: proc { Hash[User.order(:name).all.map{ |u| [u.name, u.id] }] }
+  filter :institution_name, as: :select, collection: proc { Institution.order(:name).all.map(&:name) }
   filter :requested_at
   filter :fees
   filter :debate_teams_requested

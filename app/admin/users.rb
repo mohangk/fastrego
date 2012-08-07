@@ -1,16 +1,17 @@
 ActiveAdmin.register User do
+  scope_to :current_admin_user, association_method: :team_managers
   menu label: 'Team manager'
-
-  scope :all, :default => true do |users|
-    users.includes [:institution]
-  end
+  
+  #scope :all, :default => true do |users|
+  #  users.includes [:registraton]
+  #end
 
 
   index do
     column :id
     column :name
     column :email
-    column :institution, :sortable => :'institutions.name'
+    #column :institution, :sortable => :'institutions.name'
     column :phone_number
     column :last_sign_in_at
     column :last_sign_in_ip
@@ -19,7 +20,7 @@ ActiveAdmin.register User do
     default_actions
   end
 
-  filter :institution, collection: proc { Institution.order(:name).all }
+  #filter :institution, collection: proc { Institution.order(:name).all }
   filter :email
   filter :name
   filter :phone_number
@@ -27,7 +28,7 @@ ActiveAdmin.register User do
   #TODO: not putting the collection value into a proc might result in the "table not found" issue
   form do |f|
     f.inputs "Team manager details" do
-      f.input :institution, collection:  Institution.order(:name).all 
+      #f.input :institution, collection:  Institution.order(:name).all 
       f.input :name
       f.input :email
       f.input :password
