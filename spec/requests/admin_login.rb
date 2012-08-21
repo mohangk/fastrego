@@ -31,7 +31,7 @@ describe 'AdminLogin' do
         let!(:t2_registration) { FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager) }
         let!(:t3_registration) { FactoryGirl.create(:registration, tournament: t3, team_manager: t3_team_manager) }
 
-      it 'displays the login page', js: true do
+      it 'displays the login page' do
         set_subdomain 't1'
         login t1.admin_user.email, t1.admin_user.password
         page.should_not have_content 'Invalid email or password'
@@ -40,6 +40,7 @@ describe 'AdminLogin' do
       it 'lists team managers related to t1 only' do
         set_subdomain 't1'
         login t1.admin_user.email, t1.admin_user.password
+        page.should_not have_content 'Invalid email or password'
         visit admin_users_path
         page.should_not have_content t2.admin_user.email
         page.should have_content t1.admin_user.email

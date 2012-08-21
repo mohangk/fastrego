@@ -18,6 +18,7 @@ FactoryGirl.define do
   end
 
   factory :user do
+      after(:build) { |user| user.skip_confirmation! }
       name 'Suthen Thomas'
       sequence(:email) { |n| "suthen#{n}.thomas@gmail.com" }
       password 'password'

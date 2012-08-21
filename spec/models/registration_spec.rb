@@ -5,8 +5,6 @@ describe Registration do
   let(:r) { Registration.first }
 
   before :each do
-    #we do this so that we don't need to stub the view helper current_subdomain that is called in the Devise view
-    Tournament.stub(:find_by_identifier) { t }
     FactoryGirl.create(:registration, tournament: t)
     FactoryGirl.create(:debate_team_fees, tournament: t)
     FactoryGirl.create(:adjudicator_fees, tournament: t)
