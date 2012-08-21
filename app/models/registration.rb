@@ -1,7 +1,6 @@
 class Registration < ActiveRecord::Base
   strip_attributes
   
-  #scope :pending_details, where('confirmed')
   belongs_to :team_manager, class_name: 'User'
   belongs_to :tournament
   belongs_to :institution
@@ -34,6 +33,10 @@ class Registration < ActiveRecord::Base
   validates :team_manager_id, presence: true
   validates :team_manager_id, uniqueness: { scope: :tournament_id }
   validates :tournament_id, presence: true
+
+  def self.tournament_identifier(tournament_identifier)
+    includes(:tournament).where('tournaments.identifier = ?', tournament_identifier)
+  end
 
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
     #if nothing was set, we assume the granted values are not being set 

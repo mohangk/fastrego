@@ -1,14 +1,17 @@
 require 'spec_helper'
 
 describe Registration do
-  let(:r) {Registration.first}
+  let(:t) { FactoryGirl.create(:t1_tournament) }
+  let(:r) { Registration.first }
 
   before :each do
-    r = FactoryGirl.create(:registration)
-    FactoryGirl.create(:debate_team_fees, tournament: r.tournament)
-    FactoryGirl.create(:adjudicator_fees, tournament: r.tournament)
-    FactoryGirl.create(:observer_fees, tournament: r.tournament)
-    FactoryGirl.create(:debate_team_size, tournament: r.tournament)
+    #we do this so that we don't need to stub the view helper current_subdomain that is called in the Devise view
+    Tournament.stub(:find_by_identifier) { t }
+    FactoryGirl.create(:registration, tournament: t)
+    FactoryGirl.create(:debate_team_fees, tournament: t)
+    FactoryGirl.create(:adjudicator_fees, tournament: t)
+    FactoryGirl.create(:observer_fees, tournament: t)
+    FactoryGirl.create(:debate_team_size, tournament: t)
   end
 
   it { should belong_to :institution }
@@ -41,16 +44,24 @@ describe Registration do
   it { should_not allow_mass_assignment_of(:observers_confirmed)}
   it { should validate_numericality_of(:fees)}
   it { should have_db_column(:fees).of_type(:decimal).with_options(precision:14, scale:2) }
-  #describe "confirmed" do
-    #before :each do
 
-      #FactoryGirl.
-    #end
-    #it "should return registrations that have any one of the confirmed quantities set" do
 
-    #end
+  describe '.tournament_identifier' do
 
-  #end
+    let!(:t2) { FactoryGirl.create(:t2_tournament) }
+
+    let!(:t1_team_manager) { FactoryGirl.create(:user, email: 't1_team_manager@test.com') }
+    let!(:t2_team_manager) { FactoryGirl.create(:user, email: 't2_team_manager@test.com') }
+
+    let!(:r1_t1) { FactoryGirl.create(:registration, tournament: r.tournament, team_manager: t1_team_manager) }
+    let!(:r1_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager) }
+    let!(:r2_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: t1_team_manager) }
+
+    it 'returns the registrations for the specified tournament' do
+        Registration.tournament_identifier('t2').map(&:id).should =~ [r1_t2.id, r2_t2.id]
+    end
+  end
+
   describe "#grant_slots" do
     context 'nothing set' do
       it 'should not send a slots_granted_notification' do
@@ -243,7 +254,7 @@ describe Registration do
 
         r.debate_teams[1].each_with_index do |d, index|
           d.team_number.should == 2
-          d.speaker_number.should == index +1
+          d.speaker_number.should == index+1
         end
       end
 

@@ -7,12 +7,7 @@ class AdminUser < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :subdomain
   has_many :tournaments, dependent: :nullify
-  has_many :registrations, through: :tournaments do
-    def tournament_identifier(tournament_identifier)
-      scoped.where('tournaments.identifier = ?', tournament_identifier) 
-    end
-  end
-
+  has_many :registrations, through: :tournaments 
   has_many :team_managers, through: :registrations
 
 
