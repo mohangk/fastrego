@@ -31,7 +31,7 @@ namespace :fastrego do
 
   desc 'Creates the admin user'
   task :create_admin => :environment
-  task :create_admin, [:tournament_identifier, :email, :password] do |t, args|
+  task :create_admin, [:email, :password] do |t, args|
     AdminUser.create!(email: args.email, password: args.password, password_confirmation: args.password)
   end
 end
