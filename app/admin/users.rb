@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  actions :all, :except => [:new, :edit, :destroy]
+  actions :show, :index
   scope_to association_method: :call do
     lambda { User.where(id: current_admin_user.registrations.collect { |r| r.team_manager.id }) }
   end
