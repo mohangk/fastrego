@@ -42,8 +42,8 @@ describe 'AdminLogin' do
         login t1.admin_user.email, t1.admin_user.password
         page.should_not have_content 'Invalid email or password'
         visit admin_users_path
-        page.should_not have_content t2.admin_user.email
-        page.should have_content t1.admin_user.email
+        page.should_not have_content t2_team_manager.email
+        page.should have_content t1_team_manager.email
       end
 
       it 'lists registrations related to t1 only' do
