@@ -1,15 +1,22 @@
 require 'spec_helper'
+require_relative './admin_helpers.rb'
 
 describe "Users" do
+  include AdminHelpers
+
+  let!(:t1_tournament) { FactoryGirl.create(:t1_tournament) }
   before :each do
-    FactoryGirl.create(:currency_symbol)
+    FactoryGirl.create(:currency_symbol, tournament: t1_tournament)
   end
 
   describe "sign up" do
+
     before do
       FactoryGirl.create(:institution)
     end
+
     it 'provides a form for users to sign up and then forward them to the profile page' do
+      set_subdomain 't1'
       visit profile_path
       page.should have_content 'You need to sign in'
       page.should have_link 'Sign up'
@@ -19,7 +26,7 @@ describe "Users" do
       fill_in 'Name', with: 'Jojoman'
       fill_in 'Password', with: 'password'
       fill_in 'Password confirmation', with: 'password'
-      select 'Multimedia University', from: 'Institution'
+      #select 'Multimedia University', from: 'Institution'
       fill_in 'Phone number', with: '012123123123'
       click_button 'Sign up'
       page.should_not have_content 'error'

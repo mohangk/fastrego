@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
     true if @send_reset_password_email.nil?
   end
 
-  def registered?
-    !self.registration.nil?
-  end
+  #def registered?
+  #  !self.registration.nil?
+  #end
   
   def institution_name
     self.institution && self.institution.name
