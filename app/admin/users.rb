@@ -1,5 +1,8 @@
 ActiveAdmin.register User do
-  scope_to :current_admin_user, association_method: :team_managers
+  actions :all, :except => [:new, :edit, :delete]
+  scope_to association_method: :call do
+    lambda { User.where(id: current_admin_user.registrations.collect { |r| r.team_manager.id }) }
+  end
   menu label: 'Team manager'
   
   #scope :all, :default => true do |users|
@@ -41,7 +44,6 @@ ActiveAdmin.register User do
   end
 
   controller do
-
     def create
       @user = User.new(params[:user])
       #if the admin creates the user, we skip confirmation and rely 

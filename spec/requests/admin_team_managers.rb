@@ -11,7 +11,7 @@ describe 'AdminInstitution' do
     it 'allows for a team manager to be created and edited' do
       t1 = FactoryGirl.create(:t1_tournament)
       set_subdomain 't1'
-      login
+      login t1.admin_user.email, t1.admin_user.password
       visit admin_users_path
       page.should have_content 'Team manager'
       click_link 'New User'
