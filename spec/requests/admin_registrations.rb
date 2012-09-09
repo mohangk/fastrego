@@ -16,9 +16,9 @@ describe 'AdminRegistration' do
     login_for_tournament(t2)
   end
 
-  describe 'create and update registrations' do
+  describe 'registrations associated with this tournament' do
 
-    it 'only lists registration for this tournament and allows for those registrations to be viewed, deleted and relevant fields edited', js: true do
+    it 'lists registration for this tournament and allows for those registrations to be viewed and relevant fields edited', js: true do
 
       visit admin_registrations_path
       team_manager = t2_registration.team_manager
@@ -69,14 +69,25 @@ describe 'AdminRegistration' do
       click_button 'Update Registration'
       visit admin_registrations_path
       page.should have_content '639.00'
-      click_button 'Delete'
-      page.should_not have_content '639.00'
-      debugger
+
     end
 
-    it 'does not allow the access to a different tournaments registrations' do
+    pending 'it allows deleting  registrations' do
+      visit admin_registrations_path
+      click_link 'Delete'
+      page.should_not have_content t2_registration.institution.abbreviation
+    end
+
+
+  end
+
+  describe 'unassociated registrations' do
+
+    pending 'does not allow the access to a different tournaments registrations' do
       visit edit_admin_registration_path(t1_registration)    
     end
+
+    pending 'does not allow the deleting of a different tournaments registrations'
 
   end
 end
