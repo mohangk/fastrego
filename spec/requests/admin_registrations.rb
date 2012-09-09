@@ -28,6 +28,7 @@ describe 'AdminRegistration' do
       page.should have_content t2_registration.institution.abbreviation
       page.should_not have_content t1_registration.institution.abbreviation
       page.should_not have_content 'New'
+      page.should have_content 'View'
       page.should have_content 'Edit'
       page.should have_content 'Delete'
 
