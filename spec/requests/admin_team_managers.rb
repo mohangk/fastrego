@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_relative './admin_helpers.rb'
 
-describe 'AdminInstitution' do
+describe 'AdminTeamManager' do
   include AdminHelpers
 
   describe 'create and edit team manager' do
