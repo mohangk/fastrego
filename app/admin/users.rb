@@ -1,8 +1,6 @@
 ActiveAdmin.register User do
   actions :show, :index
-  scope_to association_method: :call do
-    lambda { User.where(id: current_admin_user.registrations.collect { |r| r.team_manager.id }) }
-  end
+  scope_to :current_admin_user, association_method: :team_managers 
   menu label: 'Team manager'
   
   index do
