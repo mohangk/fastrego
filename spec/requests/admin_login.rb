@@ -5,6 +5,8 @@ describe 'AdminLogin' do
   include AdminHelpers
   describe 'the subdomain determines the tournament the admin is trying to administrate' do 
 
+    pending 'it should not log you in after a password reset'
+
     it 'raises an error if the admin tries to access a subdomain that does not exist' do
         t1 = FactoryGirl.create(:t1_tournament)
         set_subdomain 't3'
