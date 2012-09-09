@@ -4,24 +4,21 @@ require_relative './admin_helpers.rb'
 describe 'AdminInstitution' do
   include AdminHelpers
 
-  describe 'create and edit institution' do
-    it 'allows for an institution to be created' do
-      login
+  let!(:institution) { FactoryGirl.create(:institution) }
+  let!(:t1) { FactoryGirl.create(:t1_tournament) }
+
+  describe 'all institutions' do
+    it 'can only be listed and viewed' do
+
+      login_for_tournament(t1)
       visit admin_institutions_path
-      page.should have_content 'Institutions'
-      click_link 'New Institution'
-      fill_in 'Name',  with: 'Test institution'
-      fill_in 'Abbreviation', with: 'TEST'
-      fill_in 'Website', with: 'http://test.com'
-      select 'Malaysia', from: 'Country'
-      click_button 'Create Institution'
-      visit admin_institutions_path
-      page.should have_content 'Test institution'
-      click_link 'Edit'
-      page.has_field? 'Name', with: 'Test institution' 
+      page.should have_content 'Institution'
+      page.should_not have_content 'New'
+      page.should_not have_content 'Edit'
+      page.should_not have_content 'Delete'
+      click_link 'View'
+      page.should have_content institution.name
     end
   end
-
-  it 'does not allow for hosts to edit existing institutions'
 end
 
