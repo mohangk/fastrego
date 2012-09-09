@@ -1,4 +1,5 @@
 ActiveAdmin.register Registration do
+  actions :edit, :destroy, :show, :index
   scope_to association_method: :call do 
     lambda {  current_admin_user.registrations.tournament_identifier(current_subdomain) }
   end
@@ -77,8 +78,9 @@ ActiveAdmin.register Registration do
     elsif not f.object.new_record?
       disable_field = true 
     end
-    f.inputs 'Request details' do
+    f.inputs "Request details for #{f.object.tournament.name}" do
       f.input :team_manager, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
+      f.input :institution, as: :select, collection: Hash[Institution.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
       f.input :requested_at, as: :datetime, include_seconds: true, :input_html => {  :disabled => disable_field , :include_seconds => true}
       f.input :debate_teams_requested, :input_html => { :disabled => disable_field }
       f.input :adjudicators_requested, :input_html => { :disabled => disable_field }
@@ -107,19 +109,6 @@ ActiveAdmin.register Registration do
   end
 
   controller do
-    def create
-      r =  params[:registration]
-      @registration = Registration.new(r)
-      @registration.team_manager_id = r[:team_manager_id]
-      requested_at = Time.local(r[:'requested_at(1i)'], r[:'requested_at(2i)'],r[:'requested_at(3i)'], r[:'requested_at(4i)'], r[:'requested_at(5i)'], r[:'requested_at(6i)'])
-      @registration.requested_at = requested_at
-      if @registration.save and grant_and_confirm(@registration)
-        redirect_to admin_registrations_path, notice: 'Registration was successfully created'
-      else 
-        render action: "edit"
-      end
-    end
-
     def grant_and_confirm(registration)
       return registration.grant_slots(params[:registration][:debate_teams_granted],
                                    params[:registration][:adjudicators_granted],
