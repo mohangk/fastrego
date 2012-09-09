@@ -2,8 +2,13 @@ module AdminHelpers
 
   def set_subdomain(subdomain)
     host = "http://#{subdomain}.test.com"
+    if example.metadata[:js]
+      Capybara.server_port = 9988
+      port = ':'+Capybara.server_port.to_s
+      host = host+port
+    end
     host! host
-    #Capybara.app_host = host  
+    Capybara.app_host = host  
     Capybara.default_host = host
   end
 
@@ -13,7 +18,6 @@ module AdminHelpers
   end
 
   def login email = 'admin@test.com', password = 'password'
-    #FactoryGirl.create(:admin_user)
     visit admin_dashboard_path
     page.should have_content 'Login'
     fill_in 'Email', with: email
