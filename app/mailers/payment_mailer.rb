@@ -7,7 +7,7 @@ class PaymentMailer < ActionMailer::Base
 
   def update_notification(payment)
     @payment = payment
-    mail from: Setting.key(payment.registration.tournament, 'tournament_registration_email'), to: payment.registration.user.email, subject:  "[#{RegistrationMailer.tournament_identifier}] Payment update notification" do |format|
+    mail from: Setting.key(payment.registration.tournament, 'tournament_registration_email'), to: payment.registration.team_manager.email, subject:  "[#{RegistrationMailer.tournament_identifier}] Payment update notification" do |format|
       format.text
       format.html
     end

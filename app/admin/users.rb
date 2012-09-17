@@ -1,6 +1,10 @@
 ActiveAdmin.register User do
   actions :show, :index
-  scope_to :current_admin_user, association_method: :team_managers 
+
+  scope_to association_method: :call do
+    lambda { User.team_managers(current_subdomain, current_admin_user) }
+  end
+
   menu label: 'Team manager'
   
   index do

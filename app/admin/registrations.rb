@@ -128,8 +128,8 @@ ActiveAdmin.register Registration do
     end
   end
 
-  filter :team_manager_id, collection: proc { Hash[User.order(:name).all.map{ |u| [u.name, u.id] }] }
-  filter :institution_name, as: :select, collection: proc { Institution.order(:name).all.map(&:name) }
+  filter :team_manager_id, collection: proc { Hash[User.team_managers(current_subdomain, current_admin_user).order(:name).all.map{ |u| [u.name, u.id] }] }
+  filter :institution_name, as: :select, collection: proc { Institution.participating(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
   filter :requested_at
   filter :fees
   filter :debate_teams_requested

@@ -1,12 +1,15 @@
 ActiveAdmin.register Payment do
-  scope :all, :default => true do |p|
-    p.includes [ :registration => { :user => :institution } ]
+  scope_to association_method: :call do
+    lambda { Payment.where(registration_id: current_admin_user.registrations.tournament_identifier(current_subdomain).collect { |r| r.id }) }
   end
-  config.sort_order = "instituion.id desc , payments.id desc"
+  scope :all, :default => true do |p|
+    p.includes [ :registration ]
+  end
+  config.sort_order = "instituion_id desc , payments.id desc"
 
   index do
     column 'Inst', sortable: 'institutions.abbreviation' do |p|
-      link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
+      link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.institution)
     end
     column 'Date', :date_sent
     column "Amount sent" do |p|
@@ -56,7 +59,6 @@ ActiveAdmin.register Payment do
         @payment.send_payment_notification
         redirect_to admin_payments_path, notice: 'Payment was successfully updated.'
       else
-        #raise @payment.errors.inspect
         render action: "edit"
       end
     end
@@ -75,8 +77,8 @@ ActiveAdmin.register Payment do
     end
   end
 
-  filter :registration_user_name, as: :select, collection: proc { User.order(:name).all.map(&:name) }
-  filter :registration_user_institution_name, as: :select, collection: proc {Institution.order(:name).all.map(&:name)}
+  filter :registration_team_manager_name, as: :select, collection: proc { User.paid_team_managers(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
+  filter :registration_institution_name, as: :select, collection: proc { Institution.paid_participating(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
   filter :date_sent
   filter :amount_sent
   filter :comments

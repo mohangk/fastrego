@@ -30,5 +30,6 @@ describe 'AdminTeamManager' do
       page.should have_content t1_team_manager.name
     end
   end
+  pending 'unassociated team managers'
 end
 
