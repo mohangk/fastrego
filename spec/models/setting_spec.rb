@@ -7,7 +7,7 @@ describe Setting do
   it { should belong_to(:tournament) }
   it { should validate_presence_of :key }
   it { should validate_presence_of :tournament_id }
-  it { should validate_uniqueness_of :key }
+  it { should validate_uniqueness_of(:key).scoped_to(:tournament_id) }
 
   context 'key' do
 

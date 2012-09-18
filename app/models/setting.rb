@@ -1,5 +1,5 @@
 class Setting < ActiveRecord::Base
-  validates :key, presence: true, uniqueness: true
+  validates :key, presence: true, uniqueness: { scope: :tournament_id }
   validates :tournament_id, presence: true
   belongs_to :tournament
 
