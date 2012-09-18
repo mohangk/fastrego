@@ -17,9 +17,8 @@ describe 'AdminTeamManager' do
 
       login_for_tournament(t1)
       visit admin_users_path
-      page.should have_content 'Team manager'
 
-      visit admin_users_path
+      page.should have_content 'Team manager'
       page.should_not have_content t2_team_manager.email
       page.should have_content t1_team_manager.email
 

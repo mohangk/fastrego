@@ -2,7 +2,7 @@ class Setting < ActiveRecord::Base
   validates :key, presence: true, uniqueness: { scope: :tournament_id }
   validates :tournament_id, presence: true
   belongs_to :tournament
-
+  attr_accessible :key, :value
 
   def self.currency_symbol(tournament)
     Setting.key(tournament, 'currency_symbol') ? Setting.key(tournament, 'currency_symbol') : 'USD'
@@ -24,5 +24,12 @@ class Setting < ActiveRecord::Base
       setting.value = value
       setting.save
     end
+  end
+
+
+
+  def self.for_tournament(tournament_identifier, admin_user)
+    Setting.includes(:tournament)
+    .where('tournaments.identifier = ? and tournaments.admin_user_id = ?', tournament_identifier, admin_user.id)
   end
 end

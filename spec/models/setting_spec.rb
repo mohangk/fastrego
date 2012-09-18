@@ -2,13 +2,21 @@ require 'spec_helper'
 
 describe Setting do
 
-  let!(:t1) { FactoryGirl.create(:enable_pre_registration).tournament }
-
+  let!(:t1) { FactoryGirl.create(:t1_tournament) }
+  let!(:t1_setting) { FactoryGirl.create(:enable_pre_registration, tournament: t1) }
   it { should belong_to(:tournament) }
   it { should validate_presence_of :key }
   it { should validate_presence_of :tournament_id }
   it { should validate_uniqueness_of(:key).scoped_to(:tournament_id) }
 
+  describe '.for_tournament' do
+
+    let!(:t2) { FactoryGirl.create(:t2_tournament) }
+    let!(:t2_setting) { FactoryGirl.create(:enable_pre_registration, tournament: t2) }
+    it 'returns settings for the tournament only' do
+      Setting.for_tournament(t2.identifier, t2.admin_user).map(&:id).should =~ [t2_setting.id]    
+    end
+  end
   context 'key' do
 
     it 'returns the value column of the row with the corresponding "key" ' do
