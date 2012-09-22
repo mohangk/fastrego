@@ -9,7 +9,8 @@ namespace :fastrego do
   task :create_settings => :environment
   task :create_settings, [:tournament_identifier] do |t, args|
     t = Tournament.find_by_identifier(args.tournament_identifier)
-    Setting.create(
+    puts "Create setting for '#{t.identifier}'"
+    Setting.create!(
       [
         {tournament: t, key: 'enable_pre_registration', value: 'False' },
         {tournament: t, key: 'observer_fees', value: '100'},
