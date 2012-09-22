@@ -10,17 +10,20 @@ namespace :fastrego do
   task :create_settings, [:tournament_identifier] do |t, args|
     t = Tournament.find_by_identifier(args.tournament_identifier)
     puts "Create setting for '#{t.identifier}'"
-    Setting.create!(
-      [
-        {tournament: t, key: 'enable_pre_registration', value: 'False' },
-        {tournament: t, key: 'observer_fees', value: '100'},
-        {tournament: t, key: 'adjudicator_fees', value: '100'},
-        {tournament: t, key: 'debate_team_fees', value: '200'},
-        {tournament: t, key: 'debate_team_size', value: '3'},
-        {tournament: t, key: 'tournament_name', value: 'Debate tournament name'},
-        {tournament: t, key: 'currency_symbol',  value: 'USD'},
-        {tournament: t, key: 'tournament_registration_email',  value: 'registration_email@test.com'}
-      ])
+
+    settings = [
+        {key: 'enable_pre_registration', value: 'False' },
+        {key: 'observer_fees', value: '100'},
+        {key: 'adjudicator_fees', value: '100'},
+        {key: 'debate_team_fees', value: '200'},
+        {key: 'debate_team_size', value: '3'},
+        {key: 'tournament_name', value: 'Debate tournament name'},
+        {key: 'currency_symbol',  value: 'USD'},
+        {key: 'tournament_registration_email',  value: 'registration_email@test.com'}
+    ]
+    ss = settings.map { |s| Setting.new(s) }
+    ss.each { |s| s.tournament = t ; s.save! }
+
   end
 
   desc 'Creates a tournament'
