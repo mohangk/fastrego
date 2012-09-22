@@ -20,15 +20,9 @@ describe RegistrationMailer do
     RegistrationMailer.default from: Setting.key(tournament, 'tournament_registration_email')
   end
 
-  describe '.tournament_identifier' do
-    it 'returns the TLD of the default_url_options[:host]' do
-      RegistrationMailer.tournament_identifier.should == 'test'  
-    end
-  end
-
   it "has the right subject" do
-    slots_granted_mail.subject.should == "[test] Updates to your granted slots!"
-    slots_confirmed_mail.subject.should == "[test] Updates to your confirmed slots!"
+    slots_granted_mail.subject.should == "[#{tournament.identifier}] Updates to your granted slots!"
+    slots_confirmed_mail.subject.should == "[#{tournament.identifier}] Updates to your confirmed slots!"
   end
 
   it 'renders the receiver email' do
