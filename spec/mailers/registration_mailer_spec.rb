@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe RegistrationMailer do
-  let(:registration) { 
+  let!(:registration) { 
       FactoryGirl.create(:registration, 
                          debate_teams_granted: 5, 
                          debate_teams_confirmed: 3, 
@@ -9,14 +9,15 @@ describe RegistrationMailer do
                          adjudicators_confirmed: 9, 
                          observers_granted: 6, 
                          observers_confirmed: 8) }
+  let(:tournament) { registration.tournament }
   let(:slots_granted_mail) { RegistrationMailer.slots_granted_notification(registration) }
   let(:slots_confirmed_mail) { RegistrationMailer.slots_confirmed_notification(registration) }
-  let(:tournament_name_setting) {FactoryGirl.create(:tournament_name)} 
+  let(:tournament_name_setting) {FactoryGirl.create(:tournament_name, tournament: tournament)} 
 
   before do
     tournament_name_setting 
-    FactoryGirl.create(:tournament_registration_email)
-    RegistrationMailer.default from: Setting.key('tournament_registration_email')
+    FactoryGirl.create(:tournament_registration_email, tournament: tournament)
+    RegistrationMailer.default from: Setting.key(tournament, 'tournament_registration_email')
   end
 
   describe '.tournament_identifier' do
@@ -36,8 +37,8 @@ describe RegistrationMailer do
   end
 
   it 'renders the sender email' do
-    slots_granted_mail.from.should == [Setting.key('tournament_registration_email')]
-    slots_confirmed_mail.from.should == [Setting.key('tournament_registration_email')]
+    slots_granted_mail.from.should == [Setting.key(tournament, 'tournament_registration_email')]
+    slots_confirmed_mail.from.should == [Setting.key(tournament, 'tournament_registration_email')]
   end
 
   describe 'email contents' do
@@ -47,13 +48,13 @@ describe RegistrationMailer do
     end
 
     it 'contains institutions name' do
-      slots_granted_mail.body.encoded.should match(registration.team_manager.institution.name)
-      slots_confirmed_mail.body.encoded.should match(registration.team_manager.institution.name)
+      slots_granted_mail.body.encoded.should match(registration.institution.name)
+      slots_confirmed_mail.body.encoded.should match(registration.institution.name)
     end
 
     it 'contains the tournament name' do
-      slots_granted_mail.body.encoded.should match(Setting.key('tournament_name'))
-      slots_confirmed_mail.body.encoded.should match(Setting.key('tournament_name'))
+      slots_granted_mail.body.encoded.should match(Setting.key(tournament, 'tournament_name'))
+      slots_confirmed_mail.body.encoded.should match(Setting.key(tournament, 'tournament_name'))
     end
 
     it 'contains registration details' do
