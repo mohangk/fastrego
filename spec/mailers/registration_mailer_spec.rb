@@ -20,6 +20,8 @@ describe RegistrationMailer do
     RegistrationMailer.default from: Setting.key(tournament, 'tournament_registration_email')
   end
 
+  pending "generates absolute urls to the right tournament subdomain"
+
   it "has the right subject" do
     slots_granted_mail.subject.should == "[#{tournament.identifier}] Updates to your granted slots!"
     slots_confirmed_mail.subject.should == "[#{tournament.identifier}] Updates to your confirmed slots!"
