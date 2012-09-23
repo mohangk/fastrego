@@ -6,7 +6,9 @@ ActiveAdmin.register Setting do
   end
 
   index do 
-    column :key
+    column :key do |r|
+      r.key.humanize
+    end
     column :value
     default_actions
   end
@@ -17,8 +19,7 @@ ActiveAdmin.register Setting do
   end
 
   form do |f|
-    f.inputs do
-      f.input :key
+    f.inputs "#{f.object.key.humanize}" do
       f.input :value
     end
     f.buttons
@@ -27,7 +28,7 @@ ActiveAdmin.register Setting do
   controller do 
     def update
       @setting = Setting.find(params[:id])
-      @setting.update_attributes(params[:setting])
+      @setting.value = params[:setting][:value]
       @setting.tournament = Tournament.find_by_identifier(current_subdomain) 
 
       if @setting.save
