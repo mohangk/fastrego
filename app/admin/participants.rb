@@ -1,16 +1,11 @@
 ActiveAdmin.register Participant do
   actions :all, :except => [:new, :edit]
 
-
-  scope :all, default: true do |r|
-    r.includes [ :registration => [ :user => :institution ]]
-  end
-
   index do
     selectable_column
     column :id
     column 'Inst',sortable: 'institutions.abbreviation' do |p|
-        link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
+        link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.user.institution)
     end
   	column :name
   	column :gender
@@ -45,7 +40,7 @@ ActiveAdmin.register Participant do
   csv do
     column :id
     column('Inst') do |p|
-      p.registration.user.institution.abbreviation
+      p.registration.institution.abbreviation
     end
     column :name
   	column :gender
@@ -130,7 +125,7 @@ ActiveAdmin.register Participant do
     active_admin_comments
   end  
 
-  filter :registration_user_institution_name, as: :select, collection: proc { Institution.order(:name).all.map(&:name) }
+  filter :registration_institution_name, as: :select, collection: proc { Institution.participating(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
   filter :name
   filter :gender, as: :check_boxes, collection: ['Male', 'Female'] 
   filter :type, as: :check_boxes, collection: ['Debater', 'Adjudicator', 'Observer'] 
@@ -149,5 +144,4 @@ ActiveAdmin.register Participant do
   filter :nationality
   filter :passport_number
   filter :transport_number
-
 end
