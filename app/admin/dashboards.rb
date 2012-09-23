@@ -17,9 +17,9 @@ ActiveAdmin::Dashboards.build do
       roles.each do |role|
         tr do
           td role.titleize
-          td Registration.sum("#{role}_requested")
-          td Registration.sum("#{role}_granted")  
-          td Registration.sum("#{role}_confirmed")
+          td Registration.tournament_identifier(current_subdomain).sum("#{role}_requested")
+          td Registration.tournament_identifier(current_subdomain).sum("#{role}_granted")  
+          td Registration.tournament_identifier(current_subdomain).sum("#{role}_confirmed")
         end
       end
     end

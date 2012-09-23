@@ -60,7 +60,7 @@ UadcRego::Application.configure do
   config.active_support.deprecation = :notify
 
   config.assets.precompile += %w[admin/active_admin.css admin/active_admin.js]
-  #config.action_mailer.default_url_options = {:host => }
+  config.action_mailer.default_url_options = {:host => 'fastrego.com'}
   config.action_mailer.raise_delivery_errors = true
 
 
