@@ -1,7 +1,7 @@
 ActiveAdmin.register Registration do
   actions :edit, :destroy, :show, :index
   scope_to association_method: :call do 
-    lambda {  current_admin_user.registrations.tournament_identifier(current_subdomain) }
+    lambda {  Registration.for_tournament(current_subdomain, current_admin_user) }
   end
 
   scope :all, :default => true do |r|

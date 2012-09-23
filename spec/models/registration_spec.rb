@@ -56,7 +56,8 @@ describe Registration do
     let!(:r2_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: t1_team_manager) }
 
     it 'returns the registrations for the specified tournament' do
-        Registration.tournament_identifier('t2').map(&:id).should =~ [r1_t2.id, r2_t2.id]
+        Registration.for_tournament('t2', t2.admin_user).map(&:id).should =~ [r1_t2.id, r2_t2.id]
+:q
     end
   end
 

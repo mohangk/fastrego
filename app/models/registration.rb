@@ -34,8 +34,9 @@ class Registration < ActiveRecord::Base
   validates :team_manager_id, uniqueness: { scope: :tournament_id }
   validates :tournament_id, presence: true
 
-  def self.tournament_identifier(tournament_identifier)
-    includes(:tournament).where('tournaments.identifier = ?', tournament_identifier)
+  def self.for_tournament(tournament_identifier, admin_user)
+    includes(:tournament)
+    .where('tournaments.identifier = ? and tournaments.admin_user_id = ?', tournament_identifier, admin_user.id)
   end
 
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
