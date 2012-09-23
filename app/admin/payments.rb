@@ -1,6 +1,6 @@
 ActiveAdmin.register Payment do
   scope_to association_method: :call do
-    lambda { Payment.where(registration_id: current_admin_user.registrations.tournament_identifier(current_subdomain).collect { |r| r.id }) }
+    lambda { Payment.where(registration_id: Registration.for_tournament(current_subdomain, current_admin_user).collect { |r| r.id }) }
   end
   scope :all, :default => true do |p|
     p.includes [ :registration ]

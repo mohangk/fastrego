@@ -2,8 +2,9 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
 
   def current_registration
-    current_user.managed_registrations.tournament_identifier(current_subdomain).first
+    #current_user.managed_registration.for_tournament(current_subdomain, current_user)
   end
+
   helper_method :current_registration
 
   def show
