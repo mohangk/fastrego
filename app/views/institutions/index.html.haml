@@ -16,10 +16,10 @@
       %td= institution.website
       %td= institution.country
       %td
-        - if institution.user.nil?
+        - unless institution.is_participating?(current_subdomain)
           =link_to 'Add team manager', new_user_registration_path(institution_id: institution.id), id: "add_team_manager_institution_#{institution.id}"
         - else
-          = institution.user.name
+          = institution.registration(current_subdomain).team_manager.name
 %br
 
 %p Cannot find your institution ? #{link_to 'Click here to add your institution now', new_institution_path}

@@ -15,4 +15,12 @@ class Institution < ActiveRecord::Base
   def self.paid_participating(tournament_identifier, admin_user)
     self.participating(tournament_identifier, admin_user).joins(registrations: :payments)
   end
+
+  def is_participating?(tournament_identifier)
+    !registration(tournament_identifier).nil?
+  end
+
+  def registration(tournament_identifier)
+    registrations.joins(:tournament).where('tournaments.identifier = ?', tournament_identifier).first
+  end
 end
