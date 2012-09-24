@@ -31,6 +31,7 @@ Spork.each_run do
     config.include Devise::TestHelpers, type: :view
     config.include Devise::TestHelpers, type: :controller
     config.include Paperclip::Shoulda::Matchers
+    config.include SubdomainLoginHelpers, type: :request
 
     config.render_views
     # ## Mock Framework

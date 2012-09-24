@@ -1,8 +1,6 @@
 require 'spec_helper'
-require_relative './admin_helpers.rb'
 
 describe 'AdminInstitution' do
-  include AdminHelpers
 
   let!(:institution) { FactoryGirl.create(:institution) }
   let!(:t1) { FactoryGirl.create(:t1_tournament) }

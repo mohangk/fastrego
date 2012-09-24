@@ -1,8 +1,6 @@
 require 'spec_helper'
-require_relative './admin_helpers.rb'
 
 describe 'AdminSettinngs' do
-  include AdminHelpers
 
   describe 'settings associated with this admin_user and the subdomains' do
 

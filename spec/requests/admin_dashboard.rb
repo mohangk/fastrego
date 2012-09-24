@@ -1,13 +1,10 @@
 require 'spec_helper'
-require_relative './admin_helpers.rb'
 
 def columns(row_text)
   row_text.split("\n").map { |s| s.strip }.reject { |s| s.empty? }
 end
 
 describe 'AdminLogin' do
-  include AdminHelpers
-
   let!(:t2) { FactoryGirl.create(:t2_tournament) }
   let!(:t1) { FactoryGirl.create(:t1_tournament) }
   let!(:t1_team_manager) { FactoryGirl.create(:user, email: 't1_team_manager@test.com') }

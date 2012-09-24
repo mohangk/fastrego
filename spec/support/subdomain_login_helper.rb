@@ -1,4 +1,4 @@
-module AdminHelpers
+module SubdomainLoginHelpers
 
   def set_subdomain(subdomain)
     host = "http://#{subdomain}.test.com"

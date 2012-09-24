@@ -1,8 +1,6 @@
 require 'spec_helper'
-require_relative './admin_helpers.rb'
 
 describe 'AdminLogin' do
-  include AdminHelpers
   describe 'the subdomain determines the tournament the admin is trying to administrate' do 
 
     pending 'it should not log you in after a password reset'

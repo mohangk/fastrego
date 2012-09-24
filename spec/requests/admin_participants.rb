@@ -1,9 +1,6 @@
 require 'spec_helper'
-require_relative './admin_helpers.rb'
 
 describe 'AdminTeamManager' do
-  include AdminHelpers
-
   describe 'associated team managers' do
 
     let!(:t2) { FactoryGirl.create(:t2_tournament) }
