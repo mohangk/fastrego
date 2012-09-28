@@ -12,18 +12,6 @@ class UsersController < ApplicationController
     @payment = Payment.new
   end
 
-  def registration
-    @registration = Registration.new(params[:registration])
-    @registration.user = current_user
-    @registration.requested_at = Time.now
-
-    if @registration.save
-      redirect_to profile_url, notice: 'Registration was successful.'
-    else
-      render action: 'show'
-    end
-  end
-
   def payments
     @payment = Payment.new(params[:payment])
     @payment.registration = current_user.registration

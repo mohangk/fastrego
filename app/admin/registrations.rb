@@ -12,7 +12,7 @@ ActiveAdmin.register Registration do
 
   index do
     column 'Req at', sortable: :requested_at do |r|
-      r.requested_at.strftime("%d/%m %H:%M:%S")
+        r.requested_at.strftime("%d/%m %H:%M:%S") unless r.requested_at.nil?
     end
     column 'Inst',sortable: 'institutions.abbreviation' do |r|
       link_to r.institution.abbreviation, admin_institution_path(r.institution)

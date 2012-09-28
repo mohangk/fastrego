@@ -17,9 +17,9 @@ class Registration < ActiveRecord::Base
   attr_accessor :override_fees
   attr_accessible :debate_teams_requested, :adjudicators_requested, :observers_requested, :debaters_attributes, :adjudicators_attributes, :observers_attributes
 
-  validates :debate_teams_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 50 }
-  validates :adjudicators_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 50 }
-  validates :observers_requested, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 50 }
+  validates :debate_teams_requested, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 50 }, allow_blank: true
+  validates :adjudicators_requested, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 50 }, allow_blank: true
+  validates :observers_requested, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than: 50 }, allow_blank: true
   validates :debate_teams_granted, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :adjudicators_granted, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :observers_granted, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
@@ -27,7 +27,6 @@ class Registration < ActiveRecord::Base
   validates :adjudicators_confirmed, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :observers_confirmed, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
   validates :fees, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
-  validates :requested_at, presence: true
   validates :institution_id, presence: true
   validates :institution_id, uniqueness: { scope: :tournament_id }
   validates :team_manager_id, presence: true
