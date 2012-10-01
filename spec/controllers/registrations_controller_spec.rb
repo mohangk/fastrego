@@ -16,12 +16,32 @@ describe RegistrationsController do
     before :each do 
       user.confirm!
       sign_in user  
+      controller.stub(:current_subdomain).and_return(tournament.identifier)
     end
     
-    describe 'POST registration' do
-      before :each do
-        controller.stub(:current_subdomain).and_return(tournament.identifier)
+    describe 'GET registration' do
+      
+      it 'instatiates the appropriate instituion and tournament' do
+        get :new, { institution_id: institution.id  }
+
+        assigns(:institution).should ==  institution
+        assigns(:tournament).should == tournament
       end
+
+      it 'renders new' do
+        get :new, { institution_id: institution.id  }
+      end
+
+      context 'if instituion_id is not provided' do
+        it 'redirects to institutions_path' do
+          get :new, {}
+          response.should redirect_to(institutions_path)
+        end
+      end
+
+    end
+
+    describe 'POST registration' do
 
       it "creates an instance of registration" do
         post :create, { institution_id: institution.id  }
@@ -51,3 +71,4 @@ describe RegistrationsController do
   end
 
 end
+

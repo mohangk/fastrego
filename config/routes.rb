@@ -1,13 +1,14 @@
 UadcRego::Application.routes.draw do
 
   ActiveAdmin.routes(self)
-
+  
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   devise_for :users
 
   resources :institutions, only: [:new, :create, :index]
-  resources :registrations, only: [:create]
+  resources :registrations, only: [:new, :create]
+
   match "profile" => "users#show", as: :profile, via: :get
   match "embed_logo" => "pages#embed_logo", as: :embed_logo, via: :get
   match 'enquiry' => 'pages#enquiry', as: :enquiry, via: :get

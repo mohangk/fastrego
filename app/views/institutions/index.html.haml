@@ -17,7 +17,7 @@
       %td= institution.country
       %td
         - unless institution.is_participating?(current_subdomain)
-          =link_to 'Add team manager', registrations_path(institution_id: institution.id), id: "add_team_manager_institution_#{institution.id}", method: :post
+          =link_to 'Add team manager', new_registration_path(institution_id: institution.id), id: "add_team_manager_institution_#{institution.id}"
         - else
           = institution.registration(current_subdomain).team_manager.name
 %br

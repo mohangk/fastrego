@@ -1,0 +1,6 @@
+%h1 Confirm team manager assignment 
+
+%p Are you sure you would like to register as the team manager of <b>#{@institution.name}</b> for the tournament <b>#{@tournament.name}</b> ?
+
+=link_to 'Yes', registrations_path(institution_id: @institution.id), method: :post, class: 'btn btn-success'
+=link_to 'No', institutions_path, class: 'btn'

@@ -64,7 +64,6 @@ describe "Institutions list" do
       
       context 'if the team manager has an account but is not logged in' do
           it 'forwards to a  sign in page and confirms the team managers registration' do
-
             visit institutions_path
             click_link "add_team_manager_institution_#{mmu.id}"
             user = FactoryGirl.create(:user)
@@ -72,7 +71,8 @@ describe "Institutions list" do
             page.should have_content('Sign in')
             fill_in 'Email', with: user.email
             fill_in 'Password', with: 'password'
-            page.should have_content "Are you sure you would like to register as the team manager of #{mmu.name}for the tournament #{t1.name} ?"
+            click_button 'Sign in'
+            page.should have_content "Are you sure you would like to register as the team manager of #{mmu.name} for the tournament #{t1.name} ?"
           end
       end
 
@@ -83,8 +83,9 @@ describe "Institutions list" do
             user_login user.email, user.password
             visit institutions_path
             click_link "add_team_manager_institution_#{mmu.id}"
+            page.should have_content "Are you sure you would like to register as the team manager of #{mmu.name} for the tournament #{t1.name} ?"
+            click_link "Yes"
             page.should have_content "You have been successfully assigned to be the team manager for #{mmu.name} contingent during the #{t1.name}"
-            #page.should have_content "Are you sure you would like to register as the team manager of #{mmu.name}for the tournament #{t1.name} ?"
         end
       end
     end

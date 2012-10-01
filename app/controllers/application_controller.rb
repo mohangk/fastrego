@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_subdomain
 
+  def current_tournament
+    Tournament.find_by_identifier(current_subdomain)
+  end
+
 end
