@@ -1,0 +1,18 @@
+%section.homepage
+  .row
+    .span6
+      %h4 What is FastRego ?
+      %p FastRego is online tournament registration software that aims to improve the process of registering for and managing data at debate tournaments, both for organisers and participants!
+
+      %p It was developed for the United Asian Debating Championships hosted at MMU but then expanded its services to the Asian BP Championships, the North East Asian Championships and the World Universities Debating Championships.
+
+      %p FastRego's goal is to reduce redundancies, give users control over the data and make data easier to understand and manage. Read about how FastRego <a href="http://on.fb.me/FastRego-features">works</a> or try out a full  <a href="http://on.fb.me/FastRego-demo">demo</a>.
+
+      %p= link_to 'Planning a tournament? Click here to use FastRego for your tournament!', enquiry_path
+
+    .span6
+      %h4 Tournaments currently on FastRego
+      
+      %ul
+        - @tournaments.each do |t|
+          %li= t.name

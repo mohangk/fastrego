@@ -1,7 +1,12 @@
 module SubdomainLoginHelpers
 
   def set_subdomain(subdomain)
-    host = "http://#{subdomain}.test.com"
+    if subdomain.empty?
+      host = "http://test.com"
+    else
+      host = "http://#{subdomain}.test.com"
+    end
+ 
     if example.metadata[:js]
       Capybara.server_port = 9988
       port = ':'+Capybara.server_port.to_s

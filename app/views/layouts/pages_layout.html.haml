@@ -16,35 +16,12 @@
             /%a.btn.btn-navbar{data-toggle: 'collapse', data-target: '.nav-collapse'}
             %a.brand{href:'http://www.facebook.com/FastRego',style:'display:inline'} #{image_tag 'fastrego.png', size:'265x27'}
             .nav-collapse
-              %ul.nav
-                %li
-                  %a{href: '/'} Registration details
-                %li
-                  %a{href: '/institutions'} Institutions
-              - unless current_user.nil?
-                %ul.nav.pull-right  
-                  %li.dropdown 
-                    %a{href:'#', class: 'dropdown-toggle', 'data-toggle'=>'dropdown'} 
-                      #{current_user.name} 
-                      %b.caret
-                    %ul.dropdown-menu    
-                      %li
-                        =link_to 'Edit profile', edit_user_registration_path
-                      %li
-                        =link_to 'Logout', destroy_user_session_path, method: :delete
       .container
-        -unless notice.nil?
-          .alert.alert-info
-            = notice
-        -unless alert.nil?
-          .alert.alert-error
-            = alert
         = yield
       .push
     %footer
       .container
         <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Ffastrego&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=true&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=80&amp;appId=251286678234917" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>        
         #footer-right 
-          %p #{Setting.key(current_tournament, 'tournament_name')} registration is powered by #{link_to 'FastRego', 'http://www.facebook.com/fastrego'} 
           %p #{link_to 'Planning a tournament? Click here to use FastRego for your tournament!', enquiry_path}
 

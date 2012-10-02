@@ -6,6 +6,10 @@ UadcRego::Application.routes.draw do
 
   devise_for :users
 
+  match '/' => 'pages#homepage', constraints: { subdomain: /www|$^/ }
+
+  root :to => "users#show"
+
   resources :institutions, only: [:new, :create, :index]
   resources :registrations, only: [:new, :create]
 
@@ -24,7 +28,6 @@ UadcRego::Application.routes.draw do
   match "users/payments/:id" => "users#destroy_payments", via: :delete, as: 'delete_payments'
   match "users/registration" => redirect('/profile'), via: :get
   match "users/payments" => redirect('/profile'), via: :get
-  root :to => "users#show"
   match "export/institution" => "export#institution", via: :get
   match "export/adjudicator" => "export#adjudicator", via: :get
   match "export/team" => "export#team", via: :get

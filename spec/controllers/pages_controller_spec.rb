@@ -15,6 +15,13 @@ describe PagesController do
       response.should render_template('enquiry')
     end
   end
+
+  describe 'GET homepage' do
+    it 'should render the homepage view' do
+      get :homepage
+      response.should render_template('homepage')
+    end
+  end
   
 
 end
