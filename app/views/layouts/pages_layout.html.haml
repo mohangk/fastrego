@@ -17,6 +17,12 @@
             %a.brand{href:'http://www.facebook.com/FastRego',style:'display:inline'} #{image_tag 'fastrego.png', size:'265x27'}
             .nav-collapse
       .container
+        -unless notice.nil?
+          .alert.alert-info
+            = notice
+        -unless alert.nil?
+          .alert.alert-error
+            = alert
         = yield
       .push
     %footer
