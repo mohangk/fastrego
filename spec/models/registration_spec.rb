@@ -48,16 +48,23 @@ describe Registration do
 
     let!(:t2) { FactoryGirl.create(:t2_tournament) }
 
-    let!(:t1_team_manager) { FactoryGirl.create(:user, email: 't1_team_manager@test.com') }
-    let!(:t2_team_manager) { FactoryGirl.create(:user, email: 't2_team_manager@test.com') }
+    let!(:team_manager1) { FactoryGirl.create(:user, email: 'team_manager1@test.com') }
+    let!(:team_manager2) { FactoryGirl.create(:user, email: 'team_manager2@test.com') }
 
-    let!(:r1_t1) { FactoryGirl.create(:registration, tournament: r.tournament, team_manager: t1_team_manager) }
-    let!(:r1_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager) }
-    let!(:r2_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: t1_team_manager) }
+    let!(:r1_t1) { FactoryGirl.create(:registration, tournament: r.tournament, team_manager: team_manager1) }
+    let!(:r1_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: team_manager2) }
+    let!(:r2_t2) { FactoryGirl.create(:registration, tournament: t2, team_manager: team_manager1) }
 
-    it 'returns the registrations for the specified tournament' do
-        Registration.for_tournament('t2', t2.admin_user).map(&:id).should =~ [r1_t2.id, r2_t2.id]
-:q
+    context 'when user is an admin user' do
+      it 'returns the registrations for the specified tournament and admin user' do
+          Registration.for_tournament('t2', t2.admin_user).map(&:id).should =~ [r1_t2.id, r2_t2.id]
+      end
+    end
+
+    context 'when user is a team manager' do
+      it 'returns the registrations for the specified tournament and team manager' do
+          Registration.for_tournament('t2', team_manager1).map(&:id).should =~ [r2_t2.id]
+      end
     end
   end
 

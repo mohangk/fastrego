@@ -33,9 +33,14 @@ class Registration < ActiveRecord::Base
   validates :team_manager_id, uniqueness: { scope: :tournament_id }
   validates :tournament_id, presence: true
 
-  def self.for_tournament(tournament_identifier, admin_user)
-    includes(:tournament)
-    .where('tournaments.identifier = ? and tournaments.admin_user_id = ?', tournament_identifier, admin_user.id)
+  def self.for_tournament(tournament_identifier, user)
+    query = includes(:tournament).where('tournaments.identifier = ?', tournament_identifier)
+    if user.is_a?(AdminUser)
+      query = query.where('tournaments.admin_user_id = ?', user.id)
+    else
+      query = query.where('registrations.team_manager_id = ?', user.id)
+    end
+    query
   end
 
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
@@ -62,8 +67,12 @@ class Registration < ActiveRecord::Base
     self.save
   end
 
+  def requested?
+    (not debate_teams_requested.blank?) or (not adjudicators_requested.blank?) or (not observers_requested.blank?)
+  end
+
   def granted?
-    (not self.debate_teams_granted.blank?) or (not self.adjudicators_granted.blank?) or (not self.observers_granted.blank?)
+    (not debate_teams_granted.blank?) or (not adjudicators_granted.blank?) or (not observers_granted.blank?)
   end
 
   def total_confirmed_payments
