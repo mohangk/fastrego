@@ -35,6 +35,7 @@ gem 'country_select', :git => 'git://github.com/mohangk/country_select.git'
 gem 'rack-google-analytics', :require => 'rack/google-analytics'
 
 group :development, :test do
+  gem 'pry'
   gem 'sextant'
   gem 'foreman'
   gem 'rspec-rails'
