@@ -1,13 +1,9 @@
 require 'spec_helper'
-require_relative './admin_helpers.rb'
 
 describe "Users" do
-  include AdminHelpers
 
   let!(:t1_tournament) { FactoryGirl.create(:t1_tournament) }
-  before :each do
-    FactoryGirl.create(:currency_symbol, tournament: t1_tournament)
-  end
+  let!(:currency_symbol) { FactoryGirl.create(:currency_symbol, tournament: t1_tournament) }
 
   describe "sign up" do
 
@@ -41,7 +37,7 @@ describe "Users" do
     end
   end
 
-  describe 'profile' do
+  describe 'tournament profile' do
 
     let!(:user) do
       user = FactoryGirl.create(:user)
@@ -63,15 +59,16 @@ describe "Users" do
     context 'once the user is logged in' do
 
       before :each do
-        visit profile_path
-        page.should have_content 'You need to sign in'
-        fill_in 'Email', with: user.email
-        fill_in 'Password', with: 'password'
-        click_button 'Sign in'
-        page.current_path.should == profile_path
-        page.should have_content 'Signed in successfully'
+        user_login(t1_tournament, user.email, 'password')
       end
 
+      context 'before assigning himself as the team manager' do
+        it 'displays a notice informing the user as such' do
+          page.should have_content 'You are currently not assigned as a team manager for this tournament.'
+        end
+      end
+
+      context 'after being assigned as the team manager' do
       describe "top section of the profile page" do
 
         it 'will have a logout link, upon clicking it logs the user out' do
@@ -113,6 +110,7 @@ describe "Users" do
           page.current_path.should == root_path
           page.should have_content 'Signed in successfully'
         end
+      end
       end
 
       describe 'submitting pre-registration' do
