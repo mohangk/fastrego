@@ -1,4 +1,4 @@
-- unless current_user.registration.payments.empty?
+- unless @registration.payments.empty?
   %table.table.table-striped.table-bordered.table-condensed
     %thead
       %tr
@@ -11,15 +11,15 @@
         %th Our comments
         %th
 
-    - current_user.registration.payments.each do |p|
+    - @registration.payments.each do |p|
       %tr
         %td= p.date_sent
         %td=  p.account_number
-        %td= number_to_currency p.amount_sent, unit: Setting.key('currency_symbol')
+        %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
         %td= p.comments
         %td
           =link_to 'View', p.scanned_proof.url, 'data-popup' => true
-        %td= number_to_currency p.amount_received, unit: Setting.key('currency_symbol')
+        %td= number_to_currency p.amount_received, unit: current_tournament.currency_symbol
         %td= p.admin_comment
         %td
           -unless p.confirmed?

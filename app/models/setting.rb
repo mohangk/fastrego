@@ -26,8 +26,6 @@ class Setting < ActiveRecord::Base
     end
   end
 
-
-
   def self.for_tournament(tournament_identifier, admin_user)
     Setting.includes(:tournament)
     .where('tournaments.identifier = ? and tournaments.admin_user_id = ?', tournament_identifier, admin_user.id)

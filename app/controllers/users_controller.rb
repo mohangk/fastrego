@@ -2,13 +2,12 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
 
   def current_registration
-    #current_user.managed_registration.for_tournament(current_subdomain, current_user)
+    reg = current_user.managed_registrations.for_tournament(current_subdomain, current_user)
+    reg.first.nil? ? Registration.new : reg.first
   end
 
-  helper_method :current_registration
-
   def show
-    @registration = current_registration.nil? ? Registration.new : current_registration
+    @registration = current_registration
     @payment = Payment.new
   end
 

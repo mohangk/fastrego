@@ -1,148 +1,148 @@
 require 'spec_helper'
+require 'ostruct'
+
+module MockHelperMethods
+
+  @@pre_registration_enabled = false
+
+  def current_tournament 
+    OpenStruct.new(currency_symbol: 'RM', pre_registration_enabled?: @@pre_registration_enabled, name: 'MMU Worlds')
+  end
+
+  def self.set_pre_registration_enabled(enabled)
+    @@pre_registration_enabled = enabled
+  end
+
+end
 
 describe "users/show.html.haml" do
 
   let(:user) do
     FactoryGirl.create(:user)
   end
+
   before(:each) do
     user.confirm!
     sign_in user
-    @registration = Registration.new
-    FactoryGirl.create(:currency_symbol)
+    view.extend MockHelperMethods
   end
 
   describe "registration section" do
 
     it "is closed by default" do
+      @registration = Registration.new
       render
       rendered.should have_content('Registration is currently closed')
     end
 
-    context('when when the system setting "enable_pre_registration" is enabled') do
+    context 'when when the system setting "enable_pre_registration" is enabled' do
+
       before(:each) do
-        Setting.stub!(:key).and_return('True')
-        render
+        MockHelperMethods.set_pre_registration_enabled(true)
       end
-      context('before the team manager has submitted his registration') do
+
+      context('before the user has been assigned as a team manager') do
+
+        before :each do
+          @registration = Registration.new
+          render
+        end
+
         it "will tell the team manager that the registration is open" do
           rendered.should_not have_content('Registration is currently closed')
           rendered.should have_content('Registration is open')
         end
-        it "will provide 3 text boxes to fill in the team managers  requests" do
-          rendered.should have_css('input#registration_debate_teams_requested')
-          rendered.should have_css('input#registration_adjudicators_requested')
-          rendered.should have_css('input#registration_observers_requested')
-        end
-      end
 
-      context('after the team manager has submitted his registration ') do
-        let(:user) do
-          user = FactoryGirl.create(:user)
-          user.confirm!
-          registration = FactoryGirl.create(:registration, user: user)
-          user.registration = registration
-          user
+        it "tells the team manager that he should register for the tournament" do
+          rendered.should have_content('You are currently not assigned as a team manager for this tournament')
         end
 
-        it 'will not provide the registration form' do
-          rendered.should_not have_css('form#new_registration')
-        end
-
-        it 'will display the datetime that the registration was requested' do
-          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 +0800 and requested the following slots')
-        end
-
-        it 'will display the registration details' do
-          rendered.should have_content('3 debate teams')
-          rendered.should have_content('1 adjudicator')
-          rendered.should have_content('1 observer')
-        end
-      end
-    end
-
-    context('when when the system setting "enable_pre_registration" is disabled') do
-      before(:each) do
-        Setting.stub!(:key).and_return('False')
-        render
-      end
-      context('before the team manager has submitted his registration') do
-        it "will tell the team manager that the registration is open" do
-          rendered.should have_content('Registration is currently closed')
-          rendered.should_not have_content('Registration is open')
-        end
-        it "will hide the 3 text boxes to fill in the team managers  requests" do
+        it "hides the registration form" do
           rendered.should_not have_css('input#registration_debate_teams_requested')
           rendered.should_not have_css('input#registration_adjudicators_requested')
           rendered.should_not have_css('input#registration_observers_requested')
         end
       end
 
-      context('after the team manager has submitted his registration ') do
-        let(:user) do
-          user = FactoryGirl.create(:user)
-          user.confirm!
-          registration = FactoryGirl.create(:registration, user: user)
-          user.registration = registration
-          user
+      context 'after the user has been assigned as a team manager' do
+
+        before :each do
+          @registration = FactoryGirl.create(:registration, team_manager: user)
+          render
         end
 
-        it 'will not provide the registration form' do
-          rendered.should_not have_css('form#new_registration')
+        it "will recognise user as the team manager" do
+          rendered.should have_content("You are assigned as the team manager for the #{@registration.institution.name} contingent to the MMU Worlds")
         end
-
-        it 'will display the datetime that the registration was requested' do
-          rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 +0800 and requested the following slots')
-        end
-
-        it 'will display the registration details' do
-          rendered.should have_content('3 debate teams')
-          rendered.should have_content('1 adjudicator')
-          rendered.should have_content('1 observer')
+        
+        it 'will provide the registration form' do
+          rendered.should have_css('input#registration_debate_teams_requested')
+          rendered.should have_css('input#registration_adjudicators_requested')
+          rendered.should have_css('input#registration_observers_requested')
         end
       end
     end
 
+    context 'once the team manager has submitted the requested quantities' do
+
+      before :each do
+        @registration = FactoryGirl.create(:requested_registration, team_manager: user)
+        render
+      end
+
+      it 'will display the datetime that the registration was requested' do
+        rendered.should have_content('You completed pre-registration at 2011-01-01 01:01:01 +0800 and requested the following slots')
+      end
+
+      it "will hide the 3 text boxes to fill in the team managers  requests" do
+        rendered.should_not have_css('input#registration_debate_teams_requested')
+        rendered.should_not have_css('input#registration_adjudicators_requested')
+        rendered.should_not have_css('input#registration_observers_requested')
+      end
+
+      it 'will display the registration details' do
+        rendered.should have_content('3 debate teams')
+        rendered.should have_content('1 adjudicator')
+        rendered.should have_content('1 observer')
+      end
+    end
   end
 
   describe "granted slots section" do
 
-    let(:user) do
-      user = FactoryGirl.create(:user)
-      user.confirm!
-
-      user
-    end
-
     it "is closed by default" do
+      @registration = FactoryGirl.create(:requested_registration, team_manager: user)
       render
       rendered.should_not have_content('You have been granted the following slots')
     end
 
-    it "is displayed when the registration has been granted slots closed by default" do
-      registration = FactoryGirl.create(:registration, user: user)
-      registration.debate_teams_granted = 1
-      user.registration = registration
+    it "is displayed when the registration has been granted slots" do
+      @registration = FactoryGirl.create(:granted_registration, team_manager: user)
       render
       rendered.should have_content('You have been granted the following slots')
       rendered.should have_content('1 debate team')
-
     end
 
   end
 
   describe "payment section" do
 
+    before :each do
+    end
+
     it "is closed by default" do
+      @registration = FactoryGirl.create(:requested_registration, team_manager: user)
       render
       rendered.should_not have_content('Total registration fees due')
       rendered.should_not have_css('form#new_payment')
     end
 
     it "is displayed when the registration has a fees associated with it" do
-      registration = FactoryGirl.create(:registration, user: user, fees:2000)
-      payment = FactoryGirl.create(:payment, amount_sent: 1000, amount_received: 999.48, registration: registration)
+
+      @registration = FactoryGirl.create(:requested_registration, team_manager: user, fees: 2000)
+      payment = FactoryGirl.create(:payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
       #required by _form_payment.html.haml
+      @registration.reload
       @payment = Payment.new
       user.reload
       render
@@ -156,15 +156,16 @@ describe "users/show.html.haml" do
 
   describe "confirmed slot section" do
     it "is closed by default" do
+      @registration = FactoryGirl.create(:granted_registration, team_manager: user)
       render
       rendered.should_not have_content('The following slots are confirmed.')
     end
 
     context 'when debaters, adjudicators and observers are confirmed' do
       it "displays the confirmed amounts and links to add the details" do
-        r = FactoryGirl.create(:registration, user: user, fees:2000)
+        @registration = FactoryGirl.create(:granted_registration, team_manager: user, fees: 2000)
         @payment = Payment.new
-        r.confirm_slots(9,9,9)
+        @registration.confirm_slots(9,9,9)
         user.reload
         render
         rendered.should have_content('9 debate teams')
@@ -178,9 +179,9 @@ describe "users/show.html.haml" do
 
     context 'when only debaters are confirmed' do
       it "only displays the confirmed and links to add details for debaters " do
-        r = FactoryGirl.create(:registration, user: user, fees:2000)
+        @registration = FactoryGirl.create(:granted_registration, team_manager: user, fees: 2000)
         @payment = Payment.new
-        r.confirm_slots(9,nil,nil)
+        @registration.confirm_slots(9,nil,nil)
         user.reload
         render
         Capybara.string(rendered).find('section#confirmed_slots').tap do |confirmed_slots|

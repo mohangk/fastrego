@@ -34,9 +34,6 @@ describe "Institutions list" do
 
     describe 'clicking "Add team manager" ' do
 
-      before :each do
-      end
-
       context 'if the team manager has no account' do 
         pending 'forwards to a sign up page or sign in page' do
 

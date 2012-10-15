@@ -1,61 +1,62 @@
 %section#registration
-  - if not Setting.key(Tournament.find_by_identifier(current_subdomain), 'enable_pre_registration') == 'True' and not current_registration.nil?
+  - if @registration.persisted?
+    %p You are assigned as the team manager for the #{@registration.institution.name} contingent to the #{current_tournament.name}
+  - else
+    %p You are currently not assigned as a team manager for this tournament.
+    %p Please proceed to the #{link_to 'institution list', institutions_path} to assign yourself as a team manager for an institution.
+  - if not current_tournament.pre_registration_enabled?
     %p
       %b Registration is currently closed
-  - elsif Setting.key(Tournament.find_by_identifier(current_subdomain), 'enable_pre_registration') == 'True' and not current_registration.nil?
+  - elsif current_tournament.pre_registration_enabled? 
     %p
       %b Registration is open
-    = render 'registration_form'
-  - elsif not current_registration.nil?
+    - if not @registration.requested? and @registration.persisted?
+      = render 'registration_form'
+  - if @registration.requested?
     %p
-      %b You completed pre-registration at #{current_registration.requested_at} and requested the following slots
+      %b You completed pre-registration at #{@registration.requested_at} and requested the following slots
       %ul
-        %li #{ pluralize current_registration.debate_teams_requested, 'debate team' }
-        %li #{ pluralize current_registration.adjudicators_requested, 'adjudicator' }
-        %li #{ pluralize current_registration.observers_requested, 'observer' }
-  - if current_registration and current_registration.granted?
+        %li #{ pluralize @registration.debate_teams_requested, 'debate team' }
+        %li #{ pluralize @registration.adjudicators_requested, 'adjudicator' }
+        %li #{ pluralize @registration.observers_requested, 'observer' }
+  - if @registration.granted?
     %hr
     %p
       %b You have been granted the following slots
       %ul
-        %li #{ pluralize current_registration.debate_teams_granted, 'debate team' }
-        %li #{ pluralize current_registration.adjudicators_granted, 'adjudicator' }
-        %li #{ pluralize current_registration.observers_granted, 'observer' }
-
+        %li #{ pluralize @registration.debate_teams_granted, 'debate team' }
+        %li #{ pluralize @registration.adjudicators_granted, 'adjudicator' }
+        %li #{ pluralize @registration.observers_granted, 'observer' }
 %section#payment
-  - if current_registration and not current_registration.fees.blank?
+  - if not @registration.fees.blank?
     %hr
     %p
-      %b Total registration fees due  #{number_to_currency current_registration.fees, unit: Setting.key(Tournament.find_by_identifier(current_subdomain), 'currency_symbol') }.
+      %b Total registration fees due  #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }.
     %p
-      %b Total confirmed payments  #{number_to_currency current_registration.total_confirmed_payments, unit: Setting.key(Tournament.find_by_identifier(current_subdomain), 'currency_symbol') }.
+      %b Total confirmed payments  #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }.
     %p
-      %b Balance fees due  #{number_to_currency current_registration.balance_fees, unit: Setting.key(Tournament.find_by_identifier(current_subdomain), 'currency_symbol') }.
+      %b Balance fees due  #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }.
     %p
-      %b Total unconfirmed payments  #{number_to_currency current_registration.total_unconfirmed_payments, unit: Setting.key(Tournament.find_by_identifier(current_subdomain), 'currency_symbol') }.
+      %b Total unconfirmed payments  #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }.
     %p
       Make payment via the form below. Please make sure that the size of your <b>proof of transfer</b> is less then <b>2 megabytes (2MB)</b>.
       = render 'payment_table'
       = render 'payment_form'
 %section#confirmed_slots
-  - if current_registration and current_registration.confirmed?
+  - if @registration.confirmed?
     %hr
     %p
       %b You have been confirmed the following slots. Please click on the links to populate the relevant participant details.
       %ul
         %li 
-          #{ pluralize current_registration.debate_teams_confirmed, 'debate team' }
-          - if current_registration.debate_teams_confirmed > 0 
-            #{link_to (current_registration.debaters.length > 0 ? 'Edit' : 'Add') + ' debate team details', users_debaters_path}
+          #{ pluralize @registration.debate_teams_confirmed, 'debate team' }
+          - if @registration.debate_teams_confirmed > 0 
+            #{link_to (@registration.debaters.length > 0 ? 'Edit' : 'Add') + ' debate team details', users_debaters_path}
         %li 
-          #{ pluralize current_registration.adjudicators_confirmed, 'adjudicator' }
-          - if current_registration.adjudicators_confirmed > 0 
-            #{link_to (current_registration.adjudicators.length > 0 ? 'Edit' : 'Add') + ' adjudicator details', users_adjudicators_path}
+          #{ pluralize @registration.adjudicators_confirmed, 'adjudicator' }
+          - if @registration.adjudicators_confirmed > 0 
+            #{link_to (@registration.adjudicators.length > 0 ? 'Edit' : 'Add') + ' adjudicator details', users_adjudicators_path}
         %li 
-          #{ pluralize current_registration.observers_confirmed, 'observer' } 
-          - if current_registration.observers_confirmed > 0  
-            #{link_to (current_registration.observers.length > 0 ? 'Edit' : 'Add') + ' observer details', users_observers_path}
-
-       
-
-
+          #{ pluralize @registration.observers_confirmed, 'observer' } 
+          - if @registration.observers_confirmed > 0  
+            #{link_to (@registration.observers.length > 0 ? 'Edit' : 'Add') + ' observer details', users_observers_path}

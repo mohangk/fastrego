@@ -81,13 +81,21 @@ FactoryGirl.define do
   end
 
   factory :registration do
-    debate_teams_requested 3
-    adjudicators_requested 1
-    observers_requested 1
-    requested_at '2011-01-01 01:01:01'
     association :team_manager, factory: :user
     association :tournament, factory: :t1_tournament
     institution
+
+    factory :requested_registration do
+      debate_teams_requested 3
+      adjudicators_requested 1
+      observers_requested 1
+      requested_at '2011-01-01 01:01:01'
+
+      factory :granted_registration do
+        debate_teams_granted 1
+      end
+    end
+
   end
 
   factory :payment do
