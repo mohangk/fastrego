@@ -15,6 +15,12 @@ GIT
       sass (>= 3.1.0)
 
 GIT
+  remote: git://github.com/mohangk/country_select.git
+  revision: e0ade3d8e2575fdd81683b8b39972de3a3ca4b3d
+  specs:
+    country_select (1.0.1)
+
+GIT
   remote: https://github.com/jonleighton/poltergeist.git
   revision: f04b9b538fa7e56a761ee1bfb8db897f99fda7a7
   specs:
@@ -88,7 +94,6 @@ GEM
       execjs
     coffee-script-source (1.3.3)
     columnize (0.3.6)
-    country_select (0.0.2)
     debugger (1.1.3)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.1.1)
@@ -270,7 +275,7 @@ DEPENDENCIES
   aws-sdk
   capybara
   coffee-rails
-  country_select
+  country_select!
   debugger
   devise
   factory_girl_rails
