@@ -19,4 +19,16 @@ class RegistrationsController < ApplicationController
       redirect_to institutions_path, alert: 'Apologies, you cannot be assigned as the team manager'
     end
   end
+
+  def update
+    @registration = Registration.find(params[:id])
+    @registration.requested_at = Time.now
+    
+    if @registration.update_attributes(params[:registration])
+      redirect_to profile_url, notice: 'Registration was successful.'
+    else
+      redirect_to profile_url, notice: 'There was an error while recording your registration.'
+    end
+  end
+
 end

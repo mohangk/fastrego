@@ -68,6 +68,44 @@ describe RegistrationsController do
         end
       end
     end
+
+    describe 'PUT registration' do
+
+      let(:registration) { FactoryGirl.create :registration, tournament: tournament, institution: institution }
+
+      it "loads the appropriate registration" do
+        put :update, id: registration.id 
+        assigns(:registration).should eq(registration)
+        assigns(:registration).should be_persisted
+      end
+
+      it "sets the requested at value of the registration" do
+        Timecop.freeze(Time.now) do
+          put :update, id: registration.id
+          assigns(:registration).requested_at.should eq(Time.zone.now)
+          registration.reload
+          registration.requested_at.should eq(Time.zone.now)
+        end
+      end
+      
+      it "sets the requested quantities" do
+          put :update, id: registration.id, registration: { debate_teams_requested: 1,  adjudicators_requested: 2, observers_requested: 3 }
+          assigns(:registration).debate_teams_requested.should == 1
+          assigns(:registration).adjudicators_requested.should == 2
+          assigns(:registration).observers_requested.should == 3
+          registration.reload
+          registration.debate_teams_requested.should == 1
+          registration.adjudicators_requested.should == 2
+          registration.observers_requested.should == 3
+      end
+
+      it "redirects to the profile" do
+          put :update, id: registration.id, registration: { debate_teams_requested: 1,  adjudicators_requested: 2, observers_requested: 3 }
+          response.should redirect_to profile_path
+      end
+
+      
+    end
   end
 
 end

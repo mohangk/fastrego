@@ -11,7 +11,7 @@ UadcRego::Application.routes.draw do
   root :to => "users#show"
 
   resources :institutions, only: [:new, :create, :index]
-  resources :registrations, only: [:new, :create]
+  resources :registrations, only: [:create, :update]
 
   match "profile" => "users#show", as: :profile, via: :get
   match "embed_logo" => "pages#embed_logo", as: :embed_logo, via: :get
