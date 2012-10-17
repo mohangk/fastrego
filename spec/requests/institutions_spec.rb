@@ -77,7 +77,7 @@ describe "Institutions list" do
         it 'confirms the team managers registration' do
             user = FactoryGirl.create(:user)
             user.confirm!
-            user_login user.email, user.password
+            user_login t1, user.email, user.password
             visit institutions_path
             click_link "add_team_manager_institution_#{mmu.id}"
             page.should have_content "Are you sure you would like to register as the team manager of #{mmu.name} for the tournament #{t1.name} ?"
