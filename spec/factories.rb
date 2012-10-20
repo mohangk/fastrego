@@ -93,6 +93,7 @@ FactoryGirl.define do
 
       factory :granted_registration do
         debate_teams_granted 1
+        fees 1000
       end
     end
 

@@ -30,6 +30,7 @@ describe RegistrationsController do
 
       it 'renders new' do
         get :new, { institution_id: institution.id  }
+        response.should render_template 'new'
       end
 
       context 'if instituion_id is not provided' do

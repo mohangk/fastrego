@@ -7,46 +7,6 @@ describe UsersController do
     sign_in user
   end
 
-  describe "POST payment" do
-    let(:user) do
-      FactoryGirl.create(:registration).user
-    end
-
-    context 'with valid params' do
-      it 'creates a new Payment' do
-        expect {
-          post :payments, { payment: FactoryGirl.attributes_for(:payment) }
-        }.to change(Payment, :count).by(1)
-      end
-
-      it "assigns a newly created payment as @payment" do
-        post :payments, { payment: FactoryGirl.attributes_for(:payment) }
-        assigns(:payment).should be_a(Payment)
-        assigns(:payment).registration.should == user.registration
-        assigns(:payment).should be_persisted
-      end
-
-      it "forwards to the profile page on success" do
-        post :payments, { payment: FactoryGirl.attributes_for(:payment) }
-        response.should redirect_to(profile_path)
-      end
-    end
-
-    context 'with invalid params' do
-      it 'assigns a newly created but unsaved payment as @payment' do
-        Payment.any_instance.stub(:save).and_return(false)
-        post :payments, {payment: {}}
-        assigns(:payment).should be_a_new(Payment)
-      end
-
-      it 'should render profile with the errors' do
-        Payment.any_instance.stub(:save).and_return(false)
-        post :payments, {payment: {}}
-        response.should render_template(:show)
-      end
-    end
-  end
-
   describe 'GET edit_debaters' do
     before :each do
       FactoryGirl.create(:debate_team_size, value:1)

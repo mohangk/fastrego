@@ -23,7 +23,7 @@
         %td= p.admin_comment
         %td
           -unless p.confirmed?
-            = link_to 'Delete', delete_payments_path(p), method: 'delete'
+            = link_to 'Delete', payment_path(p), method: 'delete'
 
   :javascript
     $('a[data-popup]').live('click', function(e) { window.open($(this).attr('href')); e.preventDefault(); });

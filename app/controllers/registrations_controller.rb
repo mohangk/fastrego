@@ -5,7 +5,6 @@ class RegistrationsController < ApplicationController
     redirect_to institutions_path if params[:institution_id].nil? or params[:institution_id].empty?
     @tournament = current_tournament
     @institution = Institution.find_by_id(params[:institution_id])
-    render :new
   end
 
   def create

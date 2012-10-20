@@ -95,14 +95,15 @@ describe "Users" do
       end
 
       context 'after being assigned as the team manager' do
-        before :each do
-          FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user 
-        end
 
         describe "top section of the profile page" do
 
-          it 'will display the users information' do
+          before :each do
+            FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user 
             visit profile_path
+          end
+
+          it 'will display the users information' do
             page.should have_content 'Suthen Thomas'
             page.should have_content "You are assigned as the team manager for the #{mmu.name} contingent to the #{t1.name}"
           end
@@ -113,10 +114,11 @@ describe "Users" do
           context 'once pre-registration is open' do
             before :each do
               FactoryGirl.create(:enable_pre_registration, tournament: t1)
+              FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user 
+              visit profile_path
             end
 
             it "will show the pre-registration form which when submitted will save the requested values from the team manager" do
-              visit profile_path
               page.should have_content 'Registration is open'
               fill_in 'Debate teams requested', with: 3
               fill_in 'Adjudicators requested', with: 2
@@ -128,37 +130,56 @@ describe "Users" do
           end
         end
 
-      end
+        describe 'submitting payment information' do
+          context 'once relevant slots have been granted' do
+            
+            def add_payment
+              select '2012'
+              select 'Feb'
+              select '10'
+              fill_in 'A/C #', with: 'ABC123'
+              fill_in 'RM', with: 1000.50
+              fill_in 'Comments', with: 'This is a slightly longer comment then usual'
+              attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
+              click_button 'Add payment'
+            end
 
+            before :each do
+              FactoryGirl.create :granted_registration, institution: mmu, tournament: t1, team_manager: user 
+              visit profile_path
+            end
 
-      describe 'submitting payment information' do
-        context 'once relevant slots have been granted' do
-          let!(:user) do
-            user = FactoryGirl.create(:registration, debate_teams_granted: 1, fees: 1000).user
-            user.confirm!
-            user
-          end
+            it "will show the pre-registration form" do
+              page.should have_content 'Total registration fees due RM'
+            end
 
-          it "will show the pre-registration form" do
-            page.should have_content 'Total registration fees due RM'
-          end
+            it "will allow creating a payment" do
+              add_payment
+              page.current_path.should == profile_path
+              page.should have_content 'Payment was successfully recorded.'
+              page.should have_content '2012-02-10'
+              page.should have_content 'ABC123'
+              page.should have_content 'RM1,000.50'
+              page.should have_content 'This is a slightly longer comment then usual'
+              page.should have_css "a[href*='test_image.jpg']"
+            end
 
-          it "will allow creating a payment" do
-            select '2012'
-            select 'Feb'
-            select '10'
-            fill_in 'A/C #', with: 'ABC123'
-            fill_in 'RM', with: 1000.50
-            fill_in 'Comments', with: 'This is a slightly longer comment then usual'
-            attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
-            click_button 'Add payment'
-            page.current_path.should == profile_path
-            page.should have_content 'Payment was successfully recorded.'
-            page.should have_content '2012-02-10'
-            page.should have_content 'ABC123'
-            page.should have_content 'RM1,000.50'
-            page.should have_content 'This is a slightly longer comment then usual'
-            page.should have_css "a[href*='test_image.jpg']"
+            it 'allows payments to be deleted' do
+              add_payment
+              within 'section#payment' do
+                click_link 'Delete'
+              end
+              page.should have_content 'Payment was removed.'
+              page.should_not have_content 'RM1,000.50'
+            end
+
+            it 'allows payment proof to be viewed' do
+              add_payment
+              within 'section#payment' do
+                click_link 'View'
+                page.current_url.should =~ /test_image.jpg/
+              end
+            end
           end
         end
       end

@@ -13,14 +13,14 @@ describe Payment do
   it { should have_attached_file(:scanned_proof) }
   it { should validate_attachment_presence(:scanned_proof) }
   it { should validate_attachment_content_type(:scanned_proof).
-                  allowing('image/png', 'image/gif','image/jpeg', 'application/pdf') }
+       allowing('image/png', 'image/gif','image/jpeg', 'application/pdf') }
   it { should validate_attachment_size(:scanned_proof).
-                  less_than(3.megabytes) }
- it { should_not allow_mass_assignment_of(:amount_received)}
- it { should_not allow_mass_assignment_of(:admin_comment)}
- it { should_not allow_mass_assignment_of(:registration_id)}
- it { should have_db_column(:amount_received).of_type(:decimal).with_options(precision: 14, scale:2) }
- it { should have_db_column(:amount_sent).of_type(:decimal).with_options(precision: 14, scale:2) }
+       less_than(3.megabytes) }
+  it { should_not allow_mass_assignment_of(:amount_received)}
+  it { should_not allow_mass_assignment_of(:admin_comment)}
+  it { should_not allow_mass_assignment_of(:registration_id)}
+  it { should have_db_column(:amount_received).of_type(:decimal).with_options(precision: 14, scale:2) }
+  it { should have_db_column(:amount_sent).of_type(:decimal).with_options(precision: 14, scale:2) }
 
   it 'is confirmed if either the amount_received or admin_comment is set' do
     subject.amount_received = 1000
@@ -35,6 +35,23 @@ describe Payment do
     it 'will send an email with latest payment details' do
       subject.send_payment_notification
       ActionMailer::Base.deliveries.last.to.should == [subject.registration.user.email]
+    end
+  end
+
+  describe '#destroyable?' do
+
+    it 'returns false if the payments is already confirmed' do
+      subject.stub(:confirmed?).and_return(true)
+      subject.destroyable?.should == false
+      subject.stub(:confirmed?).and_return(false)
+      subject.destroyable?.should == true
+    end
+
+    it 'returns false if the user passed in does not own the payment' do
+      user2 = FactoryGirl.create :user 
+      subject.stub(:confirmed?).and_return(false)
+      subject.destroyable?(user2).should == false
+      subject.destroyable?(subject.registration.team_manager).should == true
     end
   end
 end

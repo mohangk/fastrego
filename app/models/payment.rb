@@ -48,4 +48,12 @@ class Payment < ActiveRecord::Base
   def send_payment_notification
     PaymentMailer.update_notification(self).deliver
   end
+
+  def destroyable?(user = nil)
+    if user.nil?
+      !confirmed?
+    else
+      !confirmed? and user == registration.team_manager
+    end
+  end
 end

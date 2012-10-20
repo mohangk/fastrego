@@ -1,4 +1,4 @@
-= form_for @payment,  url: users_payments_path, html: { class: 'payment_form form-search' } do |f|
+= form_for @payment, html: { class: 'payment_form form-search' } do |f|
   -if @payment.errors.any?
     #error_explanation
       %h4= "#{pluralize(@payment.errors.count, "error")} prohibited this payment from being saved:"

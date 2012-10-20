@@ -1,34 +1,9 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
 
-  def current_registration
-    reg = current_user.managed_registrations.for_tournament(current_subdomain, current_user)
-    reg.first.nil? ? Registration.new : reg.first
-  end
-
   def show
     @registration = current_registration
     @payment = Payment.new
-  end
-
-  def payments
-    @payment = Payment.new(params[:payment])
-    @payment.registration = current_user.registration
-    if @payment.save
-      redirect_to profile_url, notice: 'Payment was successfully recorded.'
-    else
-      render action: 'show'
-    end
-  end
-
-  def destroy_payments
-    payment = Payment.find_by_id(params[:id])
-    if !payment.nil? and current_user.registration == payment.registration and not payment.confirmed?
-      payment.destroy
-      redirect_to profile_url, notice: 'Payment was removed.'
-    else
-      redirect_to profile_url, alert: 'Unauthorised access.'
-    end
   end
 
   def edit_debaters

@@ -40,8 +40,8 @@
       %b Total unconfirmed payments  #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }.
     %p
       Make payment via the form below. Please make sure that the size of your <b>proof of transfer</b> is less then <b>2 megabytes (2MB)</b>.
-      = render 'payment_table'
-      = render 'payment_form'
+      = render 'users/payment_table'
+      = render 'users/payment_form'
 %section#confirmed_slots
   - if @registration.confirmed?
     %hr

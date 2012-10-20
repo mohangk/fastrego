@@ -12,6 +12,7 @@ UadcRego::Application.routes.draw do
 
   resources :institutions, only: [:new, :create, :index]
   resources :registrations, only: [:new, :create, :update]
+  resources :payments, only: [:create, :destroy]
 
   match "profile" => "users#show", as: :profile, via: :get
   match "embed_logo" => "pages#embed_logo", as: :embed_logo, via: :get
@@ -24,10 +25,10 @@ UadcRego::Application.routes.draw do
   match "users/adjudicators" => "users#update_adjudicators", via: :put
   match "users/observers" => "users#edit_observers", via: :get
   match "users/observers" => "users#update_observers", via: :put
-  match "users/payments" => "users#payments", via: :post
-  match "users/payments/:id" => "users#destroy_payments", via: :delete, as: 'delete_payments'
+  #match "users/payments" => "users#payments", via: :post
+  #match "users/payments/:id" => "users#destroy_payments", via: :delete, as: 'delete_payments'
   match "users/registration" => redirect('/profile'), via: :get
-  match "users/payments" => redirect('/profile'), via: :get
+  #match "users/payments" => redirect('/profile'), via: :get
   match "export/institution" => "export#institution", via: :get
   match "export/adjudicator" => "export#adjudicator", via: :get
   match "export/team" => "export#team", via: :get
