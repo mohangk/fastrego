@@ -110,6 +110,10 @@ describe "users/show.html.haml" do
 
   describe "granted slots section" do
 
+    before :each do
+      @payment = Payment.new
+    end
+
     it "is closed by default" do
       @registration = FactoryGirl.create(:requested_registration, team_manager: user)
       render
@@ -155,6 +159,11 @@ describe "users/show.html.haml" do
   end
 
   describe "confirmed slot section" do
+
+    before :each do
+      @payment = Payment.new
+    end
+
     it "is closed by default" do
       @registration = FactoryGirl.create(:granted_registration, team_manager: user)
       render
