@@ -18,9 +18,9 @@ describe RegistrationsController do
       sign_in user  
       controller.stub(:current_subdomain).and_return(tournament.identifier)
     end
-    
+
     describe 'GET registration' do
-      
+
       it 'instatiates the appropriate instituion and tournament' do
         get :new, { institution_id: institution.id  }
 
@@ -72,40 +72,63 @@ describe RegistrationsController do
 
     describe 'PUT registration' do
 
-      let(:registration) { FactoryGirl.create :registration, tournament: tournament, institution: institution }
+      context 'valid requests' do
+        before :each do
+          @registration = FactoryGirl.create :registration, tournament: tournament, institution: institution
+        end
 
-      it "loads the appropriate registration" do
-        put :update, id: registration.id 
-        assigns(:registration).should eq(registration)
-        assigns(:registration).should be_persisted
-      end
+        it "loads the appropriate registration" do
+          put :update, id: @registration.id 
+          assigns(:registration).should eq(@registration)
+          assigns(:registration).should be_persisted
+        end
 
-      it "sets the requested at value of the registration" do
-        Timecop.freeze(Time.now) do
-          put :update, id: registration.id
-          assigns(:registration).requested_at.should eq(Time.zone.now)
-          registration.reload
-          registration.requested_at.should eq(Time.zone.now)
+        context 'request stage' do
+          it "sets the requested at value of the registration" do
+            Timecop.freeze(Time.now) do
+              put :update, id: @registration.id, registration: {}
+              assigns(:registration).requested_at.should eq(Time.zone.now)
+              @registration.reload
+              @registration.requested_at.should eq(Time.zone.now)
+            end
+          end
+
+          it "sets the requested quantities" do
+            put :update, id: @registration.id, registration: { debate_teams_requested: 1, observers_requested: 3 }
+            assigns(:registration).debate_teams_requested.should == 1
+            assigns(:registration).adjudicators_requested.should == 0
+            assigns(:registration).observers_requested.should == 3
+            @registration.reload
+            @registration.debate_teams_requested.should == 1
+            @registration.adjudicators_requested.should == 0
+            @registration.observers_requested.should == 3
+          end
+
+          it "redirects to the profile" do
+            put :update, id: @registration.id, registration: { debate_teams_requested: 1,  adjudicators_requested: 2, observers_requested: 3 }
+            response.should redirect_to profile_path
+          end
         end
       end
-      
-      it "sets the requested quantities" do
-          put :update, id: registration.id, registration: { debate_teams_requested: 1,  adjudicators_requested: 2, observers_requested: 3 }
-          assigns(:registration).debate_teams_requested.should == 1
-          assigns(:registration).adjudicators_requested.should == 2
-          assigns(:registration).observers_requested.should == 3
-          registration.reload
-          registration.debate_teams_requested.should == 1
-          registration.adjudicators_requested.should == 2
-          registration.observers_requested.should == 3
-      end
+      context 'invalid requests' do
 
-      it "redirects to the profile" do
-          put :update, id: registration.id, registration: { debate_teams_requested: 1,  adjudicators_requested: 2, observers_requested: 3 }
-          response.should redirect_to profile_path
-      end
+        before :each do
+          @registration = FactoryGirl.create :requested_registration, tournament: tournament, institution: institution
+        end
 
-      
+        it 'does not allows for double requests' do
+          original_updated_at = @registration.updated_at 
+          frozen_time = Time.zone.now - 1.day
+          Timecop.freeze(frozen_time) do
+            put :update, id: @registration.id
+            @registration.reload
+            @registration.requested_at.should_not == frozen_time
+            @registration.updated_at.should eq(original_updated_at)
+            flash[:notice].should eq('There was an error while recording your registration.')
+          end
+        end
+
+      end
     end
   end
 

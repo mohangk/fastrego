@@ -21,9 +21,7 @@ class RegistrationsController < ApplicationController
 
   def update
     @registration = Registration.find(params[:id])
-    @registration.requested_at = Time.now
-    
-    if @registration.update_attributes(params[:registration])
+    if @registration.draft? and params[:registration] and @registration.request_slots(params[:registration][:debate_teams_requested], params[:registration][:adjudicators_requested], params[:registration][:observers_requested])
       redirect_to profile_url, notice: 'Registration was successful.'
     else
       redirect_to profile_url, notice: 'There was an error while recording your registration.'

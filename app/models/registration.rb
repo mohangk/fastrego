@@ -43,6 +43,22 @@ class Registration < ActiveRecord::Base
     query
   end
 
+  def draft?
+    ![requested_at, 
+     debate_teams_requested, 
+     adjudicators_requested, 
+     observers_requested].any?
+  end
+
+
+  def request_slots(dt_req, a_req, o_req)
+    self.debate_teams_requested = dt_req.to_i
+    self.adjudicators_requested = a_req.to_i
+    self.observers_requested = o_req.to_i
+    self.requested_at = Time.now
+    self.save
+  end 
+
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
     #if nothing was set, we assume the granted values are not being set 
     if debate_teams_granted.blank? and adjudicators_granted.blank? and observers_granted.blank?
@@ -66,6 +82,7 @@ class Registration < ActiveRecord::Base
     end
     self.save
   end
+
 
   def requested?
     (not debate_teams_requested.blank?) or (not adjudicators_requested.blank?) or (not observers_requested.blank?)
