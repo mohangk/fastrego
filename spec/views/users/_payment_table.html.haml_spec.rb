@@ -1,28 +1,29 @@
 require 'spec_helper'
 
 describe 'users/_payment_table' do
+
+  let(:t1) { FactoryGirl.create(:t1_tournament) } 
+  let(:user) { FactoryGirl.create(:user) } 
+
   before :each do
-    FactoryGirl.create(:currency_symbol)
+    view.extend MockHelperMethods
+    user.confirm!
+    user
+    @registration = FactoryGirl.create(:granted_registration, tournament:t1, team_manager: user)
   end
 
   context 'when there are no payments' do
-    before :each do
-      user = FactoryGirl.create(:registration).user
-      user.confirm!
-      sign_in user
-    end
     it 'should be empty' do
       render
       should_not have_css('table')
     end
   end
+
   context 'when there is a payment' do
     context 'that is not confirmed' do
       
       before :each do
-        user = FactoryGirl.create(:payment).registration.user
-        user.confirm!
-        sign_in user
+        FactoryGirl.create(:payment, registration: @registration)
       end
 
       it 'should contain a table of payments' do

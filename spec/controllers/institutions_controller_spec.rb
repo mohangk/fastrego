@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-
-
 describe InstitutionsController do
 
   def valid_attributes
@@ -16,6 +14,12 @@ describe InstitutionsController do
   # InstitutionsController. Be sure to keep this updated too.
   def valid_session
     {}
+  end
+
+  let(:tournament) { FactoryGirl.create(:t1_tournament) }
+
+  before :each do 
+    controller.stub(:current_subdomain).and_return(tournament.identifier)
   end
 
   describe "GET index" do
