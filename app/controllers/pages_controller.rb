@@ -1,12 +1,11 @@
 class PagesController < ApplicationController
+  layout 'pages_layout'
   
   def embed_logo
-    
   end
 
   def enquiry
     @enquiry = Enquiry.new
-    render layout:  'pages_layout'
   end
 
   def send_enquiry 
@@ -22,6 +21,5 @@ class PagesController < ApplicationController
 
   def homepage
     @tournaments = Tournament.all
-    render layout:  'pages_layout'
   end
 end
