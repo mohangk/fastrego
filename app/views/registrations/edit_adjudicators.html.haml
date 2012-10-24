@@ -1,5 +1,5 @@
 %h1 Adjudicators
-= simple_form_for @registration, url: users_adjudicators_path, html: { class: 'form-horizontal edit_adjudicators' } do |form|
+= simple_form_for @registration, url: update_adjudicators_registration_path, html: { class: 'form-horizontal edit_adjudicators' } do |form|
   -if @registration.errors.any?
     #error_explanation
       %h4= "#{pluralize(@registration.errors.count, "error")} prohibited these adjudicator profiles from being saved:"

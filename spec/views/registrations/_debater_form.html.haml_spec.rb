@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'users/_debater_form' do
+describe 'registrations/_debater_form' do
   include SimpleForm::ActionViewExtensions::FormHelper
 
 	it 'should contain pre filled information about the team and speaker number' do	

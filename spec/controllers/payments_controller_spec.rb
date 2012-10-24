@@ -22,6 +22,7 @@ describe PaymentsController do
     end
   end
 
+  pending 'when not assigned as a team manager yet/ registration not persisted'
   describe "POST payment" do
 
 

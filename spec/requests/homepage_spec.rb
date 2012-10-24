@@ -8,7 +8,7 @@ describe "Homepage" do
       FactoryGirl.create(:t2_tournament) 
     end
 
-    it 'has a list of active tournaments' do
+    pending 'has a list of active tournaments' do
       set_subdomain ''
       visit '/'
       page.should have_content 'tournament 1'

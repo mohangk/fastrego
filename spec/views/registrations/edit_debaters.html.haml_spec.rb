@@ -1,15 +1,13 @@
 require 'spec_helper'
 
-describe 'users/edit_debaters.html.haml' do
-
+describe 'registrations/edit_debaters.html.haml' do
 
   let(:registration) do
-    r = FactoryGirl.create(:registration, debate_teams_confirmed: 2)
+    FactoryGirl.create(:registration, debate_teams_confirmed: 2)
   end
 
-  before(:each) do
-    FactoryGirl.create(:debate_team_size)
-  end
+  let!(:debate_team_size) { FactoryGirl.create(:debate_team_size, tournament: registration.tournament) }
+
 
   context 'when no debaters are assigned yet' do
     it 'will render debate_teams X debate_speaker_count forms' do

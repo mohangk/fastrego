@@ -51,12 +51,12 @@
         %li 
           #{ pluralize @registration.debate_teams_confirmed, 'debate team' }
           - if @registration.debate_teams_confirmed > 0 
-            #{link_to (@registration.debaters.length > 0 ? 'Edit' : 'Add') + ' debate team details', users_debaters_path}
+            #{link_to (@registration.debaters.length > 0 ? 'Edit' : 'Add') + ' debate team details', edit_debaters_registration_path}
         %li 
           #{ pluralize @registration.adjudicators_confirmed, 'adjudicator' }
           - if @registration.adjudicators_confirmed > 0 
-            #{link_to (@registration.adjudicators.length > 0 ? 'Edit' : 'Add') + ' adjudicator details', users_adjudicators_path}
+            #{link_to (@registration.adjudicators.length > 0 ? 'Edit' : 'Add') + ' adjudicator details', edit_adjudicators_registration_path}
         %li 
           #{ pluralize @registration.observers_confirmed, 'observer' } 
           - if @registration.observers_confirmed > 0  
-            #{link_to (@registration.observers.length > 0 ? 'Edit' : 'Add') + ' observer details', users_observers_path}
+            #{link_to (@registration.observers.length > 0 ? 'Edit' : 'Add') + ' observer details', edit_observers_registration_path}

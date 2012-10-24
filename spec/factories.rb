@@ -94,6 +94,12 @@ FactoryGirl.define do
       factory :granted_registration do
         debate_teams_granted 1
         fees 1000
+
+        factory :confirmed_registration do
+          debate_teams_confirmed 1
+          adjudicators_confirmed 1
+          observers_confirmed 1
+        end
       end
     end
 
@@ -138,4 +144,14 @@ FactoryGirl.define do
     registration
   end
 
+  factory :adjudicator do
+    name 'Jack Nostrum'
+    gender 'Male'
+    sequence(:email) { |n| "test#{n}@test.com" }
+    dietary_requirement 'Halal'
+    point_of_entry 'KLIA'
+    emergency_contact_person 'Jason Statham'
+    emergency_contact_number '123123123123'
+    registration
+  end
 end

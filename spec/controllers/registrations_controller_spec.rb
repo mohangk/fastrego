@@ -19,7 +19,7 @@ describe RegistrationsController do
       controller.stub(:current_subdomain).and_return(tournament.identifier)
     end
 
-    describe 'GET registration' do
+    describe 'GET /new' do
 
       it 'instatiates the appropriate instituion and tournament' do
         get :new, { institution_id: institution.id  }
@@ -75,6 +75,7 @@ describe RegistrationsController do
       context 'valid requests' do
         before :each do
           @registration = FactoryGirl.create :registration, tournament: tournament, institution: institution
+          controller.stub(:current_registration).and_return(@registration)
         end
 
         it "loads the appropriate registration" do
@@ -130,7 +131,116 @@ describe RegistrationsController do
 
       end
     end
-  end
 
+
+    shared_examples_for 'GET participant_form' do | action |
+
+      before :each do
+        FactoryGirl.create(:debate_team_size, value:1, tournament: tournament)
+        
+        @registration = FactoryGirl.create(:registration, debate_teams_confirmed: 1, adjudicators_confirmed: 1, observers_confirmed: 1,  tournament: tournament, institution: institution)
+        controller.stub(:current_registration).and_return(@registration)
+        get action
+      end
+
+      context 'no participant created yet' do
+        it 'assigns the current_users registration as @registration' do
+          assigns(:registration).should == @registration
+        end
+
+        it "should render #{action}" do
+          response.should render_template(action)
+        end
+      end
+
+      pending 'must disallow access if not debate_teams_confirmed is not set'
+
+      pending 'when not assigned as a team manager yet/ registration not persisted'
+
+    end
+    
+    describe 'GET edit_debaters' do
+      it_should_behave_like 'GET participant_form', :edit_debaters
+    end
+
+    describe 'GET edit_adjudicators' do
+      it_should_behave_like 'GET participant_form', :edit_adjudicators
+    end
+
+    describe 'GET edit_observers' do
+      it_should_behave_like 'GET participant_form', :edit_observers
+    end
+
+    shared_examples_for 'PUT participant_form' do |action, participant_class, template, participant_hash, invalid_participant_hash |
+
+      before :each do
+        FactoryGirl.create(:debate_team_size, value:1, tournament: tournament)
+        @registration = FactoryGirl.create(:registration, debate_teams_confirmed: 1, adjudicators_confirmed: 1, observers_confirmed: 1,  tournament: tournament, institution: institution)
+        controller.stub(:current_registration).and_return(@registration)
+      end
+
+      context 'with valid parameters' do
+
+        let(:request)  { put action, {registration: participant_hash }}
+
+
+        it 'assigns the current_users registration as @registration' do
+          request  
+          assigns(:registration).should == @registration
+        end
+
+        it "creates a new #{participant_class.to_s.downcase}" do
+          expect {
+            request
+          }.to change(participant_class, :count).by(1)
+        end
+
+        pending 'must disallow put-ing if not debate_teams_confirmed is not set'
+        pending 'must validate that the count does not exceed the allocatated debate_teams_confirmed'
+
+        it 'redirects to profile_url' do
+          request
+          response.should redirect_to(profile_path)
+        end
+      end
+
+      context 'with invalid parameters' do
+
+        let(:request) { put action, { registration: invalid_participant_hash } }
+
+        it "does not create a new #{participant_class.to_s.downcase}" do
+          expect {
+            request
+          }.to change(participant_class, :count).by(0)
+        end
+
+        it 'renders edit_debaters' do
+          request
+          response.should render_template(template)
+        end
+
+      end
+    end
+
+    describe 'PUT update_debaters' do
+
+      it_should_behave_like 'PUT participant_form', :update_debaters, Debater, :edit_debaters, { :debaters_attributes => [FactoryGirl.attributes_for(:debater)] }, { :debaters_attributes => [FactoryGirl.attributes_for(:debater), name:''] }
+
+    end
+
+    describe 'PUT update_observers' do
+
+      it_should_behave_like 'PUT participant_form', :update_observers, Observer, :edit_observers, { :observers_attributes=> [FactoryGirl.attributes_for(:observer)] }, { :observers_attributes => [FactoryGirl.attributes_for(:observer), name:''] }
+
+    end
+
+    describe 'PUT update_adjudicators' do
+
+      it_should_behave_like 'PUT participant_form', :update_adjudicators, Adjudicator, :edit_adjudicators, { :adjudicators_attributes=> [FactoryGirl.attributes_for(:adjudicator)] }, { :adjudicators_attributes => [FactoryGirl.attributes_for(:adjudicator), name:''] }
+
+    end
+
+    pending 'handle users trying to access the participant forms before the confirmed quantites being set'
+  end
 end
 

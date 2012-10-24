@@ -1,5 +1,5 @@
 %h1 Debaters
-= simple_form_for @registration, url: '/users/debaters', html: { class: 'form-horizontal edit_debaters' } do |form|
+= simple_form_for @registration, url: update_debaters_registration_path,  html: { class: 'form-horizontal edit_debaters' } do |form|
   -if @registration.errors.any?
     #error_explanation
       %h4= "#{pluralize(@registration.errors.count, "error")} prohibited these debater profiles from being saved:"
@@ -7,7 +7,7 @@
         - @registration.errors.full_messages.each do |msg| 
           %li= msg
   - @registration.debate_teams.each_with_index do |team, index|
-    %h2 #{@registration.user.institution.abbreviation} #{index+1}
+    %h2 #{@registration.institution.abbreviation} #{index+1}
     - team.each do |debater|
       %legend Speaker #{debater.speaker_number}
       = form.simple_fields_for :debaters, debater do |f|

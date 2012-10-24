@@ -19,7 +19,7 @@ describe "Institutions list" do
       page.should have_content('MMU')
       page.should have_content('Malaysia')
       page.should have_content('http://www.mmu.edu.my')
-      page.should have_css("a[href='/registrations/new?institution_id=#{mmu.id}']")
+      page.should have_css("a[href='/registration/new?institution_id=#{mmu.id}']")
       page.should have_link 'Click here to add your institution now'
       click_link "add_team_manager_institution_#{mmu.id}"
     end
