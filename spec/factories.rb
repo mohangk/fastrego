@@ -117,7 +117,7 @@ FactoryGirl.define do
   factory :observer, class: Observer do
     name 'Jack Observer'
     gender 'Male'
-    sequence(:email) { |n| "test#{n}@test.com" }
+    sequence(:email) { |n| "test_observer#{n}@test.com" }
     dietary_requirement 'Halal'
     point_of_entry 'KLIA'
     emergency_contact_person 'Jason Statham'
@@ -134,7 +134,7 @@ FactoryGirl.define do
   factory :debater do
     name 'Jack Nostrum'
     gender 'Male'
-    sequence(:email) { |n| "test#{n}@test.com" }
+    sequence(:email) { |n| "test_debater#{n}@test.com" }
     dietary_requirement 'Halal'
     point_of_entry 'KLIA'
     emergency_contact_person 'Jason Statham'
@@ -147,7 +147,7 @@ FactoryGirl.define do
   factory :adjudicator do
     name 'Jack Nostrum'
     gender 'Male'
-    sequence(:email) { |n| "test#{n}@test.com" }
+    sequence(:email) { |n| "test_adjudicator#{n}@test.com" }
     dietary_requirement 'Halal'
     point_of_entry 'KLIA'
     emergency_contact_person 'Jason Statham'

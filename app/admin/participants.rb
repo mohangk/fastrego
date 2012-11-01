@@ -1,11 +1,15 @@
 ActiveAdmin.register Participant do
   actions :all, :except => [:new, :edit]
 
+  scope_to association_method: :call do
+    lambda { Participant.where(registration_id: Registration.for_tournament(current_subdomain, current_admin_user).collect { |r| r.id }) }
+  end
+
   index do
     selectable_column
     column :id
     column 'Inst',sortable: 'institutions.abbreviation' do |p|
-        link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.user.institution)
+        link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.institution)
     end
   	column :name
   	column :gender
@@ -73,7 +77,7 @@ ActiveAdmin.register Participant do
     attributes_table do 
       row :id
       row 'Inst' do 
-          link_to p.registration.user.institution.abbreviation, admin_institution_path(p.registration.user.institution)
+          link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.institution)
       end
       row :name
       row :gender

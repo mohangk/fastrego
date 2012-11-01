@@ -1,9 +1,13 @@
 require 'spec_helper'
 
 describe Participant do
+
+  let(:r)  { FactoryGirl.create(:registration) }
+
   before :each do
-    FactoryGirl.create(:observer)
+    FactoryGirl.create(:observer, registration: r)
   end
+
   it { should validate_presence_of :name }
   it { should belong_to(:registration) }
   it { should validate_presence_of :registration }
@@ -12,10 +16,11 @@ describe Participant do
   it { should validate_presence_of :dietary_requirement }
   it { should validate_presence_of :emergency_contact_person }
   it { should validate_presence_of :emergency_contact_number }
-  it { should validate_uniqueness_of :email }
   it { should have_db_column(:data).of_type(:hstore) }
-  
+
   describe 'initialize data attr' do
+    pending 'it disallows similar email addresses in the same tournament'
+
     it 'sets it to a hash' do
       Participant.new.data.should == {}
     end
@@ -34,7 +39,6 @@ describe Participant do
                     "preferred_roommate_institution"=>"",
                     "tshirt_size"=>"tshirt large",
                     "debate_experience"=>"lots of experience"}}} 
-        r = FactoryGirl.create(:registration)
         r.update_attributes(test_attributes).should == true
         r.reload
         r.adjudicators[0].tshirt_size.should == "tshirt large"
@@ -53,11 +57,11 @@ describe Participant do
 
   describe 'custom fields' do
     let(:observer) do 
-      FactoryGirl.create :custom_field_observer
+      FactoryGirl.create :custom_field_observer, registration: r
     end
     
     it 'returns nil when custom field has not been set' do
-      observer = FactoryGirl.create :observer
+      observer = FactoryGirl.create :observer, registration: r
       observer.debate_experience.should == nil
     end
 
