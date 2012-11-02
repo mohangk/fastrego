@@ -17,7 +17,7 @@ describe Debater do
   subject { Debater.where(team_number: 1).first }
   describe '#team_name' do
   	it 'should return the institution abbreviation concatenated with team_number' do
-  		subject.team_name.should == "#{subject.registration.user.institution.abbreviation} 1"
+  		subject.team_name.should == "#{subject.registration.institution.abbreviation} 1"
   	end
   end
 

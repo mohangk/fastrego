@@ -10,7 +10,6 @@ class Setting < ActiveRecord::Base
 
   def self.key(tournament, key, value=nil)
     return nil unless Setting.table_exists? 
-
     setting = self.find_by_tournament_id_and_key(tournament.id, key)
 
     if value.nil?
@@ -19,10 +18,11 @@ class Setting < ActiveRecord::Base
       end
     else
       if setting.nil?
-        setting = Setting.new(tournament_id: tournament.id, key: key) 
+        setting = Setting.new(key: key) 
       end
+      setting.tournament_id = tournament.id
       setting.value = value
-      setting.save
+      setting.save!
     end
   end
 

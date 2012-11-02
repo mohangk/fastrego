@@ -34,7 +34,7 @@ describe Payment do
   describe '#send_payment_notification' do
     it 'will send an email with latest payment details' do
       subject.send_payment_notification
-      ActionMailer::Base.deliveries.last.to.should == [subject.registration.user.email]
+      ActionMailer::Base.deliveries.last.to.should == [subject.registration.team_manager.email]
     end
   end
 
