@@ -59,5 +59,10 @@ module UadcRego
     config.middleware.use Rack::GoogleAnalytics, tracker: 'UA-31323951-1' , domain: '.herokuapp.com', multiple: true
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| "<div class=\"field_with_errors control-group error\">#{html_tag}</div>".html_safe }
 
+    config.to_prepare do
+      Devise::Mailer.class_eval do 
+        helper :subdomain 
+      end
+    end
   end
 end

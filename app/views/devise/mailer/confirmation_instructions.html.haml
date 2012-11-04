@@ -1,9 +1,10 @@
 %p
   Thank you for creating your Team Manager account for #{Setting.key(Tournament.find_by_identifier(current_subdomain), 'tournament_name')} ! In order to activate your account, you MUST confirm this email address (by clicking the link below).
 
-%p= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
+%p= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, subdomain: current_subdomain)
 
-%p Remember, this is process just creates the account you will use to register when registration actually opens.
+%p Remember, this process only creates a FastRego account for you. Once you have confirmed this account, please add yourself as a team manager for the institution that you are managing via the #{ link_to 'institutitons list', institutions_url(subdomain: current_subdomain) }. Upon that you will be able to request the amount of slots you require once the registration actually opens.
+
 So please store your password in a safe place! (your login name is your email address).
 
 = render partial: 'layouts/mail_footer'   
