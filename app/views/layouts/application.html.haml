@@ -45,6 +45,7 @@
       .container
         <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Ffastrego&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=true&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=80&amp;appId=251286678234917" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>        
         #footer-right 
-          %p #{Setting.key(current_tournament, 'tournament_name')} registration is powered by #{link_to 'FastRego', 'http://www.facebook.com/fastrego'} 
+          - if current_tournament
+            %p #{Setting.key(current_tournament, 'tournament_name')} registration is powered by #{link_to 'FastRego', 'http://www.facebook.com/fastrego'} 
           %p #{link_to 'Planning a tournament? Click here to use FastRego for your tournament!', enquiry_path}
 
