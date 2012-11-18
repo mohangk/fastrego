@@ -30,7 +30,7 @@ namespace :fastrego do
   task :create_tournament=> :environment
   task :create_tournament, [:identifier, :name, :admin_email] do |t, args|
     u = AdminUser.find_by_email!(args.admin_email)
-    t = Tournament.create!(identifier: args.identifier, name: args.name, admin_user: u)
+    t = Tournament.create!(identifier: args.identifier, name: args.name, admin_user: u, active: true)
   end
 
   desc 'Creates the admin user'
