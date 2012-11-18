@@ -13,4 +13,8 @@ class Tournament < ActiveRecord::Base
   def currency_symbol
     Setting.currency_symbol(self)
   end
+
+  def url
+    return "http://#{identifier}.fastrego.com"
+  end
 end

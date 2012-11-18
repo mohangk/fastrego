@@ -20,6 +20,26 @@ class PagesController < ApplicationController
   end
 
   def homepage
-    @tournaments = Tournament.all
+
+    @current_tournaments = { 
+      'Berlin WUDC 2013' => 'http://wudcberlin.herokuapp.com',
+      'North East Asians 2012' => 'http://neao2012.herokuapp.com'
+    }
+
+    @past_tournaments = {
+      'MMU UADC 2012'  => 'http://uadc2012.herokuapp.com',
+      'BIPEDS Asian BP 2012' => 'http://bipedsabp.herokuapp.com',
+      'Summer Asian Debate Institute 2012' => 'http://asiandebateinstitute.herokuapp.com',
+      '11th Korean National Championships' => 'http://solbridgeknc.herokuapp.com',
+      'Philippine School Debates 2012' => 'http://psdc2012.herokuapp.com' 
+    }
+
+    Tournament.all.each do |t|
+      if t.active == true
+        @current_tournaments[t.name] = t.url    
+      elsif t.active == false
+        @past_tournaments[t.name] = t.url    
+      end
+    end
   end
 end

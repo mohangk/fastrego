@@ -7,13 +7,20 @@
       %p It was developed for the United Asian Debating Championships hosted at MMU but then expanded its services to the Asian BP Championships, the North East Asian Championships and the World Universities Debating Championships.
 
       %p FastRego's goal is to reduce redundancies, give users control over the data and make data easier to understand and manage. Read about how FastRego <a href="http://on.fb.me/FastRego-features">works</a> or try out a full  <a href="http://on.fb.me/FastRego-demo">demo</a>.
-
+      :plain
+        <iframe src="http://www.slideshare.net/slideshow/embed_code/14576231" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe> 
       %p= link_to 'Planning a tournament? Click here to use FastRego for your tournament!', enquiry_path
 
     .span6
-      %h4 Tournaments currently on FastRego
+      %h4 Upcoming FastRego tournaments
       
       %ul
-        - ['Berlin WUDC 2013', 'MMU UADC 2012', 'UTMARA Australs 2013', 'China BP 2012','BIPEDS Asian BP', 'Asian Debate Institute', 'North East Asians 2012', 'Philippine School Debates 2012'].each do |t|
-          %li= t
+        - @current_tournaments.each do |name, url|
+          %li= link_to name, url
+
+      %h4 Past FastRego tournaments
+
+      %ul
+        - @past_tournaments.each do |name, url|
+          %li= link_to name, url
 
