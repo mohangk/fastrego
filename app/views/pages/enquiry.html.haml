@@ -19,6 +19,6 @@
       = f.input :expected_adjudicators
       = f.input :tournament_registration_start_date, as: :date, start_year: Date.today.year, end_year: Date.today.year + 3, order: [:day, :month, :year]
       = f.input :tournament_start_date, as: :date, start_year: Date.today.year, end_year: Date.today.year + 3, order: [:day, :month, :year]
-      = f.input :preferred_subdomain, label: 'Preferred FastRego subdomain', hint: 'This will effect the URL that is used to access your FastRego instance. For example, if you key in "uadc2012"  the URL that for your FastRego instance will be http://uadc2012.herokuapp.com' 
+      = f.input :preferred_subdomain, label: 'Preferred FastRego subdomain', hint: 'This will effect the URL that is used to access your FastRego instance. For example, if you key in "uadc2012"  the URL that for your FastRego instance will be http://uadc2012.fastrego.com' 
       = f.button :submit, 'Submit'
 
