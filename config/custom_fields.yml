@@ -4,7 +4,13 @@ development:
   t2:
     - debate_experience
     - tshirt_size
+
 production:
+  mmuopen:
+    - tshirt_size
+  uadc:
+    - debate_experience
+    - tshirt_size
 
 test:
   t1:
