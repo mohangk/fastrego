@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Participant do
 
-  let(:r)  { FactoryGirl.create(:registration) }
+  let(:r)  { FactoryGirl.create :registration, tournament: FactoryGirl.create(:t2_tournament) }
 
   before :each do
     FactoryGirl.create(:observer, registration: r)
@@ -29,7 +29,8 @@ describe Participant do
       it 'accepts the custom fields as a nested hash' do
         test_attributes = {
           "adjudicators_attributes" =>
-             {"0"=>{"name"=>"Mohan",
+             {"0"=>{ 
+                    "name"=>"Mohan",
                     "gender"=>"Male",
                     "email"=>"test@email.com",
                     "dietary_requirement"=>"test",
@@ -38,6 +39,7 @@ describe Participant do
                     "preferred_roommate"=>"",
                     "preferred_roommate_institution"=>"",
                     "tshirt_size"=>"tshirt large",
+                    "registration_id" => r.id,
                     "debate_experience"=>"lots of experience"}}} 
         r.update_attributes(test_attributes).should == true
         r.reload

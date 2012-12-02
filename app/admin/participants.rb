@@ -33,8 +33,7 @@ ActiveAdmin.register Participant do
     column :nationality
     column :passport_number
     column :transport_number
-
-    Participant.custom_fields.each do | field|
+    Participant.custom_fields(current_subdomain).each do | field|
       column field.to_sym, sortable: false 
     end 
 
@@ -68,7 +67,8 @@ ActiveAdmin.register Participant do
     column :nationality
     column :passport_number
     column :transport_number
-    Participant.custom_fields.each do | field|
+
+    Participant.custom_fields(current_subdomain).each do | field|
       column field.to_sym
     end
   end
@@ -122,7 +122,7 @@ ActiveAdmin.register Participant do
       row :passport_number
       row :transport_number
 
-      Participant.custom_fields.each do | field|
+      Participant.custom_fields(current_subdomain).each do | field|
         row field.to_sym
       end 
     end

@@ -4,11 +4,14 @@ class Registration < ActiveRecord::Base
   belongs_to :team_manager, class_name: 'User'
   belongs_to :tournament
   belongs_to :institution
+
   has_many :payments, dependent: :destroy
+
   has_many :debaters, dependent: :destroy
   has_many :adjudicators, dependent: :destroy
   has_many :observers, dependent: :destroy
   has_many :participants, dependent: :destroy
+
   accepts_nested_attributes_for :debaters
   accepts_nested_attributes_for :adjudicators
   accepts_nested_attributes_for :observers

@@ -1,7 +1,14 @@
 development:
-
+  t1:
+    - accomodation
+  t2:
+    - debate_experience
+    - tshirt_size
 production:
 
 test:
-  - debate_experience
-  - tshirt_size
+  t1:
+    - accomodation
+  t2:
+    - debate_experience
+    - tshirt_size
