@@ -13,8 +13,11 @@ class Participant < ActiveRecord::Base
   after_create :setup_custom_fields
 
   def setup_custom_fields
-    return if registration.nil?
+    return if registration.nil? 
+
     tournament_identifier = registration.tournament.identifier
+    return if CUSTOM_FIELDS[tournament_identifier].nil?
+
     Participant.class_eval do
       CUSTOM_FIELDS[tournament_identifier].each do |attr_name|
         define_method "#{attr_name}=" do |attr_value|
@@ -32,10 +35,10 @@ class Participant < ActiveRecord::Base
   end
 
   def respond_to? method, include_private=false  
-    if not registration.nil?
+    if not registration.nil? 
       tournament_identifier = registration.tournament.identifier
       attrib = (method =~ /=$/) ? method[0..-2] : method
-      return true if CUSTOM_FIELDS[tournament_identifier].include?(attrib)
+      return true if !CUSTOM_FIELDS[tournament_identifier].nil? && CUSTOM_FIELDS[tournament_identifier].include?(attrib)
     end
     super
   end
