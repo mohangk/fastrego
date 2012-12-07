@@ -37,7 +37,7 @@ group :development, :test do
   gem 'pry'
   gem 'sextant'
   gem 'foreman'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.11.0'
   gem 'capybara'
   gem 'factory_girl_rails'#, require: false
   gem 'spork'

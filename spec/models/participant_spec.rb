@@ -100,6 +100,19 @@ describe Participant do
     end
 
   end
+  
+  describe '#respond_to?' do
+    context 'where there are no custom fields set' do
+      let(:observer) { FactoryGirl.create :observer, registration: r }
+      before do
+        stub_const('Participant::CUSTOM_FIELDS', {})
+      end
+    
+      it 'still works' do
+        observer.respond_to?(:name).should be_true
+      end
+    end
+  end
 end
 
 
