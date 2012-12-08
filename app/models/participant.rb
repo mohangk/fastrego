@@ -13,13 +13,12 @@ class Participant < ActiveRecord::Base
   after_create :setup_custom_fields
 
   def setup_custom_fields
-    return if registration.nil? 
-
+    return if !has_custom_fields? 
     tournament_identifier = registration.tournament.identifier
-    return if CUSTOM_FIELDS[tournament_identifier].nil?
-
+    
     Participant.class_eval do
-      CUSTOM_FIELDS[tournament_identifier].each do |attr_name|
+      custom_fields(tournament_identifier).each do | attr_name |
+
         define_method "#{attr_name}=" do |attr_value|
           setup_hstore
           self.send(:attribute_will_change!, 'data')
@@ -30,24 +29,32 @@ class Participant < ActiveRecord::Base
           setup_hstore
           self.data[attr_name].nil? ? nil :  self.data[attr_name]
         end
+
       end  
     end
   end
 
   def respond_to? method, include_private=false  
-    if not registration.nil? 
-      tournament_identifier = registration.tournament.identifier
+    if !has_custom_fields? 
       attrib = (method =~ /=$/) ? method[0..-2] : method
-      return true if !CUSTOM_FIELDS[tournament_identifier].nil? && CUSTOM_FIELDS[tournament_identifier].include?(attrib)
+      return true if custom_fields.include?(attrib)
     end
     super
   end
+
   def setup_hstore
     self.data ||= {} 
   end
 
   def custom_fields
-    CUSTOM_FIELDS[registration.tournament.identifier] || []
+    return [] if !has_custom_fields?
+    CUSTOM_FIELDS[registration.tournament.identifier]
+  end
+
+  def has_custom_fields?
+    return false if registration.nil? 
+    tournament_identifier = registration.tournament.identifier
+    !CUSTOM_FIELDS[tournament_identifier].nil?
   end
 
   def self.custom_fields tournament_identifier

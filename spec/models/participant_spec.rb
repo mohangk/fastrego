@@ -100,10 +100,36 @@ describe Participant do
     end
 
   end
+
+  describe '#has_custom_fields?' do
+
+    subject(:participant) { participant.has_custom_fields? }
+
+    context 'when participant does not have registration assigned' do
+      let(:participant) { Participant.new }
+      it { should be_false }
+    end
+
+    context 'when there are no custom fields' do
+      before do
+        stub_const('Participant::CUSTOM_FIELDS', {})
+      end
+
+      let(:participant) { FactoryGirl.create :observer, registration: r }
+      it { should be_false }
+    end
+
+    context 'when there are custom fields' do
+      let(:participant) { FactoryGirl.create :observer, registration: r }
+      it { should be_true }
+    end
+
+  end  
   
   describe '#respond_to?' do
     context 'where there are no custom fields set' do
       let(:observer) { FactoryGirl.create :observer, registration: r }
+
       before do
         stub_const('Participant::CUSTOM_FIELDS', {})
       end
