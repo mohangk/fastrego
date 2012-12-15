@@ -1,18 +1,29 @@
-.row
-  .span4
-    %h4 Sign in now
-    = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-      = f.input :email
-      = f.input :password
-      - if devise_mapping.rememberable?
-        = f.check_box :remember_me
-      = f.submit "Sign in"
-    = render :partial => "devise/shared/links"
-  .span8
-    %h4
-      Welcome to the Registration System for #{Setting.key(current_tournament, 'tournament_name')}
+%section.sign-in
+  .row
+    .span4
+      %h4 Sign in now
+      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+        = f.input :email
+        = f.input :password
+        - if devise_mapping.rememberable?
+          = f.check_box :remember_me
+        = f.submit "Sign in"
+      = render :partial => "devise/shared/links"
 
-    %p
-      For information about the tournament (schedule, registration costs etc), please visit the tournaments homepage. For questions about the tournament, email #{mail_to Setting.key(current_tournament, 'tournament_registration_email')}
-    %p
-      This registration process is powered by #{link_to 'FastRego', 'http://www.fastrego.com'}. To find out more about us, including how you can use FastRego for a tournament you are hosting, visit us at #{link_to 'www.facebook.com/FastRego', 'http://www.facebook.com/FastRego'}
+    .span8.content
+      %header.subhead
+        %h1.jumbotron #{Setting.key(current_tournament, 'tournament_name')}
+        %p.lead Online Registration System
+
+      %p
+        For information about the tournament (schedule, registration costs etc), please visit the tournaments homepage. 
+      %p
+        For questions about the tournament, email #{mail_to Setting.key(current_tournament, 'tournament_registration_email')}
+  .row
+    .span12
+      %p
+        %small.muted
+
+          %br
+          %br
+          This registration process is powered by #{link_to 'FastRego', 'http://www.fastrego.com'}. To find out more about us, including how you can use FastRego for a tournament you are hosting, visit us at #{link_to 'www.facebook.com/FastRego', 'http://www.facebook.com/FastRego'}

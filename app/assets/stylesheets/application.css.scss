@@ -7,6 +7,10 @@
  *= require bootstrap.css
 
  */
+
+$orange: rgb(254,126,0);
+$blue: rgb(63,96,215);
+
 html, body {
   height: 100%;
 }
@@ -31,6 +35,24 @@ footer #footer-right {
   width: 450px;
   vertical-align: top;
   text-align: right;
+}
+
+.subhead {
+  .lead {
+    color: $blue;
+  }
+  text-align: left;
+}
+
+.jumbotron {
+  color: $orange;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .4), 0 0 30px rgba(0, 0, 0, .075);
+}
+
+section.sign-in {
+  .content {
+    font-size: 16px;
+  }
 }
 
 .wrapper {
