@@ -1,5 +1,16 @@
-%h1 New institution
+%section.add-institution
+  .row
+    .span6
+      %h4.blue Add your institution
 
-= render 'form'
+      = render 'form'
 
-= link_to 'Back', institutions_path
+      = link_to 'Back', institutions_path
+
+    .span6.content
+      %p
+        Use this form to register your institution. Please check if your #{link_to 'institution has already been registered', institutions_path} before doing so.
+      %p 
+        Select the type <b>Open institution</b> if you are creating a one off or ad hoc institution for an open tournament. This is normally done in the case that your contingent consists of independent adjudicators or open debate teams
+      %p
+        FastRego requires each institution to have unique <b> abbreviations </b>, to make it easier for tournament hosts. If an <b> abbreviation </b> is not available, try institution-location instead? (for example, MONASH-Malaysia)
