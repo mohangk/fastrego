@@ -10,7 +10,7 @@ describe RegistrationsController do
   context 'logged in users' do
 
     let(:user) { FactoryGirl.create(:user) }
-    let(:institution) { FactoryGirl.create(:institution) }
+    let(:university) { FactoryGirl.create(:university) }
     let(:tournament) { FactoryGirl.create(:t1_tournament) }
 
     before :each do 
@@ -22,14 +22,14 @@ describe RegistrationsController do
     describe 'GET /new' do
 
       it 'instatiates the appropriate instituion and tournament' do
-        get :new, { institution_id: institution.id  }
+        get :new, { institution_id: university.id  }
 
-        assigns(:institution).should ==  institution
+        assigns(:institution).should ==  university
         assigns(:tournament).should == tournament
       end
 
       it 'renders new' do
-        get :new, { institution_id: institution.id  }
+        get :new, { institution_id: university.id  }
         response.should render_template 'new'
       end
 
@@ -45,20 +45,20 @@ describe RegistrationsController do
     describe 'POST registration' do
 
       it "creates an instance of registration" do
-        post :create, { institution_id: institution.id  }
+        post :create, { institution_id: university.id  }
         assigns(:registration).team_manager.should == user
-        assigns(:registration).institution_id.should == institution.id
+        assigns(:registration).institution_id.should == university.id
         assigns(:registration).tournament.should == tournament
       end 
 
       it "creates a new registration for the specified user" do
         expect {
-          post :create, { institution_id: institution.id }
+          post :create, { institution_id: university.id }
         }.to change(Registration, :count).by(1)
       end
 
       it 'redirects to the profile page'  do
-        post :create, { institution_id: institution.id }
+        post :create, { institution_id: university.id }
         response.should redirect_to(profile_path)
       end
 
@@ -74,7 +74,7 @@ describe RegistrationsController do
 
       context 'valid requests' do
         before :each do
-          @registration = FactoryGirl.create :registration, tournament: tournament, institution: institution
+          @registration = FactoryGirl.create :registration, tournament: tournament, institution: university
           controller.stub(:current_registration).and_return(@registration)
         end
 
@@ -114,7 +114,7 @@ describe RegistrationsController do
       context 'invalid requests' do
 
         before :each do
-          @registration = FactoryGirl.create :requested_registration, tournament: tournament, institution: institution
+          @registration = FactoryGirl.create :requested_registration, tournament: tournament, institution: university
         end
 
         it 'does not allows for double requests' do
@@ -138,7 +138,7 @@ describe RegistrationsController do
       before :each do
         FactoryGirl.create(:debate_team_size, value:1, tournament: tournament)
         
-        @registration = FactoryGirl.create(:registration, debate_teams_confirmed: 1, adjudicators_confirmed: 1, observers_confirmed: 1,  tournament: tournament, institution: institution)
+        @registration = FactoryGirl.create(:registration, debate_teams_confirmed: 1, adjudicators_confirmed: 1, observers_confirmed: 1,  tournament: tournament, institution: university)
         controller.stub(:current_registration).and_return(@registration)
         get action
       end
@@ -175,7 +175,7 @@ describe RegistrationsController do
 
       before :each do
         FactoryGirl.create(:debate_team_size, value:1, tournament: tournament)
-        @registration = FactoryGirl.create(:registration, debate_teams_confirmed: 1, adjudicators_confirmed: 1, observers_confirmed: 1,  tournament: tournament, institution: institution)
+        @registration = FactoryGirl.create(:registration, debate_teams_confirmed: 1, adjudicators_confirmed: 1, observers_confirmed: 1,  tournament: tournament, institution: university)
         controller.stub(:current_registration).and_return(@registration)
       end
 

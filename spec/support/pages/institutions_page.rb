@@ -8,7 +8,7 @@ class InstitutionsPage < GenericPage
 
   def add_institution
     click_link ADD_INSTITUTION_LINK
-    page.should have_content('New institution')
+    page.should have_content('Add your institution')
     InstitutionForm.new
   end
 
@@ -18,6 +18,10 @@ class InstitutionsPage < GenericPage
 
   def has_add_institution_link?
     page.has_link? ADD_INSTITUTION_LINK
+  end
+
+  def institution_count
+    all('tr').length - 1 
   end
 
 

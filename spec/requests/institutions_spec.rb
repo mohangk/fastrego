@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "Institutions list" do
 
   let!(:t1) { FactoryGirl.create(:t1_tournament) } 
+  let!(:t2) { FactoryGirl.create(:t2_tournament) } 
   let!(:mmu) { FactoryGirl.create(:institution) }
 
   before(:each) do
@@ -76,15 +77,25 @@ describe "Institutions list" do
   describe "new" do
     it "provides a form that allows you to add a new institution and redirects upon success to the institutions list" do
       institutions_page = InstitutionsPage.new.tap { |p| p.visit }
+      original_institution_count = institutions_page.institution_count
       form = institutions_page.add_institution
       institutions_page = form.fill_details
+      institutions_page.institution_count.should == original_institution_count + 1
     end
 
     context 'open institution' do
       
-      it 'is visible only in tournament it was created for' do
+      it 'is visible only in the tournament it was created for' do
 
+        institutions_page = InstitutionsPage.new.tap { |p| p.visit }
+        form = institutions_page.add_institution 
+        institutions_page = form.fill_details name: 'Test Open Institution', type: 'OpenInstitution'
+        institutions_page.should have_content 'Open Institution'
 
+        set_subdomain t2.identifier
+
+        institutions_page = InstitutionsPage.new.tap { |p| p.visit }
+        institutions_page.should_not have_content 'Open Institution'
       end
     end
   end

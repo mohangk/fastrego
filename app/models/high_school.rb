@@ -1,0 +1,2 @@
+class HighSchool < Institution
+end

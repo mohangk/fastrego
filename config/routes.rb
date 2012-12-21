@@ -11,6 +11,9 @@ UadcRego::Application.routes.draw do
   root :to => "users#show"
 
   resources :institutions, only: [:new, :create, :index]
+  resources :universities, only: [:new, :create, :index], controller: 'instutitons'
+  resources :open_institutions, only: [:new, :create, :index], controller: 'instutitons'
+  resources :high_schools, only: [:new, :create, :index], controller: 'instutitons'
 
   resource :registration, only: [:new, :create, :update] do
     member do

@@ -1,19 +1,40 @@
 require 'spec_helper'
 
 describe Institution do
-  subject { FactoryGirl.create(:institution) }
+
+  let!(:t2) { FactoryGirl.create(:t2_tournament) }
+  let!(:t1) { FactoryGirl.create(:t1_tournament) }
+
+  subject { FactoryGirl.create(:institution, abbreviation: 'new') }
+
   it { should have_many(:registrations).dependent(:nullify) }
-  it { should ensure_length_of(:abbreviation).is_at_most(10) }
+
+  it { should validate_presence_of(:type) }
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:abbreviation) }
   it { should validate_presence_of(:country) }
+
   it { should validate_uniqueness_of(:name) }
   it { should validate_uniqueness_of(:abbreviation) }
 
+  it { should ensure_length_of(:abbreviation).is_at_most(10) }
+
+  describe "type column values" do
+    it "should allow valid values" do
+      Institution::SUBCLASSES.each do |v|
+        should allow_value(v).for(:type)
+      end 
+    end
+
+    it "should disallow invalid values" do
+      should_not allow_value('bobo').for(:type) 
+    end
+  end
+
   before(:each) do
     FactoryGirl.create(:institution, name: 'Zztop', abbreviation: 'zz')
-    FactoryGirl.create(:institution, name: 'Multimedia University')
-    FactoryGirl.create(:institution, name: 'Aatop', abbreviation: 'aa')
+    FactoryGirl.create(:open_institution, name: 'Multimedia University', type: 'OpenInstitution', tournament: t1 )
+    FactoryGirl.create(:open_institution, name: 'Aatop', abbreviation: 'aa', type: 'OpenInstitution', tournament: t2)
     FactoryGirl.create(:institution, name: 'Bbtop', abbreviation: 'cc')
   end
 
@@ -23,20 +44,38 @@ describe Institution do
   end
 
   it "should list institutions alphabetically" do
-
     institutions = Institution.alphabetically
     institutions[0].name.should == 'Aatop'
     institutions[1].name.should == 'Bbtop'
     institutions[2].name.should == 'Multimedia University'
     institutions[3].name.should == 'Zztop'
   end
-
+  
+  describe '.for_tournament' do
+    
+    let(:tournament_identifier) { t1.identifier }
+    subject(:institutions_for_tournament) { Institution.for_tournament(tournament_identifier) }
+    
+    context 'when t1 is the passed in tournament identifier' do
+      
+      it "should include institutions with tournaments set to t1" do
+        institutions_for_tournament.map(&:id).should include *Institution.where(tournament_id: t1.id).map(&:id)
+      end
+    
+      it "should not include institutions which are explicitly for different tournaments" do
+        institutions_for_tournament.map(&:id).should_not include *Institution.where(tournament_id: t2.id).map(&:id)
+      end
+    
+      it "should include non tournament specific institutions" do
+        institutions_for_tournament.map(&:id).should include *Institution.where(tournament_id: nil).map(&:id)
+      end
+      
+    end
+  end
 
   describe 'relations to tournament' do
     let(:institution1) { Institution.first }
     let(:institution2) { Institution.last }
-    let!(:t2) { FactoryGirl.create(:t2_tournament) }
-    let!(:t1) { FactoryGirl.create(:t1_tournament) }
     let!(:t1_team_manager) { FactoryGirl.create(:user, email: 't1_team_manager@test.com')}
     let!(:t2_team_manager) { FactoryGirl.create(:user, email: 't2_team_manager@test.com')}
     let!(:t1_registration) { FactoryGirl.create(:registration, tournament: t1, team_manager: t1_team_manager,  institution: institution1) }

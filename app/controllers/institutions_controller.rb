@@ -2,7 +2,7 @@ class InstitutionsController < ApplicationController
   # GET /institutions
   # GET /institutions.json
   def index
-    @institutions = Institution.alphabetically
+    @institutions = Institution.alphabetically.for_tournament current_tournament.identifier
 
     respond_to do |format|
       format.html # index.html.erb
@@ -39,18 +39,27 @@ class InstitutionsController < ApplicationController
 
   # POST /institutions
   # POST /institutions.json
+  
   def create
-    @institution = Institution.new(params[:institution])
+    
+    @institution = institution_factory
 
     respond_to do |format|
       if @institution.save
         format.html { redirect_to institutions_path, notice: 'Institution was successfully registered.' }
-        #format.json { render json: @institution, status: :created, location: @institution }
       else
         format.html { render action: "new" }
-        #format.json { render json: @institution.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  private
+
+  def institution_factory
+    klass = (!params[:institution][:type].nil? && params[:institution][:type].constantize) || OpenInstitution
+    institution = klass.new params[:institution] 
+    institution.tournament = current_tournament if klass == OpenInstitution
+    institution
   end
 
   # PUT /institutions/1

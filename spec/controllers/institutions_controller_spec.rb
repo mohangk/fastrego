@@ -5,6 +5,7 @@ describe InstitutionsController do
   def valid_attributes
     { name: 'test name',
       abbreviation: 'testabrev',
+      type: 'University',
       country: 'Malaysia'
     }
   end
@@ -24,9 +25,9 @@ describe InstitutionsController do
 
   describe "GET index" do
     it "assigns all institutions as @institutions" do
-      institution = Institution.create! valid_attributes
+      university = University.create! valid_attributes
       get :index, {}, valid_session
-      assigns(:institutions).should eq([institution])
+      assigns(:institutions).should eq([university])
     end
   end
 
@@ -45,10 +46,38 @@ describe InstitutionsController do
         }.to change(Institution, :count).by(1)
       end
 
-      it "assigns a newly created institution as @institution" do
-        post :create, {:institution => valid_attributes}, valid_session
-        assigns(:institution).should be_a(Institution)
-        assigns(:institution).should be_persisted
+      describe "the institution class is based on the type" do
+
+        context 'when the passed in type is a University' do
+          it "assigns a newly created institution as @institution which is of kind University" do
+            post :create, {:institution => valid_attributes}, valid_session
+            assigns(:institution).should be_a(University)
+            assigns(:institution).should be_persisted
+          end
+        end
+
+        context 'when the passed in type is a HighSchool' do
+          it "assigns a newly created institution as @institution which is of kind HighSchool" do
+            post :create, {:institution => valid_attributes.merge(type: 'HighSchool') }, valid_session
+            assigns(:institution).should be_a(HighSchool)
+            assigns(:institution).should be_persisted
+          end
+        end
+
+        context 'when the passed in type is a OpenInstitution' do
+
+          it "sets the tournament for the institutiton" do
+            post :create, {:institution => valid_attributes.merge(type: 'OpenInstitution')}, valid_session
+            assigns(:institution).tournament.should == tournament
+          end
+
+          it "assigns a newly created institution as @institution which is of kind OpenInstitution" do
+            post :create, {:institution => valid_attributes.merge(type: 'OpenInstitution')}, valid_session
+            assigns(:institution).should be_a(OpenInstitution)
+            assigns(:institution).should be_persisted
+          end
+        end
+
       end
 
       it "redirects to the institution list" do
