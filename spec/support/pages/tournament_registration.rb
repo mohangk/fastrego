@@ -9,4 +9,9 @@ class TournamentRegistration < GenericPage
     DebateTeamDetails.new
   end
 
+  def edit_debate_team_details
+    click_link 'Edit debate team details'
+    DebateTeamDetails.new
+  end
+
 end
