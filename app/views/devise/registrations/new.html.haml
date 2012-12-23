@@ -1,26 +1,23 @@
-%h2 Sign up
-= form_for(resource, :as => resource_name, :url => user_registration_path) do |f|
-  = devise_error_messages!
-  %div
-    = f.label :name
-    %br/
-    = f.text_field :name
-  %div
-    = f.label :email
-    %br/
-    = f.email_field :email
-  %div
-    = f.label :phone_number
-    %br/
-    = f.text_field :phone_number
-  %div
-    = f.label :password
-    %br/
-    = f.password_field :password
-  %div
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation
-
-  %div= f.submit "Sign up"
-= render :partial => "devise/shared/links"
+%section.sign-up
+  .row
+    .span4
+      %h4.blue Sign up
+      = simple_form_for(resource, :as => resource_name, :url => user_registration_path) do |f|
+        = devise_error_messages!
+        = f.input :name
+        = f.input :email
+        = f.input :phone_number
+        = f.input :password
+        = f.input :password_confirmation
+        = f.submit "Sign up"
+      = render :partial => "devise/shared/links"
+    .span8
+      %header.subhead
+        %h1.jumbotron Create a FastRego account today!
+      %p 
+        A FastRego account will enable you to sign your university contingent up for any FastRego run tournament registration. 
+      %p 
+        Beside making registration painless, we are also planning many other features such as
+        %ul
+          %li A profile page for all participants that will allow you to keep track of the tournaments you have participated in over the years
+          %li A record of all your scoring and how you have fared in tournaments 
