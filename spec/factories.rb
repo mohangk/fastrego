@@ -11,17 +11,16 @@ FactoryGirl.define do
   factory :university do
     sequence(:abbreviation) { |n| "MMU#{n}" }
     sequence(:name) { |n| "Multimedia University #{n}" }
-    type 'University'
     website 'http://www.mmu.edu.my'
     country 'Malaysia'
   end
 
-  factory :open_institution do
+  factory :open_institution, class: OpenInstitution do
     sequence(:abbreviation) { |n| "MMU#{n}" }
     sequence(:name) { |n| "Multimedia University #{n}" }
-    type 'OpenInstitution'
     website 'http://www.mmu.edu.my'
     country 'Malaysia'
+    association :tournament, factory: :t1_tournament
   end
 
   factory :admin_user do
