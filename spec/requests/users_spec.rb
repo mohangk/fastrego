@@ -76,8 +76,9 @@ describe "Users" do
         fill_in 'Password', with: 'password123'
         fill_in 'Password confirmation', with: 'password123'
         fill_in 'Phone number', with: '99999999'
-        click_button 'Update'
+        click_button 'Update profile'
         page.current_path.should == root_path
+        page.should have_content 'You updated your account successfully.'
         page.should have_content 'Alex Yoong'
         click_link 'Logout'
         page.should have_content 'You need to sign in'
@@ -123,7 +124,7 @@ describe "Users" do
             fill_in 'Adjudicators requested', with: 2
             fill_in 'Observers requested', with: 0
             click_button 'Save'
-            page.should have_content 'Registration was successful'
+            page.should have_content 'You have successfully requested teams!'
             page.should have_content 'You completed pre-registration at'
           end
         end

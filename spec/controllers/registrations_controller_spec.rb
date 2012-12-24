@@ -125,7 +125,7 @@ describe RegistrationsController do
             @registration.reload
             @registration.requested_at.should_not == frozen_time
             @registration.updated_at.should eq(original_updated_at)
-            flash[:notice].should eq('There was an error while recording your registration.')
+            flash[:notice].should eq('There was an error while recording your request.')
           end
         end
 

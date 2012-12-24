@@ -1,0 +1,13 @@
+= simple_form_for(resource, :as => resource_name, :url => user_registration_path) do |f|
+  = devise_error_messages!
+  = f.input :name
+  = f.input :email
+  = f.input :phone_number
+  - if button_text =~ /Update/
+    = f.input :current_password, hint: 'We need your current password to confirm changes'
+    = f.input :password, hint: 'Leave blank if you don\'t want to change it'
+  - else
+    = f.input :password
+  = f.input :password_confirmation
+  = f.submit "#{button_text}"
+= render :partial => "devise/shared/links"

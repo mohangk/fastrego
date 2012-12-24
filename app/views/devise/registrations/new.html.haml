@@ -2,15 +2,7 @@
   .row
     .span4
       %h4.blue Sign up
-      = simple_form_for(resource, :as => resource_name, :url => user_registration_path) do |f|
-        = devise_error_messages!
-        = f.input :name
-        = f.input :email
-        = f.input :phone_number
-        = f.input :password
-        = f.input :password_confirmation
-        = f.submit "Sign up"
-      = render :partial => "devise/shared/links"
+      = render partial: 'form', locals: {resource: resource, button_text: 'Sign up'} 
     .span8
       %header.subhead
         %h1.jumbotron Create a FastRego account today!

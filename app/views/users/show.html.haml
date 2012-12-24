@@ -1,15 +1,23 @@
 %section#registration
+
   - if @registration.persisted?
-    %p You are assigned as the team manager for the #{@registration.institution.name} contingent to the #{current_tournament.name}
+    .alert.alert-info
+      You are assigned as the team manager for the <b>#{@registration.institution.name}</b> contingent to the <b>#{current_tournament.name}</b>
   - else
-    %p You are currently not assigned as a team manager for this tournament.
-    %p Please proceed to the #{link_to 'institution list', institutions_path} to assign yourself as a team manager for an institution.
+    .alert.alert-block
+      %b You are currently not assigned as a team manager for this tournament.
+      %br
+      Please proceed to the #{link_to 'institution list', institutions_path} to assign yourself as a team manager for an institution.
+
   - if not current_tournament.pre_registration_enabled?
-    %p
+    .alert.alert-block
       %b Registration is currently closed
   - elsif current_tournament.pre_registration_enabled? 
-    %p
-      %b Registration is open
+    .alert.alert-success
+      %b Registration is open, you can now request for teams!
+      %br
+      Remember, it might not be possible to grant all teams requested. For more details on the registration policy, visit the official tournament website.
+
     - if not @registration.requested? and @registration.persisted?
       = render 'registration_form'
   - if @registration.requested?

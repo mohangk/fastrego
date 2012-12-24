@@ -68,7 +68,7 @@ describe "Institutions list" do
 
             page.should have_content "Are you sure you would like to register as the team manager of #{mmu.name} for the tournament #{t1.name} ?"
             click_link "Yes"
-            page.should have_content "You have been successfully assigned to be the team manager for #{mmu.name} contingent during the #{t1.name}"
+            page.should have_content "You are assigned as the team manager for the #{mmu.name} contingent to the #{t1.name}"
         end
       end
     end
