@@ -28,3 +28,4 @@
 config/database.yml
 Vagrantfile
 .vagrant
+*.txt
