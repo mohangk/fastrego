@@ -1,10 +1,13 @@
 ActiveAdmin.register Payment do
+
   scope_to association_method: :call do
     lambda { Payment.where(registration_id: Registration.for_tournament(current_subdomain, current_admin_user).collect { |r| r.id }) }
   end
+
   scope :all, :default => true do |p|
     p.includes [ :registration ]
   end
+
   config.sort_order = "instituion_id desc , payments.id desc"
 
   index do
@@ -34,7 +37,7 @@ ActiveAdmin.register Payment do
     end
     f.inputs do
       disable_field = true unless f.object.new_record?
-      f.input :registration, label: 'Institution', as: :select, collection: Hash[Registration.all.map{ |r| [r.institution_name,r.id]}],:input_html => { :disabled => disable_field }
+      f.input :registration, label: 'Institution', as: :select, collection: Hash[Registration.for_tournament(current_subdomain, current_admin_user).map{ |r| [r.institution_name,r.id]}],:input_html => { :disabled => disable_field }
       f.input :date_sent, :input_html => { :disabled => disable_field }
       f.input :amount_sent, as: :string, :input_html => { :disabled => disable_field }
       f.input :account_number, :input_html => { :disabled => disable_field }
@@ -50,6 +53,11 @@ ActiveAdmin.register Payment do
   end
 
   controller do
+
+    def new
+      @payment = Payment.new
+    end
+
     def create
       @payment = Payment.new(params[:payment])
       @payment.registration_id = params[:payment][:registration_id]
@@ -75,6 +83,7 @@ ActiveAdmin.register Payment do
         render action: "edit"
       end
     end
+
   end
 
   filter :registration_team_manager_name, as: :select, collection: proc { User.paid_team_managers(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
