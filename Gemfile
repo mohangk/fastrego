@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.9'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -25,7 +25,7 @@ gem 'jquery-rails'
 gem 'haml-rails'
 gem 'devise'
 # need this fix https://github.com/gregbell/active_admin/pull/623
-gem 'activeadmin' , :git => 'git://github.com/gregbell/active_admin.git'
+gem 'activeadmin'
 gem "strip_attributes"
 gem 'meta_search'
 gem 'newrelic_rpm'
@@ -35,6 +35,7 @@ gem 'rack-google-analytics', :require => 'rack/google-analytics'
 
 group :development, :test do
   gem 'pry'
+  gem 'pry-nav'
   gem 'sextant'
   gem 'foreman'
   gem 'rspec-rails', '~> 2.11.0'
