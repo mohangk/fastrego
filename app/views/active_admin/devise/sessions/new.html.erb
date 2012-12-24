@@ -7,7 +7,7 @@
       #resource.class.authentication_keys.each { |key| f.input key, :input_html => {:autofocus => true}}
       f.input :email
       f.input :password
-      f.input :subdomain, as: :hidden, value: request.subdomain
+      f.input :subdomain, as: :hidden, input_html: { value: request.subdomain }
       f.input :remember_me, :label => t('active_admin.devise.login.remember_me'), :as => :boolean, :if =>  false  #devise_mapping.rememberable? }
     end
     f.actions do

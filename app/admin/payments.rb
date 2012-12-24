@@ -48,7 +48,7 @@ ActiveAdmin.register Payment do
       end 
       f.input :amount_received, as: :string
       f.input :admin_comment
-      f.buttons
+      f.actions
     end
   end
 

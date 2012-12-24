@@ -22,7 +22,7 @@ ActiveAdmin.register Setting do
     f.inputs "#{f.object.key.humanize}" do
       f.input :value
     end
-    f.buttons
+    f.actions
   end
 
   controller do 

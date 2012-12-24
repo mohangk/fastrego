@@ -81,7 +81,7 @@ ActiveAdmin.register Registration do
     f.inputs "Request details for #{f.object.tournament.name}" do
       f.input :team_manager, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
       f.input :institution, as: :select, collection: Hash[Institution.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
-      f.input :requested_at, as: :datetime, include_seconds: true, :input_html => {  :disabled => disable_field , :include_seconds => true}
+      f.input :requested_at, as: :datetime_select, include_seconds: true, :input_html => {  :disabled => disable_field , :include_seconds => true}
       f.input :debate_teams_requested, :input_html => { :disabled => disable_field }
       f.input :adjudicators_requested, :input_html => { :disabled => disable_field }
       f.input :observers_requested, :input_html => { :disabled => disable_field }
@@ -105,7 +105,7 @@ ActiveAdmin.register Registration do
       f.input :adjudicators_confirmed
       f.input :observers_confirmed
     end
-    f.buttons
+    f.actions
   end
 
   controller do
