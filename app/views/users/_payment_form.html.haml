@@ -1,4 +1,4 @@
-= form_for @payment, html: { class: 'payment_form form-search' } do |f|
+= form_for @payment, html: { class: 'form-inline payment_form' } do |f|
   -if @payment.errors.any?
     #error_explanation
       %h4= "#{pluralize(@payment.errors.count, "error")} prohibited this payment from being saved:"
@@ -7,13 +7,16 @@
           %li= msg
 
   = f.label :date_sent, 'Date'
-  = f.date_select :date_sent, use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year
+  = f.date_select :date_sent, { use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year },  {class: 'span1'}
   = f.label :account_number, 'A/C #'
-  = f.text_field :account_number
+  = f.text_field :account_number, class: 'input-small'
   = f.label :amount_sent, current_tournament.currency_symbol 
-  = f.text_field :amount_sent
+  = f.text_field :amount_sent, class: 'input-small'
   = f.label :scanned_proof, 'Proof of transfer'
-  = f.file_field :scanned_proof
+  = f.file_field :scanned_proof, class: 'span3'
+  %br
   = f.label :comments
-  = f.text_field :comments
+  = f.text_field :comments, class: 'input-small'
+  %br
   = f.submit 'Add payment'
+  %span.muted Please make sure that the size of your <strong>proof of transfer</strong> is less then <b>2 megabytes (2MB)</b>.

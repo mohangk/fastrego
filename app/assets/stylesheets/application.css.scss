@@ -72,40 +72,42 @@ section.sign-in {
   padding-top: 60px;
 }
 
-.payment_form div {
-    display: inline;
-    line-height: 1em;
-    vertical-align: middle;
+section#payment {
+  .payment-items {
+    td:nth-child(even) {
+      text-align: right;
+    }
+    width: 50%;
+  }
+
+  .well {
+    padding: 4px;
+  }
+
+  form {
+    margin: 0px;
+  }
+
+  .payment_form {
+      
+      div#error_explanation {
+        padding-bottom: 1em;
+      }
+
+      span, label[for="payment_comments"], input[name="payment[comments]"], input[type="submit"] {
+          margin-top: 0.5em;
+      }
+
+      input[name="payment[comments]"]  {
+         width: 80%;
+      }
+
+      span {
+        vertical-align: middle;
+      }
+  }
 }
 
-.payment_form div#error_explanation {
-    padding-bottom: 1em;
-}
-
-.payment_form input[type="text"], .payment_form input[type="number"] {
-    width: 6em;
-}
-
-.payment_form select {
-    width: 5em;
-}
-
-.payment_form input[type="submit"] {
-    margin-top: 0.5em;
-    display: block;
-}
-
-.payment_form input[type="file"] {
-    width: 310px;
-}
-
-.payment_form label[for="payment_comments"], .payment_form input[name="payment[comments]"]  {
-    margin-top: 0.5em;
-}
-
-.payment_form input[name="payment[comments]"]  {
-   width: 50em;
-}
 
 .field_with_errors {
     display: inline;

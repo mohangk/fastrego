@@ -1,58 +1,57 @@
 %section#registration
-
-  - if @registration.persisted?
-    .alert.alert-info
-      You are assigned as the team manager for the <b>#{@registration.institution.name}</b> contingent to the <b>#{current_tournament.name}</b>
-  - else
-    .alert.alert-block
-      %b You are currently not assigned as a team manager for this tournament.
-      %br
-      Please proceed to the #{link_to 'institution list', institutions_path} to assign yourself as a team manager for an institution.
-
-  - if not current_tournament.pre_registration_enabled?
-    .alert.alert-block
-      %b Registration is currently closed
-  - elsif current_tournament.pre_registration_enabled? 
-    .alert.alert-success
-      %b Registration is open, you can now request for teams!
-      %br
-      Remember, it might not be possible to grant all teams requested. For more details on the registration policy, visit the official tournament website.
-
-    - if not @registration.requested? and @registration.persisted?
-      = render 'registration_form'
+  = render 'users/tournament_registration_header'
+%section#slots
   - if @registration.requested?
-    %p
-      %b You completed pre-registration at #{@registration.requested_at} and requested the following slots
-      %ul
-        %li #{ pluralize @registration.debate_teams_requested, 'debate team' }
-        %li #{ pluralize @registration.adjudicators_requested, 'adjudicator' }
-        %li #{ pluralize @registration.observers_requested, 'observer' }
-  - if @registration.granted?
-    %hr
-    %p
-      %b You have been granted the following slots
-      %ul
-        %li #{ pluralize @registration.debate_teams_granted, 'debate team' }
-        %li #{ pluralize @registration.adjudicators_granted, 'adjudicator' }
-        %li #{ pluralize @registration.observers_granted, 'observer' }
+    .row
+      .span6
+        %h4.blue Requested slots 
+        %b You completed pre-registration at #{@registration.requested_at} and requested the following slots
+        %ul
+          %li #{ pluralize @registration.debate_teams_requested, 'debate team' }
+          %li #{ pluralize @registration.adjudicators_requested, 'adjudicator' }
+          %li #{ pluralize @registration.observers_requested, 'observer' }
+      .span6
+        - if @registration.granted?
+          %h4.blue Granted slots
+          %b You have been granted the following slots
+          %ul
+            %li #{ pluralize @registration.debate_teams_granted, 'debate team' }
+            %li #{ pluralize @registration.adjudicators_granted, 'adjudicator' }
+            %li #{ pluralize @registration.observers_granted, 'observer' }
+
 %section#payment
   - if not @registration.fees.blank?
-    %hr
-    %p
-      %b Total registration fees due  #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }.
-    %p
-      %b Total confirmed payments  #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }.
-    %p
-      %b Balance fees due  #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }.
-    %p
-      %b Total unconfirmed payments  #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }.
-    %p
-      Make payment via the form below. Please make sure that the size of your <b>proof of transfer</b> is less then <b>2 megabytes (2MB)</b>.
-      = render 'users/payment_table'
+    %h4.blue Payment details
+    %table.payment-items.table.table-striped.table-condensed
+      %tr 
+        %td
+          Total registration fees due  
+        %td
+          #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }
+      %tr 
+        %td
+          Total confirmed payments  
+        %td 
+          #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
+      %tr
+        %td 
+          Balance fees due  
+        %td
+          #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
+      %tr
+        %td
+          Total unconfirmed payments  
+        %td
+          #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
+    = render 'users/payment_table'
+
+    .well
+      %p Use this form to submit the proof of transfer
       = render 'users/payment_form'
+
 %section#confirmed_slots
   - if @registration.confirmed?
-    %hr
+    %h4.blue Confirmed slots and participant details
     %p
       %b You have been confirmed the following slots. Please click on the links to populate the relevant participant details.
       %ul

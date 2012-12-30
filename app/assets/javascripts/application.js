@@ -7,4 +7,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-dropdown.js
+//= require bootstrap-alert.js
+//= require jquery.cookie.js
 

@@ -1,0 +1,37 @@
+- if @registration.persisted?
+  .alert.alert-info.team-manager
+    %button.close(type='button' data-dismiss='alert') x
+    You are assigned as the team manager for the <b>#{@registration.institution.name}</b> contingent to the <b>#{current_tournament.name}</b>
+- else
+  .alert.alert-block.team-manager
+    %b You are currently not assigned as a team manager for this tournament.
+    %br
+    Please proceed to the #{link_to 'institution list', institutions_path} to assign yourself as a team manager for an institution.
+
+- if not current_tournament.pre_registration_enabled?
+  .alert.alert-block.registration-open
+    %b Registration is currently closed
+- elsif current_tournament.pre_registration_enabled? 
+  .alert.alert-success.registration-open
+    %button.close(type='button' data-dismiss='alert') x
+    %b Registration is open, you can now request for teams!
+    %br
+    Remember, it might not be possible to grant all teams requested. For more details on the registration policy, visit the official tournament website.
+  - if not @registration.requested? and @registration.persisted?
+    = render 'registration_form'
+
+:javascript
+  $.cookie.defaults = { expires: 365 }
+
+  var alerts =  $('.team-manager,.registration-open');
+
+  $.each(alerts, function(idx, el) {
+    if($.cookie(el.className) !== null) {
+      $(el).alert('close');    
+    } 
+  });
+
+  alerts.bind('closed', function(e) {
+    $.cookie(e.target.className, 'closed');
+  })
+
