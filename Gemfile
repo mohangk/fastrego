@@ -32,6 +32,7 @@ gem 'newrelic_rpm'
 gem 'simple_form'
 gem 'country_select', :git => 'git://github.com/mohangk/country_select.git'  
 gem 'rack-google-analytics', :require => 'rack/google-analytics'
+gem 'active_paypal_adaptive_payment'
 
 group :development, :test do
   gem 'pry'

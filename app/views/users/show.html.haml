@@ -24,25 +24,21 @@
     %h4.blue Payment details
     %table.payment-items.table.table-striped.table-condensed
       %tr 
-        %td
-          Total registration fees due  
-        %td
-          #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }
+        %td Total registration fees due  
+        %td #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }
+        %td 
       %tr 
-        %td
-          Total confirmed payments  
+        %td Total confirmed payments  
+        %td #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
         %td 
-          #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
       %tr
-        %td 
-          Balance fees due  
-        %td
-          #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
+        %td Balance fees due  
+        %td #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
+        %td #{link_to 'Pay now via PayPal', checkout_path, method: :post}
       %tr
+        %td Total unconfirmed payments  
+        %td #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
         %td
-          Total unconfirmed payments  
-        %td
-          #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
     = render 'users/payment_table'
 
     .well

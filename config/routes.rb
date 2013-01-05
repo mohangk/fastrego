@@ -26,11 +26,18 @@ UadcRego::Application.routes.draw do
     end
   end
 
-  resources :payments, only: [:create, :destroy]
+  resources :payments, only: [:create, :destroy] do
+  end
 
-  match "profile" => "users#show", as: :profile, via: :get
+  match 'checkout'  => 'payments#checkout'
+  match 'completed' => 'payments#completed'
+  match 'canceled'  => 'payments#canceled'
+  match 'ipn'       => 'payments#ipn'
+
+
+  match "profile"      => "users#show", as: :profile, via: :get
   match "registration" => redirect('/profile'), via: :get
-  match "payments" => redirect('/profile'), via: :get
+  match "payments"     => redirect('/profile'), via: :get
 
   match "embed_logo" => "pages#embed_logo", as: :embed_logo, via: :get
   match 'enquiry' => 'pages#enquiry', as: :enquiry, via: :get

@@ -38,4 +38,11 @@ UadcRego::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.action_mailer.default_url_options = { :host => 'test.host.com:3000' }
+
+  ActiveMerchant::Billing::Base.mode = :test
+  ::GATEWAY =  ActiveMerchant::Billing::PaypalAdaptivePayment.new(
+    :login => "fastre_1356344930_biz_api1.gmail.com",
+    :password => "1356344950",
+    :signature => "Ata7WHUnSN0WA66.v.mkvBNYXyBsAvZP-x8joINtidDWenedQO5QIv0c",
+    :appid => "APP-80W284485P519543T" )
 end
