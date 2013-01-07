@@ -1,3 +1,10 @@
+-if @paypal_payment && @paypal_payment.errors.any?
+  #error_explanation
+    %h4= "Failure when trying to submit to PayPal"
+    %ul
+      - @paypal_payment.errors.full_messages.each do |msg|
+        %li= msg
+
 %section#registration
   = render 'users/tournament_registration_header'
 %section#slots

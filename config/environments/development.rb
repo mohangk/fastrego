@@ -45,4 +45,7 @@ UadcRego::Application.configure do
     :password => "1356344950",
     :signature => "Ata7WHUnSN0WA66.v.mkvBNYXyBsAvZP-x8joINtidDWenedQO5QIv0c",
     :appid => "APP-80W284485P519543T" )
+
+  ::FASTREGO_PAYPAL_ACCOUNT = 'fastre_1356344930_biz@gmail.com'
+  
 end

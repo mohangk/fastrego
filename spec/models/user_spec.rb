@@ -26,7 +26,7 @@ describe User do
     it 'returns users who have made any payment for a specific tournament' do
       t2_team_manager2 = FactoryGirl.create(:user, email: 't2_team_manager2@test.com')
       t2_registration_2 = FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager2)
-      FactoryGirl.create(:payment, registration: t2_registration) 
+      FactoryGirl.create(:manual_payment, registration: t2_registration) 
       User.paid_team_managers(t2.identifier, t2.admin_user).map(&:id).should =~ [t2_team_manager.id]
     end
   end

@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe PaymentMailer do
-  let(:payment) { FactoryGirl.create(:payment, amount_received: 1000, admin_comment: 'This is a comment' ) }
+  let(:payment) { FactoryGirl.create(:manual_payment, amount_received: 1000, admin_comment: 'This is a comment' ) }
   let(:tournament) { payment.registration.tournament }
   let(:mail) { PaymentMailer.update_notification(payment) }
 

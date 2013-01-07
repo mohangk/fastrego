@@ -14,4 +14,11 @@ class TournamentRegistration < GenericPage
     DebateTeamDetails.new
   end
 
+  def pay_via_paypal
+    click_link 'Pay now via PayPal'
+    GenericPage.new
+    debugger
+    puts 'almost done'
+  end
+
 end

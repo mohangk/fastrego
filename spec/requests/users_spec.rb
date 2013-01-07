@@ -130,10 +130,11 @@ describe "Users" do
         end
 
         describe 'submitting payment information' do
-          def add_payment
-            select '2012'
-            select 'Feb'
-            select '10'
+
+          def add_payment date
+            select date.year.to_s
+            select date.strftime '%b'
+            select date.day.to_s
             fill_in 'A/C #', with: 'ABC123'
             fill_in 'RM', with: 1000.50
             fill_in 'Comments', with: 'This is a slightly longer comment then usual'
@@ -151,10 +152,11 @@ describe "Users" do
           end
 
           it "will allow creating a payment" do
-            add_payment
+            date = Date.today
+            add_payment date
             page.current_path.should == profile_path
             page.should have_content 'Payment was successfully recorded.'
-            page.should have_content '2012-02-10'
+            page.should have_content date.strftime '%Y-%m-%d'
             page.should have_content 'ABC123'
             page.should have_content 'RM1,000.50'
             page.should have_content 'This is a slightly longer comment then usual'
@@ -162,7 +164,7 @@ describe "Users" do
           end
 
           it 'allows payments to be deleted' do
-            add_payment
+            add_payment Date.today
             within 'section#payment' do
               click_link 'Delete'
             end
@@ -171,7 +173,7 @@ describe "Users" do
           end
 
           it 'allows payment proof to be viewed' do
-            add_payment
+            add_payment Date.today
             within 'section#payment' do
               click_link 'View'
               page.current_url.should =~ /test_image.jpg/

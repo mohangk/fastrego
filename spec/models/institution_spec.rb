@@ -91,7 +91,7 @@ describe Institution do
       it 'returns institutions whose team managers have paid' do
         t2_team_manager2 = FactoryGirl.create(:user, email: 't2_team_manager2@test.com')
         t2_registration_2 = FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager2)
-        FactoryGirl.create(:payment, registration: t2_registration) 
+        FactoryGirl.create(:manual_payment, registration: t2_registration) 
         Institution.paid_participating(t2.identifier, t2.admin_user).map(&:id).should =~ [t2_registration.institution.id]         
       end
     end

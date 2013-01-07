@@ -48,18 +48,21 @@ ActiveAdmin.register Payment do
       end 
       f.input :amount_received, as: :string
       f.input :admin_comment
-      f.actions
+      f.actions do 
+        f.action :submit, label: (f.object.new_record? ? 'Create Payment' : 'Update Payment' )
+        f.action :cancel, label: 'Cancel'
+      end
     end
   end
 
   controller do
 
     def new
-      @payment = Payment.new
+      @payment = ManualPayment.new
     end
 
     def create
-      @payment = Payment.new(params[:payment])
+      @payment = ManualPayment.new(params[:payment])
       @payment.registration_id = params[:payment][:registration_id]
       @payment.amount_received = params[:payment][:amount_received]
       @payment.admin_comment = params[:payment][:admin_comment]
@@ -72,7 +75,7 @@ ActiveAdmin.register Payment do
     end
 
     def update
-      @payment = Payment.find(params[:id])
+      @payment = ManualPayment.find(params[:id])
       @payment.amount_received = params[:payment][:amount_received]
       @payment.admin_comment = params[:payment][:admin_comment]
 

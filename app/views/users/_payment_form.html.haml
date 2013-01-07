@@ -1,5 +1,5 @@
 = form_for @payment, html: { class: 'form-inline payment_form' } do |f|
-  -if @payment.errors.any?
+  - if @payment.errors.any?
     #error_explanation
       %h4= "#{pluralize(@payment.errors.count, "error")} prohibited this payment from being saved:"
       %ul

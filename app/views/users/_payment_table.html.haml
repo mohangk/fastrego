@@ -15,16 +15,18 @@
     - @registration.payments.each do |p|
       %tr
         %td= p.date_sent
-        %td=  p.account_number
+        %td= p.account_number
         %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
         %td= p.comments
-        %td
-          =link_to 'View', p.scanned_proof.url, 'data-popup' => true
+        - if p.respond_to?(:scanned_proof)
+          %td
+            =link_to 'View', p.scanned_proof.url, 'data-popup' => true
         %td= number_to_currency p.amount_received, unit: current_tournament.currency_symbol
         %td= p.admin_comment
         %td
-          -unless p.confirmed?
+          -if p.deleteable?
             = link_to 'Delete', payment_path(p), method: 'delete'
+
 
   :javascript
     $('a[data-popup]').live('click', function(e) { window.open($(this).attr('href')); e.preventDefault(); });

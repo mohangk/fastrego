@@ -130,7 +130,7 @@ describe "users/show.html.haml" do
     it "is displayed when the registration has a fees associated with it" do
 
       @registration = FactoryGirl.create(:requested_registration, team_manager: user, fees: 2000)
-      payment = FactoryGirl.create(:payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
+      payment = FactoryGirl.create(:manual_payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
       #required by _form_payment.html.haml
       @registration.reload
       @payment = Payment.new

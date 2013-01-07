@@ -10,6 +10,7 @@ describe Registration do
     FactoryGirl.create(:adjudicator_fees, tournament: t)
     FactoryGirl.create(:observer_fees, tournament: t)
     FactoryGirl.create(:debate_team_size, tournament: t)
+    FactoryGirl.create(:host_paypal_account, tournament: t)
   end
 
   it { should belong_to :institution }
@@ -151,7 +152,7 @@ describe Registration do
   describe 'payment related methods' do
 
     before :each do
-      FactoryGirl.create_list(:payment, 5, registration: r, amount_received: 10000)
+      FactoryGirl.create_list(:manual_payment, 5, registration: r, amount_received: 10000)
       #set one payment as unconfirmed
       r.reload.payments[4].amount_received = nil
       r.payments[4].save
@@ -280,4 +281,64 @@ describe Registration do
   pending 'it should validate that the email is only sent if there are changes to the actual quantities'
   pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
   pending 'debate_teams explodes when the confirmed quantities are not set yet'
+
+  describe "#host_fees_portion" do
+    it "should be amount smaller than balance fees" do
+      r.stub(:balance_fees).and_return(100.00)
+      r.host_fees_portion.should == r.balance_fees * 0.95
+    end
+  end
+
+  shared_examples 'Paypal hash' do
+
+    it { should be_a(Hash) }
+
+    it {subject.keys.should include(:email, :amount, :primary)}
+
+
+    it {subject[:email].should == email}
+
+    it {subject[:amount].should == amount}
+
+    it {subject[:primary].should == primary}
+
+  end
+
+  describe "#paypal_recipients" do
+
+    subject(:recipients) { r.paypal_recipients }
+
+    its(:count) { should == 2}
+
+    it { should be_a(Array) }
+
+
+    context 'the first hash' do
+      subject { r.paypal_recipients.first }
+      let(:email) {::FASTREGO_PAYPAL_ACCOUNT}
+      let(:amount) {r.balance_fees}
+      let(:primary) {true}
+      it_behaves_like 'Paypal hash'
+    end
+
+    context 'the second hash' do
+      subject { r.paypal_recipients.last }
+      let(:email) {Setting.key(t,'host_paypal_account')}
+      let(:amount) {r.host_fees_portion}
+      let(:primary) {false}
+      it_behaves_like 'Paypal hash'
+    end
+
+    context 'when email is not provided' do
+
+      before :each do
+        Setting.stub(:key).and_return(nil)
+      end
+
+      it 'should raise an error' do
+        expect {r.paypal_recipients}.to raise_error
+      end
+    end
+
+  end
 end

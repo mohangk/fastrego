@@ -94,6 +94,11 @@ FactoryGirl.define do
       key 'tournament_registration_email'
       value 'test@test.com'
     end
+
+    factory :host_paypal_account, class: Setting do
+      key 'host_paypal_account'
+      value 'mohang_1356050668_biz@gmail.com'
+    end
   end
 
   factory :registration do
@@ -109,7 +114,7 @@ FactoryGirl.define do
 
       factory :granted_registration do
         debate_teams_granted 1
-        fees 1000
+        fees 90
 
         factory :confirmed_registration do
           debate_teams_confirmed 1
@@ -121,7 +126,7 @@ FactoryGirl.define do
 
   end
 
-  factory :payment do
+  factory :manual_payment do
     account_number 'AB1231234'
     amount_sent 12000
     date_sent '2011-12-12'
@@ -129,7 +134,15 @@ FactoryGirl.define do
     scanned_proof { Rack::Test::UploadedFile.new(File.join(Rails.root,'spec','uploaded_files','test_image.jpg'), 'image/png')  }
     registration
   end
- 
+
+  factory :paypal_payment do
+    account_number 'test_account@gmail.com'
+    amount_sent 980
+    date_sent '2012-12-12'
+    status 'Draft'
+    registration
+  end  
+
   factory :observer, class: Observer do
     name 'Jack Observer'
     gender 'Male'

@@ -26,8 +26,8 @@ UadcRego::Application.routes.draw do
     end
   end
 
-  resources :payments, only: [:create, :destroy] do
-  end
+  resources :manual_payments, only: [:create, :destroy], controller: 'payments' 
+  resources :payments, only: [:create, :destroy]
 
   match 'checkout'  => 'payments#checkout'
   match 'completed' => 'payments#completed'

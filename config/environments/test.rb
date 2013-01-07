@@ -40,9 +40,20 @@ UadcRego::Application.configure do
   config.action_mailer.default_url_options = { :host => 'test.host.com:3000' }
 
   ActiveMerchant::Billing::Base.mode = :test
+  #::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
   ::GATEWAY =  ActiveMerchant::Billing::PaypalAdaptivePayment.new(
     :login => "fastre_1356344930_biz_api1.gmail.com",
     :password => "1356344950",
     :signature => "Ata7WHUnSN0WA66.v.mkvBNYXyBsAvZP-x8joINtidDWenedQO5QIv0c",
     :appid => "APP-80W284485P519543T" )
+
+#  def GATEWAY.setup_purchase(*args)
+#    { 'payKey' => 'FakePayKey' }
+#  end
+#
+#  def GATEWAY.redirect_url_for(*args)
+#    '/FakePayPal'
+#  end
+
+  ::FASTREGO_PAYPAL_ACCOUNT = 'fastre_1356344930_biz@gmail.com'
 end
