@@ -27,5 +27,8 @@
 
       %ul
         - @past_tournaments.each do |name, url|
-          %li= link_to name, url
+          - if url
+            %li= link_to name, url
+          - else
+            %li= name
 
