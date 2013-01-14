@@ -38,5 +38,15 @@ namespace :fastrego do
   task :create_admin, [:email, :password] do |t, args|
     AdminUser.create!(email: args.email, password: args.password, password_confirmation: args.password)
   end
+
+  desc 'Admin host paypal account'
+  task :add_host_paypal_account => :environment
+  task :add_host_paypal_account, [:host_paypal_account, :tournament_identifier] do |t, args|
+    t = Tournament.find_by_identifier(args.tournament_identifier)
+    puts "Adding host_paypal_account '#{args.host_paypal_account}' for '#{t.identifier}'"
+    s = Setting.new key: 'host_paypal_account', value: args.host_paypal_account
+    s.tournament = t
+    s.save!
+  end
 end
   
