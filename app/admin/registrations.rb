@@ -51,11 +51,11 @@ ActiveAdmin.register Registration do
     column('Inst abbr') do |r|
       r.institution.abbreviation
     end
-    column('Email') do |r|
-      r.email
-    end
     column('TM name') do |r|
       r.team_manager.name
+    end
+    column('TM Email') do |r|
+      r.team_manager.email
     end
     column('DT Rq') { |r| r.debate_teams_requested }
     column('Adj Rq') { |r| r.adjudicators_requested }
