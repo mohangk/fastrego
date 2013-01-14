@@ -43,7 +43,7 @@ ActiveAdmin.register Registration do
 
   csv do
     column('Req at') do |r|
-      r.requested_at.strftime("%d/%m %H:%M:%S")
+      r.requested_at.nil? ? '' : r.requested_at.strftime("%d/%m %H:%M:%S")
     end
     column('Inst name') do |r|
       r.institution.name
