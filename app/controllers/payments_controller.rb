@@ -25,7 +25,6 @@ class PaymentsController < ApplicationController
   end
 
   def checkout
-
     @paypal_payment = PaypalPayment.new({:registration => current_registration,
                                          :date_sent => Date.today,
                                          :amount_sent => current_registration.balance_fees})
@@ -37,6 +36,11 @@ class PaymentsController < ApplicationController
         :ipn_notification_url => url_for(:action => 'ipn', :only_path => false),
         :receiver_list => current_registration.paypal_recipients
       )
+
+      @paypal_payment.transaction_txnid = response["payKey"]
+      @paypal_payment.primary_receiver = current_registration.paypal_recipients[0][:email]
+      @paypal_payment.secondary_receiver = current_registration.paypal_recipients[1][:email]
+
     rescue Exception => e
       logger.error e.message
       logger.error e.backtrace
@@ -68,29 +72,37 @@ class PaymentsController < ApplicationController
 
   def ipn
     notify = PaypalAdaptivePayment::Notification.new(request.raw_post)
+    payment = Payment.where(transaction_txnid: notify.params['pay_key']).first
+    acknowledged = notify.acknowledge
 
-    #order = Order.find(notify.item_id)
-
-    logger.error "==> Notify item_id #{notify.item_id}"
-
-    if notify.acknowledge
+    if acknowledged and payment.nil?
+      logger.error "MISSING PAYMENT pay_key: '#{notify.params['pay_key']}' complete ?: '#{notify.complete?}', amount: '#{notify.amount}'"
+    end
+    if acknowledged and !payment.nil?
       begin
+        completeness = notify.complete?
+        if completeness and payment.amount_sent.to_i == notify.amount.split[1].to_i
+          logger.error "notify amount #{notify.amount}"
+          logger.error "status: #{notify.complete?}"
+          payment.status = 'Success'
+          payment.amount_received = notify.amount.split[1].to_i
+        elsif completeness and notify.amount > 0 
+          logger.error "notify amount #{notify.amount}"
+          logger.error "status: #{notify.complete?}"
+          payment.status = 'Partial'
 
-        if notify.complete? #and order.total == notify.amount
-          logger.error "Notify amount #{notify.amount}"
-          logger.error "Status: #{notify.complete?}"
-          #order.status = 'success'
-          #shop.ship(order)
+          payment.amount_received = notify.amount
         else
+          payment.status = 'Fail'
           logger.error("Failed to verify Paypal's notification, please investigate")
         end
 
       rescue => e
         logger.error "FAILED : #{notify.complete?}"
-        #order.status = 'failed'
+        payment.status = 'Fail'
         raise
       ensure
-        #order.save
+        payment.save
       end
     end
 
