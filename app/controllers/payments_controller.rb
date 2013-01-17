@@ -36,6 +36,8 @@ class PaymentsController < ApplicationController
         :ipn_notification_url => url_for(:action => 'ipn', :only_path => false),
         :receiver_list => current_registration.paypal_recipients
       )
+      logger.info "PAYPAL Setup purchase request'#{response.request.inspect}'"
+      logger.info "PAYPAL Setup purchase response'#{response.json.inspect}'"
 
       @paypal_payment.transaction_txnid = response["payKey"]
       @paypal_payment.primary_receiver = current_registration.paypal_recipients[0][:email]
