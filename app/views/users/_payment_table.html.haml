@@ -22,8 +22,8 @@
         %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
         %td= p.comments
         %td
-        - if p.respond_to?(:scanned_proof)
-          =link_to 'View', p.scanned_proof.url, 'data-popup' => true
+          - if p.respond_to?(:scanned_proof)
+            =link_to 'View', p.scanned_proof.url, 'data-popup' => true
         %td= number_to_currency p.amount_received, unit: current_tournament.currency_symbol
         %td= p.status
         %td= p.admin_comment

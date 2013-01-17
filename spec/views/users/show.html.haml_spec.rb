@@ -142,6 +142,9 @@ describe "users/show.html.haml" do
       rendered.should have_content('Total unconfirmed payments RM0.00')
       rendered.should have_css('form#new_payment')
     end
+
+
+    pending 'it has a Pay now via PayPal link only when PayPal is enabled and there is a balance due'
   end
 
   describe "confirmed slot section" do

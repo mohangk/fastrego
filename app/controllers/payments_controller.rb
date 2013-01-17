@@ -31,7 +31,7 @@ class PaymentsController < ApplicationController
 
     begin
       response = GATEWAY.setup_purchase(
-        :return_url => url_for(:action => 'completed', :only_path => false),
+        :return_url => url_for(:controller=> 'users', :action => 'show', :only_path => false),
         :cancel_url => url_for(:action => 'canceled', :only_path => false),
         :ipn_notification_url => url_for(:action => 'ipn', :only_path => false),
         :receiver_list => current_registration.paypal_recipients
@@ -75,6 +75,11 @@ class PaymentsController < ApplicationController
 
   def ipn
     notify = PaypalAdaptivePayment::Notification.new(request.raw_post)
+    
+    logger.info '++++++++++++++++++++++++++++'
+    logger.info request.raw_post
+    logger.info '++++++++++++++++++++++++++++'
+
     payment = Payment.where(transaction_txnid: notify.params['pay_key']).first
     acknowledged = notify.acknowledge
 
