@@ -4,24 +4,28 @@
     %thead
       %tr
         %th Date
+        %th Type
         %th A/C #
         %th Amount sent
         %th Comments
         %th Proof
         %th Amount received
+        %th Status
         %th Our comments
         %th
 
     - @registration.payments.each do |p|
       %tr
         %td= p.date_sent
+        %td= p.type.humanize
         %td= p.account_number
         %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
         %td= p.comments
+        %td
         - if p.respond_to?(:scanned_proof)
-          %td
-            =link_to 'View', p.scanned_proof.url, 'data-popup' => true
+          =link_to 'View', p.scanned_proof.url, 'data-popup' => true
         %td= number_to_currency p.amount_received, unit: current_tournament.currency_symbol
+        %td= p.status
         %td= p.admin_comment
         %td
           -if p.deleteable?
