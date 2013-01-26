@@ -23,6 +23,7 @@ class CreateParticipants < ActiveRecord::Migration
       t.string :nationality
       t.string :passport_number
       t.string :transport_number
+      t.hstore :participants, :data
       t.timestamps
     end
   end
