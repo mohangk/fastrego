@@ -31,10 +31,11 @@ class PaymentsController < ApplicationController
 
     begin
       response = GATEWAY.setup_purchase(
-        :return_url => url_for(:controller=> 'users', :action => 'show', :only_path => false),
-        :cancel_url => url_for(:action => 'canceled', :only_path => false),
+        :fees_payer =>           'PRIMARYRECEIVER',
+        :return_url =>           url_for(:controller=> 'users', :action => 'show', :only_path => false),
+        :cancel_url =>           url_for(:action => 'canceled', :only_path => false),
         :ipn_notification_url => url_for(:action => 'ipn', :only_path => false),
-        :receiver_list => current_registration.paypal_recipients
+        :receiver_list =>        current_registration.paypal_recipients
       )
 
       logger.info "PAYPAL Setup purchase request'#{response.request.inspect}'"
@@ -75,10 +76,6 @@ class PaymentsController < ApplicationController
 
   def ipn
     notify = PaypalAdaptivePayment::Notification.new(request.raw_post)
-    
-    logger.info '++++++++++++++++++++++++++++'
-    logger.info request.raw_post
-    logger.info '++++++++++++++++++++++++++++'
 
     payment = Payment.where(transaction_txnid: notify.params['pay_key']).first
     acknowledged = notify.acknowledge
@@ -94,7 +91,7 @@ class PaymentsController < ApplicationController
           logger.error "status: #{notify.complete?}"
           payment.status = 'Success'
           payment.amount_received = notify.amount.split[1].to_i
-        elsif completeness and notify.amount > 0 
+        elsif completeness and notify.amount > 0
           logger.error "notify amount #{notify.amount}"
           logger.error "status: #{notify.complete?}"
           payment.status = 'Partial'

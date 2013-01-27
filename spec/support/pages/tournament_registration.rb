@@ -16,9 +16,11 @@ class TournamentRegistration < GenericPage
 
   def pay_via_paypal
     click_link 'Pay now via PayPal'
-    GenericPage.new
-    debugger
-    puts 'almost done'
+    PayPalFlow.new
+  end
+
+  def has_payment?
+    has_css? '.payment-history'
   end
 
 end

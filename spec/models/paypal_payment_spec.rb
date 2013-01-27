@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe PaypalPayment do
-	 
-	subject(:paypal_payment) { FactoryGirl.create(:paypal_payment) }
 
-	its(:status) { should === 'Draft' }
+  subject(:paypal_payment) { FactoryGirl.create(:paypal_payment) }
 
-	it { should validate_presence_of(:status) }
+  its(:status) { should === 'Draft' }
+
+  it { should validate_presence_of(:status) }
 
 end

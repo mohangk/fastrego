@@ -86,11 +86,12 @@ describe RegistrationsController do
 
         context 'request stage' do
           it "sets the requested at value of the registration" do
-            Timecop.freeze(Time.now) do
+            now = Time.zone.local(2008, 9, 1, 12, 0, 0)
+            Timecop.freeze(now) do
               put :update, id: @registration.id, registration: {}
-              assigns(:registration).requested_at.should eq(Time.zone.now)
+              assigns(:registration).requested_at.should eq(now)
               @registration.reload
-              @registration.requested_at.should eq(Time.zone.now)
+              @registration.requested_at.should eq(now)
             end
           end
 

@@ -47,6 +47,7 @@ group :development, :test do
   gem 'timecop'
   gem 'debugger'
   gem 'poltergeist', git: 'https://github.com/jonleighton/poltergeist.git'
+  gem 'database_cleaner'
 end
 
 # To use ActiveModel has_secure_password

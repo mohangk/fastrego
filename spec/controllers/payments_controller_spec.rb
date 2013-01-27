@@ -2,20 +2,17 @@ require 'spec_helper'
 
 Notification = ActiveMerchant::Billing::Integrations::PaypalAdaptivePayment::Notification
 
-def GATEWAY.setup_purchase(*args)
-  { 'payKey' => 'FakePayKey' }
-end
-
-def GATEWAY.redirect_url_for(*args)
-  '/FakePayPal'
-end
-
 describe PaymentsController do
+
 
   let(:registration) { FactoryGirl.create(:granted_registration) }
   let(:user) { registration.team_manager }
 
   before(:each) do
+
+    GATEWAY.stub(:setup_purchase).and_return(double(:fake_response, :[] =>'FakePayKey', request: {}, json:{}))
+    GATEWAY.stub(:redirect_url_for).and_return '/FakePayPal'
+
     FactoryGirl.create :host_paypal_account, tournament: registration.tournament
     user.confirm!
     sign_in user
@@ -166,47 +163,42 @@ describe PaymentsController do
   end
 
   describe "POST ipn" do
-    let(:params) {
-      {
-        "transaction"=>
-        {"0"=>
-         {".is_primary_receiver"=>"true",
-          ".id_for_sender_txn"=>"9K096230EL9214721",
-          ".receiver"=>"fastre_1356344930_biz@gmail.com",
-          ".amount"=>"USD 1000.00",
-          ".status"=>"Completed",
-          ".id"=>"06L90310UW5273008",
-          ".status_for_sender_txn"=>"Completed",
-          ".paymentType"=>"SERVICE",
-          ".pending_reason"=>"NONE"},
-          "1"=>
-         {".paymentType"=>"SERVICE",
-          ".id_for_sender_txn"=>"21X87400MR783724Y",
-          ".is_primary_receiver"=>"false",
-          ".status_for_sender_txn"=>"Completed",
-          ".receiver"=>"mohang_1356050668_biz@gmail.com",
-          ".amount"=>"USD 900.00",
-          ".pending_reason"=>"NONE",
-          ".id"=>"8LK3354461194463S", ".status"=>"Completed"}
-        },
-        "log_default_shipping_address_in_transaction"=>"false",
-        "action_type"=>"PAY",
-        "ipn_notification_url"=>"http://staging-mt-fastrego.herokuapp.com/ipn",
-        "charset"=>"windows-1252", "transaction_type"=>"Adaptive Payment PAY",
-        "notify_version"=>"UNVERSIONED",
-        "cancel_url"=>"http://staging-mt-fastrego.herokuapp.com/canceled",
-        "verify_sign"=>"AUv8k1qXzdVB6.NDG8oijgOskCK2A2PY9giokojAf13jj8IpDQN1rsgY",
-        "sender_email"=>"buyer_1356051155_per@gmail.com",
-        "fees_payer"=>"EACHRECEIVER",
-        "return_url"=>"http://staging-mt-fastrego.herokuapp.com/completed",
-        "reverse_all_parallel_payments_on_error"=>"false",
-        "pay_key"=>"AP-6HN366870A409841A",
-        "status"=>"COMPLETED",
-        "test_ipn"=>"1",
-        "payment_request_date"=>"Sat Jan 05 00:02:23 PST 2013"}
+    let(:raw_request) {
+"transaction%5B0%5D.is_primary_receiver=true&\
+transaction%5B0%5D.id_for_sender_txn=8PY816957G648382H&\
+log_default_shipping_address_in_transaction=false&\
+transaction%5B0%5D.receiver=fastre_1356344930_biz%40gmail.com&\
+action_type=PAY&ipn_notification_url=http%3A//staging-mt-fastrego.herokuapp.com/ipn&\
+transaction%5B1%5D.paymentType=SERVICE&\
+transaction%5B0%5D.amount=USD+50.00&\
+charset=windows-1252&transaction_type=Adaptive+Payment+PAY&\
+transaction%5B1%5D.id_for_sender_txn=76E764642W014120T&\
+transaction%5B1%5D.is_primary_receiver=false&\
+transaction%5B0%5D.status=Completed&\
+notify_version=UNVERSIONED&\
+transaction%5B0%5D.id=9GL074773F315032R&\
+cancel_url=http%3A//staging-mt-fastrego.herokuapp.com/canceled&\
+transaction%5B1%5D.status_for_sender_txn=Completed&\
+transaction%5B1%5D.receiver=mohang_1356050668_biz%40gmail.com&\
+verify_sign=Ayoqld3fWVmmp5xMCzJQ60DBUtsYAmdKdz0xbQ7-WEELGYIYNfQA-qu1&\
+sender_email=buyer2_1356051252_per%40gmail.com&\
+fees_payer=EACHRECEIVER&\
+transaction%5B0%5D.status_for_sender_txn=Completed&\
+return_url=http%3A//staging-mt-fastrego.herokuapp.com/&\
+transaction%5B0%5D.paymentType=SERVICE&\
+transaction%5B1%5D.amount=USD+47.50&\
+reverse_all_parallel_payments_on_error=false&\
+transaction%5B1%5D.pending_reason=NONE&\
+pay_key=AP-6AB52111TJ2109115&\
+transaction%5B1%5D.id=02T89064XT796082E&\
+transaction%5B0%5D.pending_reason=NONE&\
+status=COMPLETED&transaction%5B1%5D.status=Completed&test_ipn=1&\
+payment_request_date=Fri+Jan+18+20%3A01%3A29+PST+2013"
     }
 
-    subject(:ipn) { post :ipn, params }
+    subject(:ipn) { @request.env['RAW_POST_DATA'] = raw_request; post :ipn, { }, 'CONTENT_TYPE' => 'application/octet-stream'; @request.env.delete('RAW_POST_DATA') }
+
+    let(:notification_params) { Notification.new(raw_request).params }
 
     before do
       sign_out user
@@ -224,8 +216,8 @@ describe PaymentsController do
 
     context 'when the payment is found' do
       let!(:payment) { FactoryGirl.create :paypal_payment, 
-                       transaction_txnid: params['pay_key'], 
-                       amount_sent: params['transaction']['0']['.amount'].split[1].to_i,
+                       transaction_txnid: notification_params['pay_key'], 
+                       amount_sent: notification_params['transaction[0].amount'].split[1].to_i,
                        registration: registration }
 
       it 'sets it as paid' do

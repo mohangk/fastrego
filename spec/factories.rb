@@ -137,9 +137,10 @@ FactoryGirl.define do
 
   factory :paypal_payment do
     account_number 'test_account@gmail.com'
-    amount_sent 980
+    amount_sent 50
     date_sent '2012-12-12'
     status 'Draft'
+    transaction_txnid 'fakeid123'
     registration
   end  
 
