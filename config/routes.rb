@@ -27,11 +27,12 @@ UadcRego::Application.routes.draw do
   end
 
   resources :manual_payments, only: [:create, :destroy], controller: 'payments' 
-  resources :payments, only: [:create, :destroy]
+  resources :payments, only: [:create, :destroy] do
+    get 'canceled'  => 'payments#canceled', on: :member
+    get 'completed' => 'payments#completed', on: :member
+  end
 
   match 'checkout'  => 'payments#checkout'
-  match 'completed' => 'payments#completed'
-  match 'canceled'  => 'payments#canceled'
   match 'ipn'       => 'payments#ipn'
 
 

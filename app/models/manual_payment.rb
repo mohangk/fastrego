@@ -47,7 +47,8 @@ class ManualPayment < Payment
     if user.nil?
       !confirmed?
     else
-      !confirmed? and user == registration.team_manager
+      !confirmed? and owner?(user)
     end
   end
+
 end

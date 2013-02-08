@@ -7,10 +7,11 @@ describe PaymentsController do
 
   let(:registration) { FactoryGirl.create(:granted_registration) }
   let(:user) { registration.team_manager }
+  let(:fake_setup_purchase_response) { double(:[] =>'FakePayKey', request: {}, json:{}, success?: true) }
 
   before(:each) do
 
-    GATEWAY.stub(:setup_purchase).and_return(double(:fake_response, :[] =>'FakePayKey', request: {}, json:{}))
+    GATEWAY.stub(:setup_purchase).and_return(fake_setup_purchase_response)
     GATEWAY.stub(:redirect_url_for).and_return '/FakePayPal'
 
     FactoryGirl.create :host_paypal_account, tournament: registration.tournament
@@ -109,8 +110,10 @@ describe PaymentsController do
     it 'assigns a newly created payment as @paypal_payment' do
       checkout
       assigns(:paypal_payment).should be_a(PaypalPayment)
+      assigns(:paypal_payment).status.should == PaypalPayment::STATUS_DRAFT
       assigns(:paypal_payment).registration.team_manager.should == user
       assigns(:paypal_payment).amount_sent.should == registration.balance_fees
+      assigns(:paypal_payment).transaction_txnid.should == 'FakePayKey'
       assigns(:paypal_payment).should be_persisted
     end
 
@@ -127,10 +130,9 @@ describe PaymentsController do
       end
     end
 
-    context 'when there are validation errors' do
+    context 'when there are exceptions' do
       before do
-        fake_paypal_payment = double(:paypal_payment, save: false, errors: double(full_messages: ["Error Message"],any?: true)).as_null_object
-        PaypalPayment.stub(:new).and_return(fake_paypal_payment)
+        GATEWAY.stub(:setup_purchase).and_raise(Exception.new)
       end
 
       it 'should render tournament registration page' do
@@ -144,19 +146,73 @@ describe PaymentsController do
       end
     end
 
-    context 'when there are excpetions' do
-      before do
-        GATEWAY.stub(:setup_purchase).and_raise(Exception.new)
+  end
+
+  describe "GET completed" do
+    let(:paypal_payment) { FactoryGirl.create :paypal_payment, registration: registration }
+
+    subject(:completed) { get :completed, { id: paypal_payment.id }   }
+
+    it 'initializes the right payment' do
+      completed
+      assigns(:paypal_payment).should be_a(PaypalPayment)
+      assigns(:paypal_payment).id.should == paypal_payment.id
+    end
+
+    it 'should render tournament registration page' do
+      completed
+      response.should render_template(:completed)
+    end
+
+    context 'when someone tries to access payments not owned by them' do
+
+      before :each do
+        user2 = FactoryGirl.create :user
+        sign_in user2
+        completed
       end
 
-      it 'should render tournament registration page' do
-        checkout
-        response.should render_template(:show)
+      it "redirects back to profile" do
+        response.should redirect_to profile_path
+      end
+    end
+  end
+
+  describe "GET canceled" do
+    let(:paypal_payment) { FactoryGirl.create :paypal_payment, registration: registration }
+
+    subject(:canceled) { get :canceled, { id: paypal_payment.id }   }
+
+    it 'initializes the right payment' do
+      canceled
+      assigns(:paypal_payment).should be_a(PaypalPayment)
+      assigns(:paypal_payment).id.should == paypal_payment.id
+    end
+
+    it 'sets the payment status to cancel' do
+      canceled
+      assigns(:paypal_payment).status.should == PaypalPayment::STATUS_CANCELED
+    end
+
+    it 'should render tournament registration page' do
+      canceled
+      response.should render_template(:canceled)
+    end
+
+    context 'when someone tries to access payments not owned by them' do
+
+      before :each do
+        user2 = FactoryGirl.create :user
+        sign_in user2
+        canceled
       end
 
-      it "should display validation errors" do
-        checkout
-        response.body.should have_content("Failure when trying to submit to PayPal")
+      it "doesn't allow you to edit other folks payments" do
+        assigns(:paypal_payment).status.should == PaypalPayment::STATUS_DRAFT
+      end
+
+      it "redirects back to profile" do
+        response.should redirect_to profile_path
       end
     end
 
@@ -215,15 +271,15 @@ payment_request_date=Fri+Jan+18+20%3A01%3A29+PST+2013"
     end
 
     context 'when the payment is found' do
-      let!(:payment) { FactoryGirl.create :paypal_payment, 
-                       transaction_txnid: notification_params['pay_key'], 
+      let!(:payment) { FactoryGirl.create :paypal_payment,
+                       transaction_txnid: notification_params['pay_key'],
                        amount_sent: notification_params['transaction[0].amount'].split[1].to_i,
                        registration: registration }
 
       it 'sets it as paid' do
         ipn
         payment.reload
-        payment.status.should == 'Success' 
+        payment.status.should == PaypalPayment::STATUS_COMPLETED
       end
 
     end

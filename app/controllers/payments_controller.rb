@@ -15,25 +15,24 @@ class PaymentsController < ApplicationController
   end
 
   def destroy
-    payment = ManualPayment.find_by_id(params[:id])
+    payment = ManualPayment.find(params[:id])
+
     if !payment.nil? and payment.destroyable?(current_user)
       payment.destroy
-      redirect_to profile_url, notice: 'ManualPayment was removed.'
+      redirect_to profile_url, notice: 'Payment was removed.'
     else
       redirect_to profile_url, alert: 'Unauthorised access.'
     end
   end
 
   def checkout
-    @paypal_payment = PaypalPayment.new({:registration => current_registration,
-                                         :date_sent => Date.today,
-                                         :amount_sent => current_registration.balance_fees})
-
     begin
+      @paypal_payment = PaypalPayment.create current_registration
+
       response = GATEWAY.setup_purchase(
         :fees_payer =>           'PRIMARYRECEIVER',
-        :return_url =>           url_for(:controller=> 'users', :action => 'show', :only_path => false),
-        :cancel_url =>           url_for(:action => 'canceled', :only_path => false),
+        :return_url =>           completed_payment_path(only_path: false, id: @paypal_payment.id),
+        :cancel_url =>           canceled_payment_path(only_path: false, id: @paypal_payment.id),
         :ipn_notification_url => url_for(:action => 'ipn', :only_path => false),
         :receiver_list =>        current_registration.paypal_recipients
       )
@@ -41,9 +40,12 @@ class PaymentsController < ApplicationController
       logger.info "PAYPAL Setup purchase request'#{response.request.inspect}'"
       logger.info "PAYPAL Setup purchase response'#{response.json.inspect}'"
 
-      @paypal_payment.transaction_txnid = response["payKey"]
-      @paypal_payment.primary_receiver = current_registration.paypal_recipients[0][:email]
-      @paypal_payment.secondary_receiver = current_registration.paypal_recipients[1][:email]
+      if response.success?
+        @paypal_payment.update_pay_key(response["payKey"])
+        redirect_to (GATEWAY.redirect_url_for(response["payKey"]))
+      else
+        raise 'Setup purchase response from Paypal failed'
+      end
 
     rescue Exception => e
       logger.error e.message
@@ -52,26 +54,22 @@ class PaymentsController < ApplicationController
       @payment = ManualPayment.new
       @paypal_payment.errors[:base] << "Paypal Payment error #{e.message}"
       @registration = current_registration
-
       render 'users/show' and return
     end
 
-    if @paypal_payment.save
-      redirect_to (GATEWAY.redirect_url_for(response["payKey"]))
-    else
-      @payment = ManualPayment.new
-      @registration = current_registration
-      render 'users/show'
-    end
-    # For redirecting the customer to the actual paypal site to finish the payment.
   end
 
   def completed
-    render text: 'Completed payment'
+    @paypal_payment = PaypalPayment.find(params[:id])
+    abort_if_not_owner(@paypal_payment) and return
+    render 'users/completed'
   end
 
   def canceled
-    render text: 'Cancel payment'
+    @paypal_payment = PaypalPayment.find(params[:id])
+    abort_if_not_owner(@paypal_payment) and return
+    @paypal_payment.cancel!
+    render 'users/canceled'
   end
 
   def ipn
@@ -87,18 +85,16 @@ class PaymentsController < ApplicationController
       begin
         completeness = notify.complete?
         if completeness and payment.amount_sent.to_i == notify.amount.split[1].to_i
-          logger.error "notify amount #{notify.amount}"
-          logger.error "status: #{notify.complete?}"
-          payment.status = 'Success'
+          log_notify notify
+          payment.status = PaypalPayment::STATUS_COMPLETED
           payment.amount_received = notify.amount.split[1].to_i
         elsif completeness and notify.amount > 0
-          logger.error "notify amount #{notify.amount}"
-          logger.error "status: #{notify.complete?}"
-          payment.status = 'Partial'
-
+          log_notify notify
+          payment.status = PaypalPayment::STATUS_COMPLETED
           payment.amount_received = notify.amount
         else
-          payment.status = 'Fail'
+          log_notify notify
+          payment.status = PaypalPayment::STATUS_FAIL
           logger.error("Failed to verify Paypal's notification, please investigate")
         end
 
@@ -112,6 +108,17 @@ class PaymentsController < ApplicationController
     end
 
     render nothing: true
+  end
+
+  private
+
+  def log_notify notify
+    logger.error "notify amount #{notify.amount}"
+    logger.error "status: #{notify.complete?}"
+  end
+
+  def abort_if_not_owner(payment)
+    redirect_to profile_url, alert: 'Error' if payment.nil? || !payment.owner?(current_user)
   end
 
 end

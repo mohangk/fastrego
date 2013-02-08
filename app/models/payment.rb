@@ -18,4 +18,8 @@ class Payment < ActiveRecord::Base
   def deleteable?
     raise NotImplementedError
   end
+
+  def owner?(user)
+    user == registration.team_manager
+  end
 end
