@@ -11,6 +11,9 @@ production:
   uadc:
     - debate_experience
     - tshirt_size
+  easters2013:
+    - mobile
+    - date_of_birth
 
 test:
   t1:
