@@ -3,7 +3,7 @@
 = f.input :passport_number
 = f.input :nationality
 = f.input :email
-= f.input :dietary_requirement, collection: ['No_special_requirements', 'Halal', 'Vegetarian'], as: :radio_buttons
+= f.input :dietary_requirement, collection: ['No_special_requirements', 'Halal', 'Vegetarian', 'Vegan', 'Kosher'], as: :radio_buttons
 = f.input :allergies
 = f.input :arrival_at, {as: :datetime, use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year } 
 = f.input :departure_at, {as: :datetime, use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year } 
