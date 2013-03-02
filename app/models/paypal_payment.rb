@@ -9,6 +9,7 @@ class PaypalPayment < Payment
   # <tt>PROCESSING</tt>::
   # <tt>PENDING</tt>::
   STATUS_DRAFT = 'Draft'
+  STATUS_PENDING = 'Pending'
   STATUS_COMPLETED = 'Completed'
   STATUS_PARTIAL = 'Partial'
   STATUS_CANCELED = 'Canceled'
@@ -39,7 +40,7 @@ class PaypalPayment < Payment
   end
 
   def update_pay_key payKey
-    self.update_attributes!(transaction_txnid: payKey)
+    self.update_attributes!(status: STATUS_PENDING, transaction_txnid: payKey)
   end
 
   def cancel!

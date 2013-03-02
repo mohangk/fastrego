@@ -1,0 +1,18 @@
+- unless @registration.paypal_payments.empty?
+  %h4.blue PayPal payment history
+  %table.paypal-payment-history.table.table-striped.table-bordered.table-condensed
+    %thead
+      %tr
+        %th ID
+        %th Date
+        %th Amount
+        %th Status
+        %th Host comments
+
+    - @registration.paypal_payments.each do |p|
+      %tr
+        %td= p.id
+        %td= p.created_at
+        %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
+        %td= p.status
+        %td= p.admin_comment

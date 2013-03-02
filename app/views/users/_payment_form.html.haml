@@ -8,7 +8,7 @@
 
   = f.label :date_sent, 'Date'
   = f.date_select :date_sent, { use_short_month: true, start_year: Date.today.year, end_year: (Date.today + 1.year).year },  {class: 'span1'}
-  = f.label :account_number, 'A/C #'
+  = f.label :account_number, 'Ref #'
   = f.text_field :account_number, class: 'input-small'
   = f.label :amount_sent, current_tournament.currency_symbol 
   = f.text_field :amount_sent, class: 'input-small'

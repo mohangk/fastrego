@@ -6,6 +6,8 @@ class Registration < ActiveRecord::Base
   belongs_to :institution
 
   has_many :payments, dependent: :destroy
+  has_many :paypal_payments, dependent: :destroy
+  has_many :manual_payments, dependent: :destroy
 
   has_many :debaters, dependent: :destroy
   has_many :adjudicators, dependent: :destroy

@@ -110,7 +110,7 @@ describe PaymentsController do
     it 'assigns a newly created payment as @paypal_payment' do
       checkout
       assigns(:paypal_payment).should be_a(PaypalPayment)
-      assigns(:paypal_payment).status.should == PaypalPayment::STATUS_DRAFT
+      assigns(:paypal_payment).status.should == PaypalPayment::STATUS_PENDING
       assigns(:paypal_payment).registration.team_manager.should == user
       assigns(:paypal_payment).amount_sent.should == registration.balance_fees
       assigns(:paypal_payment).transaction_txnid.should == 'FakePayKey'
@@ -133,6 +133,11 @@ describe PaymentsController do
     context 'when there are exceptions' do
       before do
         GATEWAY.stub(:setup_purchase).and_raise(Exception.new)
+      end
+
+      it 'leaves the payment status as draft' do
+        checkout
+        assigns(:paypal_payment).status.should == PaypalPayment::STATUS_DRAFT
       end
 
       it 'should render tournament registration page' do

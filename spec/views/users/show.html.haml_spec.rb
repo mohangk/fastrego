@@ -115,7 +115,7 @@ describe "users/show.html.haml" do
 
   end
 
-  describe "payment section" do
+  describe "payment details section" do
 
     before :each do
     end

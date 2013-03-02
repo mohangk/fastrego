@@ -135,7 +135,7 @@ describe "Users" do
             select date.year.to_s
             select date.strftime '%b'
             select date.day.to_s
-            fill_in 'A/C #', with: 'ABC123'
+            fill_in 'Ref #', with: 'ABC123'
             fill_in 'RM', with: 1000.50
             fill_in 'Comments', with: 'This is a slightly longer comment then usual'
             attach_file 'payment_scanned_proof', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')

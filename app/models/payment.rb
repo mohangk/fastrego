@@ -1,5 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :registration
+
   validates :registration, presence: true
   validates :date_sent, presence: true
 

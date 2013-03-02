@@ -46,10 +46,12 @@
         %td Total unconfirmed payments  
         %td #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
         %td
+
+    = render 'users/paypal_payment_table'
     = render 'users/payment_table'
 
     .well
-      %p Use this form to submit the proof of transfer
+      %p Use this form to submit a manual payment
       = render 'users/payment_form'
 
 %section#confirmed_slots

@@ -1,31 +1,27 @@
-- unless @registration.payments.empty?
-  %h4.blue Payment history
-  %table.payment-history.table.table-striped.table-bordered.table-condensed
+- unless @registration.manual_payments.empty?
+  %h4.blue Manual payment history
+  %table.manual-payment-history.table.table-striped.table-bordered.table-condensed
     %thead
       %tr
+        %th ID
         %th Date
-        %th Type
-        %th A/C #
         %th Amount sent
+        %th Ref #
         %th Comments
         %th Proof
         %th Amount received
-        %th Status
-        %th Our comments
+        %th Host comments
         %th
 
-    - @registration.payments.each do |p|
+    - @registration.manual_payments.each do |p|
       %tr
+        %td= p.id
         %td= p.date_sent
-        %td= p.type.humanize
-        %td= p.account_number
         %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
+        %td= p.account_number
         %td= p.comments
-        %td
-          - if p.respond_to?(:scanned_proof)
-            =link_to 'View', p.scanned_proof.url, 'data-popup' => true
+        %td= link_to 'View', p.scanned_proof.url, 'data-popup' => true
         %td= number_to_currency p.amount_received, unit: current_tournament.currency_symbol
-        %td= p.status
         %td= p.admin_comment
         %td
           -if p.deleteable?

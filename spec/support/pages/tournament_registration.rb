@@ -14,13 +14,23 @@ class TournamentRegistration < GenericPage
     DebateTeamDetails.new
   end
 
-  def pay_via_paypal
+  def pay_via_paypal stubbed = false
+
     click_link 'Pay now via PayPal'
-    PayPalFlow.new
+
+    if stubbed
+      CompletedPaymentPage.new
+    else
+      PayPalFlow.new
+    end
   end
 
-  def has_payment?
-    has_css? '.payment-history'
+  def has_manual_payment?
+    has_css? '.manual-payment-history'
+  end
+
+  def has_paypal_payment?
+    has_css? '.paypal-payment-history'
   end
 
 end
