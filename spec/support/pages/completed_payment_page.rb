@@ -17,6 +17,9 @@ class CompletedPaymentPage < GenericPage
     page.should have_content 'Requested slots'
   end
 
+  def return_to_registration_page
+    click_link 'Return to registration page'
+  end
 
 end
 

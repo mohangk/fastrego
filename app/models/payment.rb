@@ -4,6 +4,8 @@ class Payment < ActiveRecord::Base
   validates :registration, presence: true
   validates :date_sent, presence: true
 
+  default_scope order('created_at')
+
   def self.confirmed
     where("amount_received is not null")
   end

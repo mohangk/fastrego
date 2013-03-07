@@ -15,7 +15,13 @@ class PayPalFlow < GenericPage
     has_content? amount
   end
 
-  def complete_payment
+  def cancel_payment
+    fill_in_credit_card_form
+    click_button 'Cancel'
+    CompletedPaymentPage.new
+  end
+
+  def fill_in_credit_card_form
     fill_in 'Credit card number', with: '4372896746997231'
     fill_in 'expdate_month', with: '1'
     fill_in 'expdate_year', with: '18'
@@ -32,6 +38,10 @@ class PayPalFlow < GenericPage
     fill_in 'Email', with: 'test@test.com'
     click_button 'Review and Continue'
     click_button 'Continue'
+  end
+
+  def complete_payment
+    fill_in_credit_card_form
     click_button 'Pay'
     click_button 'Return'
     CompletedPaymentPage.new

@@ -1,7 +1,12 @@
-%section.add-institution
-  .row
-    .span9
-      %h4.blue Canceled payment
-      
-      = link_to 'Back', profile_path
+%dl
+  .alert.alert-error
+    You canceled the PayPal transaction
+
+  %dd Payment ID
+  %dt.id= @paypal_payment.id
+  %dd Status
+  %dt.status= @paypal_payment.status
+
+=link_to 'Return to registration page', profile_path
+
 
