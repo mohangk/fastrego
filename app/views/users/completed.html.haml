@@ -1,0 +1,9 @@
+%dl
+  %dd Payment ID
+  %dt.id= @paypal_payment.id
+  %dd Status
+  %dt.status= @paypal_payment.status
+
+:javascript
+  new FastRego.PaymentStatusPoller(parseInt($('.id').text()),
+    $('.status')).start()

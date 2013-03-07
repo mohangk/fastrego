@@ -9,4 +9,6 @@
 //= require bootstrap-dropdown.js
 //= require bootstrap-alert.js
 //= require jquery.cookie.js
+//= require payment_status_poller.js.coffee
+
 

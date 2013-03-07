@@ -34,6 +34,6 @@ class PayPalFlow < GenericPage
     click_button 'Continue'
     click_button 'Pay'
     click_button 'Return'
-    TournamentRegistration.new
+    CompletedPaymentPage.new
   end
 end

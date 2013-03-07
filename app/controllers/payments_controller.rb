@@ -3,6 +3,16 @@ class PaymentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:ipn]
   include ActiveMerchant::Billing::Integrations
 
+  def show
+    @paypal_payment = Payment.find(params[:id])
+
+    abort_if_not_owner(@paypal_payment) and return
+
+    respond_to do |format|
+      format.json { render json: @paypal_payment }
+    end
+  end
+
   def create
     @payment = ManualPayment.new(params[:payment])
     @payment.registration = current_registration

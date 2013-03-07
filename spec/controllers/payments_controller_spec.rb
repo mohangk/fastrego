@@ -35,7 +35,44 @@ describe PaymentsController do
 
   pending 'when not assigned as a team manager yet/ registration not persisted'
 
-  describe "POST payment" do
+  describe 'GET /payment/:id' do
+
+    let(:paypal_payment) { FactoryGirl.create :paypal_payment, registration: registration }
+
+    subject(:show_payment) {
+      get :show, id: paypal_payment.id, format: :json
+    }
+
+    it 'assigns the right payment' do
+      sign_in user
+      show_payment
+      assigns(:paypal_payment).id.should == paypal_payment.id
+      assigns(:paypal_payment).should be_a(PaypalPayment)
+    end
+
+    it 'responds with JSON' do
+      show_payment
+      response.status.should == 200
+      response.headers['Content-Type'].should match /application\/json/
+    end
+
+    context 'when someone else tries to access the payment' do
+
+      before :each do
+        user2 = FactoryGirl.create :user
+        sign_in user2
+        show_payment
+      end
+
+      it "redirects back to profile" do
+        response.should redirect_to profile_path
+      end
+
+    end
+
+  end
+
+  describe 'POST payment' do
 
     context 'with valid params' do
       it 'creates a new Payment' do

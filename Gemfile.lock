@@ -111,6 +111,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    colorize (0.5.8)
     columnize (0.3.6)
     database_cleaner (0.9.1)
     debugger (1.2.3)
@@ -171,6 +172,12 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.7.4)
+    konacha (2.4.0)
+      actionpack (>= 3.1, < 5)
+      capybara
+      colorize
+      railties (>= 3.1, < 5)
+      sprockets
     libwebsocket (0.1.7.1)
       addressable
       websocket
@@ -322,6 +329,7 @@ DEPENDENCIES
   foreman
   haml-rails
   jquery-rails
+  konacha
   meta_search
   newrelic_rpm
   paperclip

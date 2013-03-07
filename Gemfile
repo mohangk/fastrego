@@ -48,6 +48,7 @@ group :development, :test do
   gem 'debugger'
   gem 'poltergeist', git: 'https://github.com/jonleighton/poltergeist.git'
   gem 'database_cleaner'
+  gem 'konacha'
 end
 
 # To use ActiveModel has_secure_password

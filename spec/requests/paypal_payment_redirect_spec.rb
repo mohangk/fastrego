@@ -1,6 +1,7 @@
 require 'spec_helper'
+require Rails.root.join 'lib/stub_gateway'
 
-describe 'Paypal payments integration', js: true do
+describe 'Paypal payments redirect', js: true do
 
   let!(:t1) { FactoryGirl.create(:t1_tournament) }
   let!(:currency_symbol) { FactoryGirl.create(:currency_symbol, tournament: t1) }
@@ -13,19 +14,17 @@ describe 'Paypal payments integration', js: true do
   before :each do
     r = FactoryGirl.create :granted_registration, tournament: t1
     user_login t1, r.team_manager.email, 'password'
-    PayPalFlow.developer_login
   end
 
-  it 'allows payment via paypal', js: true do
+  it 'polls for the latest payment status, updates it and redirects', js: true do
     tournament = TournamentRegistration.new.tap { |t| t.visit }
     tournament.should_not have_paypal_payment
-    paypal = tournament.pay_via_paypal
-    paypal.should be_on_payment_page
-    paypal.should have_payment_amount '90.00'
-    completed_page = paypal.complete_payment
-    completed_page.status.should == 'Pending'
-    tournament = TournamentRegistration.new.tap { |t| t.visit }
-    tournament.should have_paypal_payment
+    completed_payment = tournament.pay_via_paypal true
+    completed_payment.status.should == 'Pending'
+    payment = Payment.find completed_payment.payment_id
+    payment.update_attribute(:status, PaypalPayment::STATUS_COMPLETED)
+    completed_payment.status? PaypalPayment::STATUS_COMPLETED
+    completed_payment.redirected?
   end
 
 end
