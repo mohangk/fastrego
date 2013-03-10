@@ -18,6 +18,8 @@ class CompletedPaymentPage < GenericPage
   end
 
   def return_to_registration_page
+    Capybara.ignore_hidden_elements = true
+    page.should have_content 'Return to registration page'
     click_link 'Return to registration page'
   end
 

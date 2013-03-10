@@ -5,7 +5,7 @@ class FastRego.PaymentStatusPoller
   timeout: 30000
   timeoutCounter: 0
 
-  constructor: (@payment_id, @statusEl) ->
+  constructor: (@payment_id, @statusEl, @progressEl, @doneEl, @completedEl, @timedoutEl) ->
     console.log 'in constructor'
 
   isComplete: ->
@@ -17,10 +17,19 @@ class FastRego.PaymentStatusPoller
   setStatus: (data) ->
     @statusEl.html(data.status)
 
+  finishPolling: ->
+    @progressEl.addClass('hide')
+    @doneEl.removeClass('hide')
+
   start: =>
-    if @isComplete() or @isTimedout()
-      @redirect '/'
-    @pollStatus() unless @isComplete() or @isTimedout()
+    if @isComplete() 
+      @finishPolling()
+      @completedEl.removeClass('hide')
+    else if @isTimedout()
+      @finishPolling()
+      @timedoutEl.removeClass('hide')
+    else
+      @pollStatus()
 
   pollStatus: ->
     $.ajax
@@ -30,5 +39,3 @@ class FastRego.PaymentStatusPoller
         @timeoutCounter += @interval
         setTimeout @start, @interval
 
-  redirect: (location) ->
-    window.location = location

@@ -2,13 +2,18 @@ class PayPalFlow < GenericPage
 
   def self.developer_login
     Capybara::visit 'https://developer.paypal.com/'
-    Capybara::fill_in 'Email Address', with: ENV['PAYPAL_LOGIN']
-    Capybara::fill_in 'Password', with: ENV['PAYPAL_PASSWORD']
-    Capybara::click_button 'Log In'
+    Capybara::click_link 'Log In with PayPal'
+    new_window = Capybara.current_session.driver.browser.window_handles.last
+    Capybara.current_session.within_window new_window do
+      Capybara::fill_in 'e', with: ENV['PAYPAL_LOGIN']
+      Capybara::fill_in 'pw', with: ENV['PAYPAL_PASSWORD']
+      Capybara::click_button 'Log In'
+    end
   end
 
   def on_payment_page?
-   has_content? 'Choose a way to pay'
+    debugger
+   page.should have_content 'Choose a way to pay'
   end
 
   def has_payment_amount? amount

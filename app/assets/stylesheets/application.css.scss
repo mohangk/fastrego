@@ -89,7 +89,6 @@ section#payment {
   }
 
   .payment_form {
-      
       div#error_explanation {
         padding-bottom: 1em;
       }
@@ -125,4 +124,8 @@ section#payment {
 
 .edit_debaters select, .edit_adjudicators select, .edit_observers select {
   width: 5em;
+}
+
+.text-center {
+  text-align: center;
 }

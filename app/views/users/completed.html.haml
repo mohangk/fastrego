@@ -1,9 +1,27 @@
-%dl
-  %dd Payment ID
-  %dt.id= @paypal_payment.id
-  %dd Status
-  %dt.status= @paypal_payment.status
+.alert.alert-info
+  .progress.progress-striped.active
+    .bar(style='width: 100%;')
+  %p.text-center
+    Waiting for response from PayPal. Do not reload or click away.
+.alert.alert-error.hide
+  %p.text-center
+    The payment failed to complete. Please contact the #{mail_to Setting.key(current_tournament, 'tournament_registration_email'), 'tournament host' }. #{link_to 'Return to registration page', profile_path, class: 'done hide'}
+.alert.alert-success.hide
+  %p.text-center
+    Your payment was successful! #{link_to 'Return to registration page', profile_path, class: 'done hide'}
+%dl.dl-horizontal
+  %dt Payment ID
+  %dd.id= @paypal_payment.id
+  %dt Status
+  %dd.status= @paypal_payment.status
+
+=link_to 'Return to registration page', profile_path, class: 'done hide'
 
 :javascript
   new FastRego.PaymentStatusPoller(parseInt($('.id').text()),
-    $('.status')).start()
+    $('.status'),
+    $('.alert-info'),
+    $('.done'),
+    $('.alert-success'),
+    $('.alert-error')
+    ).start()

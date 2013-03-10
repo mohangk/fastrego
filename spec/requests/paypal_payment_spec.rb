@@ -20,9 +20,10 @@ describe 'Paypal payments integration', js: true do
     paypal.should have_payment_amount '90.00'
     completed_page = paypal.complete_payment
     #force an update - IPN wont reach local server
-    Payment.last.update_attributes status: PaypalPayment::STATUS_COMPLETED
+    payment = Payment.find completed_page.payment_id
+    payment.update_attributes status: PaypalPayment::STATUS_COMPLETED
     completed_page.status? 'Completed'
-    completed_page.redirected?
+    completed_page.return_to_registration_page
     tournament = TournamentRegistration.new
     tournament.should have_paypal_payment
   end
