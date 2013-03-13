@@ -11,24 +11,57 @@ ActiveAdmin.register Payment do
   config.sort_order = "instituion_id desc , payments.id desc"
 
   index do
+    column 'ID', :id
     column 'Inst', sortable: 'institutions.abbreviation' do |p|
       link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.institution)
     end
+    column 'Type', :type
+    column 'Status', :status
     column 'Date', :date_sent
-    column "Amount sent" do |p|
+    column 'Amount sent' do |p|
       number_to_currency p.amount_sent, unit: ''
     end
-    column 'A/C #', :account_number
+    column 'Ref #', :account_number
     column 'Comments', :comments
-    column 'Proof'  do |p|
-      link_to 'View', p.scanned_proof.url
-    end
-    column :created_at
-    column "Amount received" do |p|
+    column 'Amount received' do |p|
       number_to_currency p.amount_received, unit: ''
     end
     column 'Admin comment', :admin_comment
-    default_actions
+    column '' do |p|
+      links = []
+      links << link_to('Show', admin_payment_path(p))
+      if p.type == 'ManualPayment'
+        links << link_to('Proof', p.scanned_proof.url)
+        links << link_to('Edit', edit_admin_payment_path(p))
+        links << link_to('Delete', admin_payment_path(p), method: :delete)
+      end
+      safe_join links, ' '
+    end
+  end
+
+  show do |p|
+    if p.is_a? ManualPayment
+      attributes_table do
+        row :id
+        row :type
+        row :status
+        row :date_sent
+        row :amount_sent
+        row :account_number
+        row :comments
+        row :amount_received
+        row :admin_comment
+      end
+    else
+      attributes_table do
+        row :id
+        row :type
+        row :status
+        row :date_sent
+        row :amount_sent
+        row :admin_comment
+      end
+    end
   end
 
   form do |f|
@@ -40,7 +73,7 @@ ActiveAdmin.register Payment do
       f.input :registration, label: 'Institution', as: :select, collection: Hash[Registration.for_tournament(current_subdomain, current_admin_user).map{ |r| [r.institution_name,r.id]}],:input_html => { :disabled => disable_field }
       f.input :date_sent, :input_html => { :disabled => disable_field }
       f.input :amount_sent, as: :string, :input_html => { :disabled => disable_field }
-      f.input :account_number, :input_html => { :disabled => disable_field }
+      f.input :account_number, :label => 'Ref #', :input_html => { :disabled => disable_field }
       f.input :scanned_proof
       f.input :comments, :input_html => { :disabled => disable_field }
       if !f.object.new_record?

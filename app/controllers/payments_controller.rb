@@ -110,7 +110,7 @@ class PaymentsController < ApplicationController
 
       rescue => e
         logger.error "FAILED : #{notify.complete?}"
-        payment.status = 'Fail'
+        payment.status = PaypalPayment::STATUS_FAIL
         raise
       ensure
         payment.save

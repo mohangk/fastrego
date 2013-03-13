@@ -8,42 +8,106 @@ describe 'AdminInstitution' do
   let!(:t1_registration) { FactoryGirl.create(:registration, tournament: t1, team_manager: t1_team_manager) }
   let!(:t2_registration) { FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager) }
 
+  pending 'only lists team managers who have submitted payments in the select'
+  pending 'only list institutions that have submitted payments in the select'
+  pending 'only proof of payments relevant to the team manager are available'
+
+  before :each do
+    login_for_tournament(t2)
+  end
+
   describe 'payments index' do
-    pending 'only lists team managers who have submitted payments in the select'
-    pending 'only list institutions that have submitted payments in the select'
+
+    let!(:manual_payment) { FactoryGirl.create :completed_manual_payment, registration: t2_registration }
+    let!(:paypal_payment) { FactoryGirl.create :paypal_payment, registration: t2_registration }
+    let!(:payments) {[manual_payment, paypal_payment]}
+
+    before :each do
+      visit admin_payments_path
+    end
+
+    it 'lists the payments' do
+
+      payment_list = AdminPaymentListPage.new
+      payment_list.should have(payments.count).data_rows
+
+      data_rows = payment_list.data_rows
+
+      data_rows[0].should have_action 'Show'
+      data_rows[0].should have_action 'Edit'
+      data_rows[0].should have_action 'Proof'
+      data_rows[0].should have_action 'Delete'
+
+      data_rows[1].should have_action 'Show'
+      data_rows[1].should_not have_action 'Edit'
+      data_rows[1].should_not have_action 'Proof'
+      data_rows[1].should_not have_action 'Delete'
+    end
+
+    it 'show the manual payment details' do
+
+      payment_list = AdminListPage.new
+      data_rows = payment_list.data_rows
+
+      manual_payment_show_page = data_rows[0].click_show
+      manual_payment_show_page.should have_content manual_payment.id
+      manual_payment_show_page.should have_content manual_payment.type
+      manual_payment_show_page.should have_content manual_payment.status
+      manual_payment_show_page.should have_content manual_payment.date_sent.strftime('%B %d, %Y')
+      manual_payment_show_page.should have_content manual_payment.amount_sent
+      manual_payment_show_page.should have_content manual_payment.account_number
+      manual_payment_show_page.should have_content manual_payment.comments
+      manual_payment_show_page.should have_content manual_payment.amount_received
+      manual_payment_show_page.should have_content manual_payment.admin_comment
+    end
+
+    it 'shows the paypal payment details' do
+
+      payment_list = AdminListPage.new
+      data_rows = payment_list.data_rows
+
+      paypal_payment_show_page = data_rows[1].click_show
+      paypal_payment_show_page.should have_content paypal_payment.id
+      paypal_payment_show_page.should have_content paypal_payment.type
+      paypal_payment_show_page.should have_content paypal_payment.status
+      paypal_payment_show_page.should have_content paypal_payment.date_sent.strftime '%B %d, %Y'
+      paypal_payment_show_page.should have_content paypal_payment.amount_sent
+      paypal_payment_show_page.should have_content paypal_payment.admin_comment
+    end
+
   end
 
   describe 'create and update payments' do
     pending 'form only lists institutions who have registrations for this tournament'
 
-    it 'allows for a payment to be created and edited and deleted' do
+    before :each do
+      visit admin_payments_path
+    end
+
+    it 'allows for a manual payment to be created and edited and deleted' do
       registration = t2_registration
-      login_for_tournament(t2)
-      visit admin_payments_path
-      page.should have_content 'Payment'
-      click_link 'New Payment'
-      select registration.institution.name, from: 'Institution'
-      fill_in 'Amount sent', with: '120'
-      fill_in 'A/C #', with: '987654321' 
-      attach_file 'Proof of transfer', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg') 
-      fill_in 'Amount received', with: '100'
-      click_button 'Create Payment'
-      visit admin_payments_path
-      page.should have_content registration.institution.abbreviation
-      click_link 'Edit'
-      page.should have_select 'Institution', with: registration.team_manager.name 
-      page.should have_field 'Amount sent', with: '120.00'
-      page.should have_field 'A/C #', with: '987654321'
-      page.should have_field 'Amount received', with: '100.00'
 
-      fill_in 'Amount received' , with: '110.00'
-      click_button 'Update Payment'
-      visit admin_registrations_path
-      page.should have_content '110.00'
+      payment_list = AdminPaymentListPage.new
+      payment_list.should have_content 'Payment'
+      admin_payment_form = payment_list.click_new
+      admin_payment_form.create registration.institution.name
 
-      page.should have_content 'Delete'
-      click_link 'Delete'
-      page.should_not have_content '110.00'
+      visit admin_payments_path
+      payment_list = AdminPaymentListPage.new
+      payment_list.should have(1).data_rows
+      data_rows = payment_list.data_rows
+      data_rows[0].columns[1].text().should == registration.institution.abbreviation
+      admin_payment_form = data_rows[0].click_edit
+      admin_payment_form.verify_create registration.institution.abbreviation
+
+      admin_payment_form.update
+      visit admin_payments_path
+
+      payment_list = AdminPaymentListPage.new
+      payment_list.data_rows[0].columns[8].text().should == '110.00'
+
+      payment_list = payment_list.data_rows[0].click_delete
+      payment_list.should have(0).data_rows
     end
 
   end

@@ -133,12 +133,16 @@ FactoryGirl.define do
     comments 'Total payment - arriba!'
     scanned_proof { Rack::Test::UploadedFile.new(File.join(Rails.root,'spec','uploaded_files','test_image.jpg'), 'image/png')  }
     registration
+
+    factory :completed_manual_payment do
+      amount_received 12000
+      admin_comment 'This is an admin comment'
+    end
   end
 
   factory :paypal_payment do
     account_number 'test_account@gmail.com'
     amount_sent 50
-    date_sent '2012-12-12'
     status 'Draft'
     transaction_txnid 'fakeid123'
     registration

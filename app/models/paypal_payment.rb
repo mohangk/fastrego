@@ -47,5 +47,9 @@ class PaypalPayment < Payment
     self.update_attributes!(status: PaypalPayment::STATUS_CANCELED)
   end
 
+  def date_sent
+    created_at
+  end
+
 
 end
