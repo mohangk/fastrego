@@ -4,7 +4,6 @@ gem 'rails'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
-gem 'sqlite3'
 gem 'pg'
 gem 'activerecord-postgres-hstore'
 gem 'unicorn'
@@ -35,6 +34,7 @@ gem 'rack-google-analytics', :require => 'rack/google-analytics'
 gem 'active_paypal_adaptive_payment'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'pry'
   gem 'pry-nav'
   gem 'sextant'
