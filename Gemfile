@@ -50,6 +50,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'konacha'
   gem 'rails_best_practices'
+  gem 'better_errors'
 end
 
 # To use ActiveModel has_secure_password

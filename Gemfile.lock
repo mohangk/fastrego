@@ -88,6 +88,9 @@ GEM
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
     bcrypt-ruby (3.0.1)
+    better_errors (0.7.2)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
     bourbon (3.0.1)
       sass (>= 3.2.0)
       thor
@@ -333,6 +336,7 @@ DEPENDENCIES
   activeadmin
   activerecord-postgres-hstore
   aws-sdk
+  better_errors
   capybara
   coffee-rails
   country_select!
