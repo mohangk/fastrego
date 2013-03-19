@@ -51,6 +51,12 @@ group :development, :test do
   gem 'konacha'
   gem 'rails_best_practices'
   gem 'better_errors'
+
+  gem 'guard'
+  gem 'rb-inotify', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-fchange', :require => false
+  gem 'guard-rspec'
 end
 
 # To use ActiveModel has_secure_password
