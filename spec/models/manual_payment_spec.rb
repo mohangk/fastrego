@@ -2,7 +2,15 @@
 require 'spec_helper'
 
 describe ManualPayment do
-  subject { FactoryGirl.create(:manual_payment) }
+
+  let(:r) { FactoryGirl.create(:registration) }
+  let(:t) { r.tournament }
+
+  before :each do
+    FactoryGirl.create :tournament_registration_email, tournament: t
+  end
+
+  subject { FactoryGirl.create(:manual_payment, registration: r) }
   it { should belong_to(:registration) }
   it { should validate_presence_of(:registration) }
   it { should validate_presence_of(:account_number).with_message(/can't be blank/)}
@@ -48,7 +56,7 @@ describe ManualPayment do
     end
 
     it 'returns false if the user passed in does not own the payment' do
-      user2 = FactoryGirl.create :user 
+      user2 = FactoryGirl.create :user
       subject.stub(:confirmed?).and_return(false)
       subject.destroyable?(user2).should == false
       subject.destroyable?(subject.registration.team_manager).should == true

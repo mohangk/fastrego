@@ -1,15 +1,15 @@
 class RegistrationMailer < ActionMailer::Base
 
   def slots_granted_notification(registration)
-    @registration = registration 
-    @notification_type = 'granted' 
-    notification(@registration, @notification_type) 
+    @registration = registration
+    @notification_type = 'granted'
+    notification(@registration, @notification_type)
   end
-  
+
   def slots_confirmed_notification(registration)
-    @registration = registration 
-    @notification_type = 'confirmed' 
-    notification(@registration, @notification_type) 
+    @registration = registration
+    @notification_type = 'confirmed'
+    notification(@registration, @notification_type)
   end
 
   private

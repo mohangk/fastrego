@@ -8,6 +8,7 @@ describe "users/show.html.haml" do
   end
 
   before(:each) do
+    RegistrationMailer.stub(:slots_confirmed_notification).and_return double.as_null_object
     user.confirm!
     sign_in user
     view.extend MockHelperMethods

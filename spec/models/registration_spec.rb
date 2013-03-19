@@ -11,6 +11,7 @@ describe Registration do
     FactoryGirl.create(:observer_fees, tournament: t)
     FactoryGirl.create(:debate_team_size, tournament: t)
     FactoryGirl.create(:host_paypal_account, tournament: t)
+    FactoryGirl.create(:tournament_registration_email, tournament: t)
   end
 
   it { should belong_to :institution }

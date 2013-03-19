@@ -1,6 +1,6 @@
 class Registration < ActiveRecord::Base
   strip_attributes
-  
+
   belongs_to :team_manager, class_name: 'User'
   belongs_to :tournament
   belongs_to :institution
@@ -49,9 +49,9 @@ class Registration < ActiveRecord::Base
   end
 
   def draft?
-    ![requested_at, 
-     debate_teams_requested, 
-     adjudicators_requested, 
+    ![requested_at,
+     debate_teams_requested,
+     adjudicators_requested,
      observers_requested].any?
   end
 
@@ -62,10 +62,10 @@ class Registration < ActiveRecord::Base
     self.observers_requested = o_req.to_i
     self.requested_at = Time.now
     self.save
-  end 
+  end
 
   def grant_slots(debate_teams_granted, adjudicators_granted, observers_granted, fees=nil)
-    #if nothing was set, we assume the granted values are not being set 
+    #if nothing was set, we assume the granted values are not being set
     if debate_teams_granted.blank? and adjudicators_granted.blank? and observers_granted.blank?
       self.debate_teams_granted = nil
       self.adjudicators_granted = nil
@@ -75,7 +75,7 @@ class Registration < ActiveRecord::Base
       self.adjudicators_granted = adjudicators_granted.to_i
       self.observers_granted = observers_granted.to_i
       if [self.debate_teams_granted_changed?, self.adjudicators_granted_changed?, self.observers_granted_changed?].any?
-        RegistrationMailer.slots_granted_notification(self).deliver 
+        RegistrationMailer.slots_granted_notification(self).deliver
       end
       if fees.blank?
         self.fees = (self.debate_teams_granted * BigDecimal.new(Setting.key(tournament, 'debate_team_fees') || 0) +
@@ -110,7 +110,7 @@ class Registration < ActiveRecord::Base
   end
 
   def confirm_slots(debate_teams_confirmed=nil, adjudicators_confirmed=nil, observers_confirmed=nil)
-    #if nothing was set, we assume the confirmed values are not being set 
+    #if nothing was set, we assume the confirmed values are not being set
     if debate_teams_confirmed.blank? and adjudicators_confirmed.blank? and observers_confirmed.blank?
       self.debate_teams_confirmed = nil
       self.adjudicators_confirmed = nil
@@ -120,7 +120,7 @@ class Registration < ActiveRecord::Base
       self.adjudicators_confirmed = adjudicators_confirmed.to_i
       self.observers_confirmed = observers_confirmed.to_i
       if [self.debate_teams_confirmed_changed?, self.adjudicators_confirmed_changed?, self.observers_confirmed_changed?].any?
-        RegistrationMailer.slots_confirmed_notification(self).deliver 
+        RegistrationMailer.slots_confirmed_notification(self).deliver
       end
     end
     self.save
@@ -133,10 +133,9 @@ class Registration < ActiveRecord::Base
   def debate_teams
     debate_teams = []
     self.debate_teams_confirmed.times {debate_teams << []}
-   
     self.debaters.each do |debater|
       #if the team_number or speaker_number is empty we create a fresh debater record
-      # this should only happen in tests as we always set the hidden values in the form 
+      # this should only happen in tests as we always set the hidden values in the form
       debate_teams[debater.team_number-1][debater.speaker_number-1] = debater if debater.team_number.present? and debater.speaker_number.present?
     end
 
@@ -150,7 +149,7 @@ class Registration < ActiveRecord::Base
 
     return debate_teams
   end
-  
+
   def institution_name
     self.institution.name
   end
