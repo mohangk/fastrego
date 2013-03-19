@@ -41,7 +41,7 @@
       %tr
         %td Balance fees due  
         %td #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
-        %td #{link_to 'Pay now via PayPal', checkout_path, method: :post}
+        %td #{link_to 'Pay now via PayPal', checkout_path, method: :post if current_tournament.paypal_payment_enabled?}
       %tr
         %td Total unconfirmed payments  
         %td #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }

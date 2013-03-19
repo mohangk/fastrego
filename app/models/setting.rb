@@ -4,8 +4,18 @@ class Setting < ActiveRecord::Base
   belongs_to :tournament
   attr_accessible :key, :value
 
+  ENABLE_PAYPAL_PAYMENT = 'enable_paypal_payment'
+
   def self.currency_symbol(tournament)
     Setting.key(tournament, 'currency_symbol') ? Setting.key(tournament, 'currency_symbol') : 'USD'
+  end
+
+  def self.paypal_payment_enabled?(tournament)
+    self.treat_as_bool Setting.key(tournament, Setting::ENABLE_PAYPAL_PAYMENT)
+  end
+
+  def self.pre_registration_enabled?(tournament)
+    self.treat_as_bool Setting.key(tournament, 'enable_pre_registration')
   end
 
   def self.key(tournament, key, value=nil)
@@ -29,5 +39,12 @@ class Setting < ActiveRecord::Base
   def self.for_tournament(tournament_identifier, admin_user)
     Setting.includes(:tournament)
     .where('tournaments.identifier = ? and tournaments.admin_user_id = ?', tournament_identifier, admin_user.id)
+  end
+
+  private
+
+  def self.treat_as_bool value
+    return false if value.nil?
+    value.downcase == 'true'
   end
 end

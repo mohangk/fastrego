@@ -9,6 +9,7 @@ describe 'Paypal payments redirect', js: true do
 
   before :all do
     FactoryGirl.create :host_paypal_account, tournament: t1
+    FactoryGirl.create :enable_paypal_payment, tournament: t1
   end
 
   before :each do

@@ -7,11 +7,15 @@ class Tournament < ActiveRecord::Base
 
 
   def pre_registration_enabled?
-    Setting.key(self, 'enable_pre_registration') == 'True'
+    Setting.pre_registration_enabled?(self)
   end
 
   def currency_symbol
     Setting.currency_symbol(self)
+  end
+
+  def paypal_payment_enabled?
+    Setting.paypal_payment_enabled?(self)
   end
 
   def url

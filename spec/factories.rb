@@ -80,6 +80,11 @@ FactoryGirl.define do
       value 'True'
     end
 
+    factory :enable_paypal_payment, :class => Setting do
+      key Setting::ENABLE_PAYPAL_PAYMENT
+      value 'True'
+    end
+
     factory :debate_team_size, class: Setting do
       key 'debate_team_size'
       value 3

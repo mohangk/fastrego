@@ -4,7 +4,7 @@ namespace :fastrego do
     sql = 'CREATE EXTENSION hstore';
     puts ActiveRecord::Base.connection.execute(sql)
   end
-  
+
   desc 'Adds default settings'
   task :create_settings => :environment
   task :create_settings, [:tournament_identifier] do |t, args|
@@ -39,14 +39,20 @@ namespace :fastrego do
     AdminUser.create!(email: args.email, password: args.password, password_confirmation: args.password)
   end
 
-  desc 'Admin host paypal account'
-  task :add_host_paypal_account => :environment
-  task :add_host_paypal_account, [:host_paypal_account, :tournament_identifier] do |t, args|
-    t = Tournament.find_by_identifier(args.tournament_identifier)
-    puts "Adding host_paypal_account '#{args.host_paypal_account}' for '#{t.identifier}'"
-    s = Setting.new key: 'host_paypal_account', value: args.host_paypal_account
-    s.tournament = t
+  desc 'Enable PayPal payment'
+  task :enable_paypal_payment => :environment
+  task :enable_paypal_payment, [:host_paypal_account, :tournament_identifier] do |t, args|
+    t = Tournament.where(identifier: args.tournament_identifier).first
+    raise "Cannot find tournament with identifier '#{args.tournament_identifier}'" if t.nil?
+    puts "Enabling PayPal for '#{t.identifier}'"
+    s = Setting.where(key:  Setting::ENABLE_PAYPAL_PAYMENT, tournament_id: t.id).first_or_initialize
+    s.value = 'True'
+    s.save!
+
+    puts "Setting host_paypal_account '#{args.host_paypal_account}' for '#{t.identifier}'"
+    s = Setting.where(key: 'host_paypal_account', tournament_id: t.id).first_or_initialize
+    s.value = args.host_paypal_account
     s.save!
   end
 end
-  
+

@@ -127,24 +127,41 @@ describe "users/show.html.haml" do
       rendered.should_not have_css('form#new_payment')
     end
 
-    it "is displayed when the registration has a fees associated with it" do
+    context 'when the registration has a fees associated with it' do
 
-      @registration = FactoryGirl.create(:requested_registration, team_manager: user, fees: 2000)
-      payment = FactoryGirl.create(:manual_payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
-      #required by _form_payment.html.haml
-      @registration.reload
-      @payment = Payment.new
-      user.reload
-      render
-      rendered.should have_content('Total registration fees due RM2,000.00')
-      rendered.should have_content('Total confirmed payments RM999.48')
-      rendered.should have_content('Balance fees due RM1,000.52')
-      rendered.should have_content('Total unconfirmed payments RM0.00')
-      rendered.should have_css('form#new_payment')
+      before :each do
+        @registration = FactoryGirl.create(:requested_registration, team_manager: user, fees: 2000)
+        #required by _form_payment.html.haml
+        @payment = Payment.new
+      end
+
+      it "is displayed " do
+        payment = FactoryGirl.create(:manual_payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
+        @registration.reload
+
+        user.reload
+        render
+        rendered.should have_content 'Total registration fees due RM2,000.00'
+        rendered.should have_content 'Total confirmed payments RM999.48'
+        rendered.should have_content 'Balance fees due RM1,000.52'
+        rendered.should have_content 'Total unconfirmed payments RM0.00'
+        rendered.should_not have_content 'PayPal'
+        rendered.should have_css 'form#new_payment'
+      end
+
+      context 'when PayPal is enabled' do
+
+        before(:each) do
+          MockHelperMethods.paypal_payment_enabled = true
+        end
+
+        it 'has a pay via PayPal link' do 
+          render
+          rendered.should have_content 'PayPal'
+        end
+       end
     end
 
-
-    pending 'it has a Pay now via PayPal link only when PayPal is enabled and there is a balance due'
   end
 
   describe "confirmed slot section" do
