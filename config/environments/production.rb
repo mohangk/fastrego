@@ -86,10 +86,11 @@ UadcRego::Application.configure do
 
   ActiveMerchant::Billing::Base.mode = :test
   ::GATEWAY =  ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-    :login => "fastre_1356344930_biz_api1.gmail.com",
-    :password => "1356344950",
-    :signature => "Ata7WHUnSN0WA66.v.mkvBNYXyBsAvZP-x8joINtidDWenedQO5QIv0c",
-    :appid => "APP-80W284485P519543T" )
+    :login =>     ENV['PAYPAL_LOGIN'],     #"fastre_1356344930_biz_api1.gmail.com",
+    :password =>  ENV['PAYPAL_PASSWORD'],  #"1356344950",
+    :signature => ENV['PAYPAL_SIGNATURE'], #"Ata7WHUnSN0WA66.v.mkvBNYXyBsAvZP-x8joINtidDWenedQO5QIv0c",
+    :appid =>     ENV['PAYPAL_APPID']      #"APP-80W284485P519543T"
+  )
 
   ::FASTREGO_PAYPAL_ACCOUNT = 'fastre_1356344930_biz@gmail.com'
 
