@@ -84,7 +84,7 @@ UadcRego::Application.configure do
   }
   ActionMailer::Base.delivery_method = :smtp
 
-  ActiveMerchant::Billing::Base.mode = :test
+  #ActiveMerchant::Billing::Base.mode = :test
   ::GATEWAY =  ActiveMerchant::Billing::PaypalAdaptivePayment.new(
     :login =>     ENV['PAYPAL_LOGIN'],     #"fastre_1356344930_biz_api1.gmail.com",
     :password =>  ENV['PAYPAL_PASSWORD'],  #"1356344950",
