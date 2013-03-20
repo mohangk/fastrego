@@ -92,7 +92,7 @@ UadcRego::Application.configure do
     :appid =>     ENV['PAYPAL_APPID']      #"APP-80W284485P519543T"
   )
 
-  ::FASTREGO_PAYPAL_ACCOUNT = 'fastre_1356344930_biz@gmail.com'
+  ::FASTREGO_PAYPAL_ACCOUNT = ENV['PAYPAL_EMAIL'] #'fastre_1356344930_biz@gmail.com'
 
 
 end
