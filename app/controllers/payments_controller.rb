@@ -40,6 +40,7 @@ class PaymentsController < ApplicationController
       @paypal_payment = PaypalPayment.create current_registration
 
       response = GATEWAY.setup_purchase(
+        :currency_code =>        current_tournament.currency_symbol,
         :fees_payer =>           'PRIMARYRECEIVER',
         :return_url =>           completed_payment_path(only_path: false, id: @paypal_payment.id),
         :cancel_url =>           canceled_payment_path(only_path: false, id: @paypal_payment.id),
