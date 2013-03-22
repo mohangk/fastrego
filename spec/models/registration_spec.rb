@@ -73,7 +73,7 @@ describe Registration do
   describe "#grant_slots" do
     context 'nothing set' do
       it 'should not send a slots_granted_notification' do
-        ActionMailer::Base.deliveries = [] 
+        ActionMailer::Base.deliveries = []
         r.grant_slots(nil,nil,nil)
         ActionMailer::Base.deliveries.last.should == nil
       end
@@ -93,7 +93,7 @@ describe Registration do
 
     context "granting 1 dt, 1 adj, 1 obs" do
       it 'should send a slots_granted_notification' do
-        ActionMailer::Base.deliveries = [] 
+        ActionMailer::Base.deliveries = []
         r.grant_slots(1,1,1)
         ActionMailer::Base.deliveries.last.to.should == [r.team_manager.email]
       end
@@ -177,7 +177,7 @@ describe Registration do
     context 'nothing confirmed' do
 
       it 'should not send a slots_confirmed_notification' do
-        ActionMailer::Base.deliveries = [] 
+        ActionMailer::Base.deliveries = []
         r.confirm_slots(nil,nil,nil)
         ActionMailer::Base.deliveries.last.should == nil
       end
@@ -198,9 +198,9 @@ describe Registration do
       end
     end
     context 'something confirmed' do
-      
+
       it 'should send a slots_granted_notification' do
-        ActionMailer::Base.deliveries = [] 
+        ActionMailer::Base.deliveries = []
         r.confirm_slots(2,1,1)
         ActionMailer::Base.deliveries.last.to.should == [r.team_manager.email]
       end
@@ -228,7 +228,7 @@ describe Registration do
     before :each do
       r.debate_teams_confirmed = 2
     end
-    
+
     context 'no debaters created' do
       it 'returns an array of array of new debaters' do
         r.debate_teams.count.should == 2
@@ -238,7 +238,7 @@ describe Registration do
             d.should be_an_instance_of(Debater)
             d.persisted?.should == false
           end
-        }        
+        }
       end
     end
 
@@ -316,7 +316,7 @@ describe Registration do
 
     context 'the first hash' do
       subject { r.paypal_recipients.first }
-      let(:email) {::FASTREGO_PAYPAL_ACCOUNT}
+      let(:email) {Setting.key(t,'host_paypal_account')}
       let(:amount) {r.balance_fees}
       let(:primary) {true}
       it_behaves_like 'Paypal hash'
@@ -324,8 +324,8 @@ describe Registration do
 
     context 'the second hash' do
       subject { r.paypal_recipients.last }
-      let(:email) {Setting.key(t,'host_paypal_account')}
-      let(:amount) {r.host_fees_portion}
+      let(:email) {::FASTREGO_PAYPAL_ACCOUNT}
+      let(:amount) {r.fastrego_fees_portion}
       let(:primary) {false}
       it_behaves_like 'Paypal hash'
     end

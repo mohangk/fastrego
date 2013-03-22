@@ -30,3 +30,4 @@ Vagrantfile
 .vagrant
 *.txt
 tags
+setup_paypal.sh
