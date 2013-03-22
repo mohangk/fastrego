@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130106091231) do
+ActiveRecord::Schema.define(:version => 20130322071730) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
     t.integer  "author_id"
     t.string   "author_type"
     t.text     "body"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "namespace"
   end
 
@@ -29,18 +29,18 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
   create_table "admin_users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
@@ -51,10 +51,10 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
     t.string   "abbreviation"
     t.string   "website"
     t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "type"
     t.integer  "tournament_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
   end
 
   create_table "participants", :force => true do |t|
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
     t.string   "gender"
     t.string   "email"
     t.string   "dietary_requirement"
-    t.string   "allergies"
+    t.text     "allergies"
     t.datetime "arrival_at"
     t.string   "point_of_entry"
     t.string   "emergency_contact_person"
@@ -74,13 +74,12 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
     t.integer  "speaker_number"
     t.integer  "team_number"
     t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "nationality"
     t.string   "passport_number"
     t.string   "transport_number"
-    t.hstore   "participants"
-    t.hstore   "data"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.text     "data"
   end
 
   create_table "payments", :force => true do |t|
@@ -91,12 +90,12 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
     t.decimal  "amount_received",            :precision => 14, :scale => 2
     t.text     "admin_comment"
     t.integer  "registration_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "scanned_proof_file_name"
     t.string   "scanned_proof_content_type"
     t.integer  "scanned_proof_file_size"
     t.datetime "scanned_proof_updated_at"
-    t.datetime "created_at",                                                :null => false
-    t.datetime "updated_at",                                                :null => false
     t.string   "type"
     t.string   "status"
     t.string   "transaction_txnid"
@@ -116,50 +115,47 @@ ActiveRecord::Schema.define(:version => 20130106091231) do
     t.integer  "observers_confirmed"
     t.integer  "adjudicators_confirmed"
     t.integer  "team_manager_id"
-    t.integer  "institution_id"
-    t.integer  "tournament_id"
-    t.decimal  "fees",                   :precision => 14, :scale => 2
     t.datetime "requested_at"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "fees",                   :precision => 14, :scale => 2
+    t.integer  "tournament_id"
+    t.integer  "institution_id"
   end
 
   create_table "settings", :force => true do |t|
     t.string   "key"
     t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "tournament_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
   end
 
   create_table "tournaments", :force => true do |t|
-    t.string   "name"
-    t.boolean  "active",        :default => true
-    t.string   "identifier"
-    t.integer  "admin_user_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.string  "name"
+    t.boolean "active"
+    t.string  "identifier"
+    t.integer "admin_user_id"
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "name",                                                  :null => false
+    t.string   "phone_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
-    t.string   "name",                                   :null => false
-    t.string   "phone_number"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
