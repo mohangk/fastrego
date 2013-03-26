@@ -9,6 +9,7 @@ describe 'AdminRegistration' do
   let!(:t2_registration) { FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager) }
 
   before :each do
+    FactoryGirl.create :tournament_registration_email, tournament: t2
     FactoryGirl.create :debate_team_fees, tournament: t2
     login_for_tournament(t2)
   end
@@ -33,11 +34,11 @@ describe 'AdminRegistration' do
       page.should have_field 'Debate teams requested', with: t2_registration.debate_teams_requested.to_s
       page.should have_field 'Adjudicators requested', with: t2_registration.adjudicators_requested.to_s
       page.should have_field 'Observers requested', with: t2_registration.observers_requested.to_s
-      
+
       fill_in 'Debate teams granted', with: 6
       fill_in 'Adjudicators granted', with: 5
       fill_in 'Observers granted', with: 4
-      
+
       fill_in 'Debate teams confirmed', with: 3
       fill_in 'Adjudicators confirmed', with: 2
       fill_in 'Observers confirmed', with: 1
@@ -53,6 +54,7 @@ describe 'AdminRegistration' do
       page.should have_select 'Team manager', with: team_manager.name
       page.should have_select 'Institution', with: t2_registration.institution.name
 
+
       page.should have_field 'Debate teams granted', with: '6'
       page.should have_field 'Adjudicators granted', with: '5'
       page.should have_field 'Observers granted', with: '4'
@@ -60,7 +62,7 @@ describe 'AdminRegistration' do
       page.should have_field 'Debate teams confirmed', with: '3'
       page.should have_field 'Adjudicators confirmed', with: '2'
       page.should have_field 'Observers confirmed', with: '1'
-      page.find('input#registration_fees')['value'].should == '1200.00' 
+      page.find('input#registration_fees')['value'].should == '1200.00'
       check 'registration_override_fees'
 
       fill_in 'Fees' , with: '639.00'
@@ -82,7 +84,7 @@ describe 'AdminRegistration' do
   describe 'unassociated registrations' do
 
     pending 'does not allow the access to a different tournaments registrations' do
-      visit edit_admin_registration_path(t1_registration)    
+      visit edit_admin_registration_path(t1_registration)
     end
 
     pending 'does not allow the deleting of a different tournaments registrations'

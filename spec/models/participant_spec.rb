@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Participant do
-
-  let(:r)  { FactoryGirl.create :registration, tournament: FactoryGirl.create(:t2_tournament) }
+  let(:t2) { FactoryGirl.create(:t2_tournament) }
+  let(:r)  { FactoryGirl.create :registration, tournament: t2}
 
   before :each do
-    FactoryGirl.create(:observer, registration: r)
+    #FactoryGirl.create(:observer, registration: r)
   end
 
   it { should validate_presence_of :name }
@@ -18,6 +18,33 @@ describe Participant do
   it { should validate_presence_of :emergency_contact_number }
   it { should have_db_column(:data).of_type(:hstore) }
 
+  describe 'validations' do
+    describe 'email' do
+
+      it 'is unique for all participants within the same tournament' do
+        email = 'test@test.com'
+        r1_for_t2 = FactoryGirl.create :registration, tournament: t2
+        r2_for_t2 = r
+
+        observer_for_r1_t2 = FactoryGirl.create :observer, email: email, registration: r1_for_t2
+        expect {
+        observer_for_r2_t2 = FactoryGirl.create :observer, email: email, registration: r2_for_t2
+        }.to raise_exception ActiveRecord::RecordInvalid
+      end
+
+      it 'allows duplicate emails for participants across 2 different tournaments' do
+        email = 'test@test.com'
+        r_for_t1 = FactoryGirl.create :registration, tournament: FactoryGirl.create(:t1_tournament)
+        r_for_t2 = r
+        observer_for_t1 = FactoryGirl.create :observer, email: email, registration: r_for_t1
+        observer_for_t2 = FactoryGirl.create :observer, email: email, registration: r_for_t2
+
+        observer_for_t1.should be_valid
+
+        observer_for_t2.should be_valid
+      end
+    end
+  end
   describe 'initialize data attr' do
     pending 'it disallows similar email addresses in the same tournament'
 
@@ -29,7 +56,7 @@ describe Participant do
       it 'accepts the custom fields as a nested hash' do
         test_attributes = {
           "adjudicators_attributes" =>
-             {"0"=>{ 
+             {"0"=>{
                     "name"=>"Mohan",
                     "gender"=>"Male",
                     "email"=>"test@email.com",
@@ -40,7 +67,7 @@ describe Participant do
                     "preferred_roommate_institution"=>"",
                     "tshirt_size"=>"tshirt large",
                     "registration_id" => r.id,
-                    "debate_experience"=>"lots of experience"}}} 
+                    "debate_experience"=>"lots of experience"}}}
         r.update_attributes(test_attributes).should == true
         r.reload
         r.adjudicators[0].tshirt_size.should == "tshirt large"
@@ -48,7 +75,7 @@ describe Participant do
         test_attributes['adjudicators_attributes']['0']['tshirt_size'] = 'tshirt small'
         test_attributes['adjudicators_attributes']['0']['id'] = r.adjudicators[0].id
         r.adjudicators_attributes = test_attributes['adjudicators_attributes']
-                                                    
+
         r.save!
         r.reload
         r.adjudicators.size == 1
@@ -58,10 +85,10 @@ describe Participant do
   end
 
   describe 'custom fields' do
-    let(:observer) do 
+    let(:observer) do
       FactoryGirl.create :custom_field_observer, registration: r
     end
-    
+
     it 'returns nil when custom field has not been set' do
       observer = FactoryGirl.create :observer, registration: r
       observer.debate_experience.should == nil
@@ -74,9 +101,9 @@ describe Participant do
       observer.save!
       observer.reload
       observer.debate_experience.should == '50'
-      observer.data_changed?.should == false 
-      observer.tshirt_size = 'new field test' 
-      observer.data_changed?.should == true 
+      observer.data_changed?.should == false
+      observer.tshirt_size = 'new field test'
+      observer.data_changed?.should == true
       observer.save!
       observer.reload
       observer.tshirt_size.should == 'new field test'
@@ -124,8 +151,8 @@ describe Participant do
       it { should be_true }
     end
 
-  end  
-  
+  end
+
   describe '#respond_to?' do
     context 'where there are no custom fields set' do
       let(:observer) { FactoryGirl.create :observer, registration: r }
@@ -133,7 +160,7 @@ describe Participant do
       before do
         stub_const('Participant::CUSTOM_FIELDS', {})
       end
-    
+
       it 'still works' do
         observer.respond_to?(:name).should be_true
       end
