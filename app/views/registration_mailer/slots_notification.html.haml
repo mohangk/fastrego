@@ -5,18 +5,18 @@
   %body
     %h1
       Slots #{@notification_type} notification for #{@registration.institution.name}
-    
+
     %p Hello #{@registration.team_manager.name}
 
-    %p There have been changes to your institution registration record for the #{Setting.key(@registration.tournament, 'tournament_name')}, specially in terms of how many slots you've been #{@notification_type}. Details as follows : <br/>
+    %p There have been changes to your institution registration record for the #{Setting.key(@registration.tournament, 'tournament_name')}, especially in terms of how many slots you've been #{@notification_type}. Details as follows : <br/>
     %table
       %tr
-        %td Debate teams 
+        %td Debate teams
         %td= @registration.send("debate_teams_#{@notification_type}")
       %tr
         %td Adjudicators
         %td= @registration.send("adjudicators_#{@notification_type}")
       %tr
-        %td Observers 
+        %td Observers
         %td= @registration.send("observers_#{@notification_type}")
-    = render partial: 'layouts/mail_footer'   
+    = render partial: 'layouts/mail_footer'
