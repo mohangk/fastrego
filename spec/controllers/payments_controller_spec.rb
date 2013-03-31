@@ -148,6 +148,7 @@ describe PaymentsController do
       checkout
       assigns(:paypal_payment).should be_a(PaypalPayment)
       assigns(:paypal_payment).status.should == PaypalPayment::STATUS_PENDING
+      assigns(:paypal_payment).registration == registration
       assigns(:paypal_payment).registration.team_manager.should == user
       assigns(:paypal_payment).amount_sent.should == registration.balance_fees
       assigns(:paypal_payment).transaction_txnid.should == 'FakePayKey'

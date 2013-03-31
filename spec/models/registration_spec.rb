@@ -10,7 +10,6 @@ describe Registration do
     FactoryGirl.create(:adjudicator_fees, tournament: t)
     FactoryGirl.create(:observer_fees, tournament: t)
     FactoryGirl.create(:debate_team_size, tournament: t)
-    FactoryGirl.create(:host_paypal_account, tournament: t)
     FactoryGirl.create(:tournament_registration_email, tournament: t)
   end
 
@@ -290,56 +289,4 @@ describe Registration do
     end
   end
 
-  shared_examples 'Paypal hash' do
-
-    it { should be_a(Hash) }
-
-    it {subject.keys.should include(:email, :amount, :primary)}
-
-
-    it {subject[:email].should == email}
-
-    it {subject[:amount].should == amount}
-
-    it {subject[:primary].should == primary}
-
-  end
-
-  describe "#paypal_recipients" do
-
-    subject(:recipients) { r.paypal_recipients }
-
-    its(:count) { should == 2}
-
-    it { should be_a(Array) }
-
-
-    context 'the first hash' do
-      subject { r.paypal_recipients.first }
-      let(:email) {Setting.key(t,'host_paypal_account')}
-      let(:amount) {r.balance_fees}
-      let(:primary) {true}
-      it_behaves_like 'Paypal hash'
-    end
-
-    context 'the second hash' do
-      subject { r.paypal_recipients.last }
-      let(:email) {::FASTREGO_PAYPAL_ACCOUNT}
-      let(:amount) {r.fastrego_fees_portion}
-      let(:primary) {false}
-      it_behaves_like 'Paypal hash'
-    end
-
-    context 'when email is not provided' do
-
-      before :each do
-        Setting.stub(:key).and_return(nil)
-      end
-
-      it 'should raise an error' do
-        expect {r.paypal_recipients}.to raise_error
-      end
-    end
-
-  end
 end

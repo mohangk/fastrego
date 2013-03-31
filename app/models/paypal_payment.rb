@@ -17,22 +17,28 @@ class PaypalPayment < Payment
 
   after_initialize :initialize_status
   validates :status, presence: true
-  #validates :transaction_txnid, presence: true
 
-  def self.create registration
+  def self.generate registration
 
     @paypal_payment = PaypalPayment.new({:registration => registration,
-                                         :date_sent => Date.today,
                                          :amount_sent => registration.balance_fees})
 
-    @paypal_payment.primary_receiver = registration.paypal_recipients[0][:email]
-    @paypal_payment.secondary_receiver = registration.paypal_recipients[1][:email]
+    @paypal_payment.primary_receiver = registration.host_paypal_account
+    @paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
     @paypal_payment.save!
     @paypal_payment
   end
 
   def initialize_status
     self.status = STATUS_DRAFT unless persisted?
+  end
+
+  def fastrego_fees_portion
+    registration.fastrego_fees_portion
+  end
+
+  def secondary_receiver
+    ::FASTREGO_PAYPAL_ACCOUNT
   end
 
   def deleteable?

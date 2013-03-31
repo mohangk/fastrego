@@ -154,18 +154,6 @@ class Registration < ActiveRecord::Base
     self.institution.name
   end
 
-  def paypal_recipients
-    host_paypal_account = Setting.key(self.tournament,'host_paypal_account')
-    raise 'Host paypal account setting not set' if host_paypal_account.nil?
-    [{:email => host_paypal_account,
-      :amount => self.balance_fees,
-      :primary => true}, {
-        :email => ::FASTREGO_PAYPAL_ACCOUNT,
-        :amount => self.fastrego_fees_portion,
-        :primary => false
-      }
-    ]
-  end
 
   def fastrego_fees_portion
     self.balance_fees * 0.05
@@ -173,6 +161,10 @@ class Registration < ActiveRecord::Base
 
   def host_fees_portion
     self.balance_fees * 0.95
+  end
+
+  def host_paypal_account
+    Setting.key(tournament,'host_paypal_account')
   end
 
 end
