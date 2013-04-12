@@ -1,4 +1,5 @@
 require 'spec_helper'
+require Rails.root.join 'lib/stub_gateway'
 
 Notification = ActiveMerchant::Billing::Integrations::PaypalAdaptivePayment::Notification
 
@@ -11,7 +12,6 @@ describe PaymentsController do
 
   before(:each) do
 
-    GATEWAY.stub(:setup_purchase).and_return(fake_setup_purchase_response)
     GATEWAY.stub(:redirect_url_for).and_return '/FakePayPal'
 
     FactoryGirl.create :host_paypal_account, tournament: registration.tournament
