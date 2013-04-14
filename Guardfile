@@ -1,4 +1,4 @@
-guard 'rspec' do
+guard 'rspec',:all_on_start => false, :zeus => true, :bundler => false  do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -12,7 +12,7 @@ guard 'rspec' do
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
 
   # Capybara features specs
-  watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
+  # watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
 
   # View specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/views/#{m[1]}_spec.rb" }
