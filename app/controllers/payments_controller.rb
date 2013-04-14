@@ -38,17 +38,12 @@ class PaymentsController < ApplicationController
   def checkout
     begin
       @paypal_payment = PaypalPayment.generate current_registration
-      paypal_request = PaypalRequest.new @paypal_payment
+      paypal_request = ChainedPaypalRequest.new payment: @paypal_payment,
+        return_url: completed_payment_url(@paypal_payment.id),
+        cancel_url: canceled_payment_url(@paypal_payment.id),
+        ipn_notification_url:    ipn_url
 
-      response = GATEWAY.setup_purchase(
-        :currency_code =>        current_tournament.currency_symbol,
-        :fees_payer =>           'SECONDARYONLY',
-        :return_url =>           completed_payment_path(only_path: false, id: @paypal_payment.id),
-        :cancel_url =>           canceled_payment_path(only_path: false, id: @paypal_payment.id),
-        :ipn_notification_url => url_for(:action => 'ipn', :only_path => false),
-        :receiver_list =>        paypal_request.recipients
-      )
-
+      response = paypal_request.setup_payment
       logger.info "PAYPAL Setup purchase request'#{response.request.inspect}'"
       logger.info "PAYPAL Setup purchase response'#{response.json.inspect}'"
 

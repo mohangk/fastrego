@@ -5,10 +5,8 @@ Notification = ActiveMerchant::Billing::Integrations::PaypalAdaptivePayment::Not
 
 describe PaymentsController do
 
-
   let(:registration) { FactoryGirl.create(:granted_registration) }
   let(:user) { registration.team_manager }
-  let(:fake_setup_purchase_response) { double(:[] =>'FakePayKey', request: {}, json:{}, success?: true) }
 
   before(:each) do
 
@@ -144,6 +142,31 @@ describe PaymentsController do
 
     subject(:checkout) { post :checkout }
 
+    describe 'ChainedPaypalRequest integration' do
+      before do
+        expected_params = { payment: paypal_payment,
+                            return_url: completed_payment_url(id: paypal_payment.id),
+                            cancel_url: canceled_payment_url(id: paypal_payment.id),
+                            ipn_notification_url: ipn_url }
+
+        PaypalPayment.stub(:generate).and_return paypal_payment
+        paypal_request.should_receive(:setup_payment).and_return paypal_setup_response
+        paypal_setup_response.should_receive(:[]).with("payKey").twice.and_return 'FakePayKey'
+        paypal_payment.should_receive(:update_pay_key).with 'FakePayKey'
+
+        ChainedPaypalRequest.should_receive(:new)
+          .with(expected_params)
+          .and_return(paypal_request)
+      end
+
+      let(:paypal_payment) { double('paypal payment', id: 123) }
+      let(:paypal_request) { double('paypal request') }
+      let(:paypal_setup_response) { double('paypal setup response',success?: true, request: double, json: double ) }
+      it 'initializes ChainedPaypalRequest' do
+        checkout
+      end
+    end
+
     it 'assigns a newly created payment as @paypal_payment' do
       checkout
       assigns(:paypal_payment).should be_a(PaypalPayment)
@@ -263,7 +286,7 @@ describe PaymentsController do
 
   describe "POST ipn" do
     let(:raw_request) {
-"transaction%5B0%5D.is_primary_receiver=true&\
+      "transaction%5B0%5D.is_primary_receiver=true&\
 transaction%5B0%5D.id_for_sender_txn=8PY816957G648382H&\
 log_default_shipping_address_in_transaction=false&\
 transaction%5B0%5D.receiver=fastre_1356344930_biz%40gmail.com&\

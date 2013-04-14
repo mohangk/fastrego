@@ -57,5 +57,8 @@ class PaypalPayment < Payment
     created_at
   end
 
+  def currency_code
+    registration.tournament.currency_symbol
+  end
 
 end

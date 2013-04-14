@@ -1,7 +1,7 @@
 UadcRego::Application.routes.draw do
 
   ActiveAdmin.routes(self)
-  
+
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   devise_for :users
@@ -26,10 +26,12 @@ UadcRego::Application.routes.draw do
     end
   end
 
-  resources :manual_payments, only: [:create, :destroy], controller: 'payments' 
+  resources :manual_payments, only: [:create, :destroy], controller: 'payments'
   resources :payments, only: [:show, :create, :destroy] do
-    get 'canceled'  => 'payments#canceled', on: :member
-    get 'completed' => 'payments#completed', on: :member
+    member do
+      get 'canceled'  => 'payments#canceled'
+      get 'completed' => 'payments#completed'
+    end
   end
 
   match 'checkout'  => 'payments#checkout'
