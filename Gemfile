@@ -29,7 +29,7 @@ gem "strip_attributes"
 gem 'meta_search'
 gem 'newrelic_rpm'
 gem 'simple_form'
-gem 'country_select', :git => 'git://github.com/mohangk/country_select.git'  
+gem 'country_select', :git => 'git://github.com/mohangk/country_select.git'
 gem 'rack-google-analytics', :require => 'rack/google-analytics'
 gem 'active_paypal_adaptive_payment'
 
@@ -51,6 +51,8 @@ group :development, :test do
   gem 'konacha'
   gem 'rails_best_practices'
   gem 'better_errors'
+  gem 'quiet_assets'
+  gem 'binding_of_caller'
 
   gem 'guard'
   gem 'rb-inotify', :require => false
