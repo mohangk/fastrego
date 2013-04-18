@@ -38,22 +38,12 @@ class PaymentsController < ApplicationController
   def checkout
     begin
       @paypal_payment = PaypalPayment.generate current_registration
-      paypal_request = ChainedPaypalRequest.new payment: @paypal_payment,
+      paypal_request = PaypalRequest.new payment: @paypal_payment,
         return_url: completed_payment_url(@paypal_payment.id),
         cancel_url: canceled_payment_url(@paypal_payment.id),
-        ipn_notification_url:    ipn_url
-
-      response = paypal_request.setup_payment
-      logger.info "PAYPAL Setup purchase request'#{response.request.inspect}'"
-      logger.info "PAYPAL Setup purchase response'#{response.json.inspect}'"
-
-      if response.success?
-        @paypal_payment.update_pay_key(response["payKey"])
-        redirect_to (GATEWAY.redirect_url_for(response["payKey"]))
-      else
-        raise 'Setup purchase response from Paypal failed'
-      end
-
+        request:    request,
+        logger: logger
+      redirect_to paypal_request.setup_payment
     rescue Exception => e
       logger.error e.message
       logger.error e.backtrace
@@ -68,6 +58,18 @@ class PaymentsController < ApplicationController
 
   def completed
     @paypal_payment = PaypalPayment.find(params[:id])
+
+    paypal_request = PaypalRequest.new payment: @paypal_payment,
+      return_url: completed_payment_url(@paypal_payment.id),
+      cancel_url: canceled_payment_url(@paypal_payment.id),
+      request:    request,
+      logger: logger
+
+    #handle express checkout
+    if params[:token] && params[:PayerID]
+      paypal_request.complete_payment params[:token], params[:PayerID]
+    end
+
     abort_if_not_owner(@paypal_payment) and return
     render 'users/completed'
   end

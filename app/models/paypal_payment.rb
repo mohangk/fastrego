@@ -37,6 +37,10 @@ class PaypalPayment < Payment
     registration.fastrego_fees_portion
   end
 
+  def receiver
+    registration.tournament.name
+  end
+
   def secondary_receiver
     ::FASTREGO_PAYPAL_ACCOUNT
   end
@@ -59,6 +63,10 @@ class PaypalPayment < Payment
 
   def currency_code
     registration.tournament.currency_symbol
+  end
+
+  def amount_sent_in_cents
+    amount_sent * 100
   end
 
 end
