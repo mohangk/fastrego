@@ -5,6 +5,7 @@ class ChainedPaypalRequest
     @return_url = options[:return_url]
     @cancel_url = options[:cancel_url]
     @ipn_notification_url = options[:ipn_notification_url]
+    @logger = options[:logger]
   end
 
   def recipients
@@ -22,13 +23,23 @@ class ChainedPaypalRequest
   end
 
   def setup_payment
-    GATEWAY.setup_purchase(
+    response = GATEWAY.setup_purchase(
       :currency_code =>        @paypal_payment.currency_code,
       :fees_payer =>           'SECONDARYONLY',
       :return_url =>           @return_url,
       :cancel_url =>           @cancel_url,
       :ipn_notification_url => @ipn_notification_url,
       :receiver_list =>        recipients)
+
+    @logger.info "PAYPAL Setup purchase request'#{response.inspect}'"
+    @logger.info "PAYPAL Setup purchase response'#{response.inspect}'"
+
+    if response.success?
+      @paypal_payment.update_pay_key(response["payKey"])
+      GATEWAY.redirect_url_for(response["payKey"])
+    else
+      raise 'Setup purchase response from Paypal failed'
+    end
   end
 
 end

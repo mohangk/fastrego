@@ -14,7 +14,9 @@ describe 'ChainedPaypalRequest' do
 
   let(:return_url) { double('return_url') }
   let(:cancel_url) { double('cancel_url') }
+  let(:logger) { double(:logger, info: nil) }
   let(:ipn_notification_url) { double('ipn_notification_url') }
+
   let (:payment) do
     paypal_payment = FactoryGirl.create(:paypal_payment)
     paypal_payment.stub( primary_receiver: 'fakehost@gmail.com',
@@ -27,16 +29,21 @@ describe 'ChainedPaypalRequest' do
 
   let(:payment_request) {
       ChainedPaypalRequest.new(payment: payment,
+       logger: logger,
        return_url: return_url,
        cancel_url: cancel_url,
        ipn_notification_url: ipn_notification_url)
   }
 
 
-  describe "#setup_chained_payment" do
+  describe "setup_payment" do
     before do
       payment_request.stub(:recipients).and_return(recipients)
+      GATEWAY.stub(:setup_purchase).and_return setup_purchase_response
+      GATEWAY.stub(:redirect_url_for)
     end
+
+    let(:setup_purchase_response) { double(:response, 'success?' => true, '[]' => 'FakePayKey') }
     let(:recipients) { double('recipients') }
 
     it 'passes the right params' do
@@ -47,7 +54,12 @@ describe 'ChainedPaypalRequest' do
                     ipn_notification_url: ipn_notification_url,
                     receiver_list: recipients }
 
-      GATEWAY.should_receive(:setup_purchase).with setup_options
+      GATEWAY.should_receive(:setup_purchase).with(setup_options)
+      payment_request.setup_payment
+    end
+
+    it 'returns the redirection URL' do
+      GATEWAY.should_receive(:redirect_url_for).with 'FakePayKey'
       payment_request.setup_payment
     end
   end

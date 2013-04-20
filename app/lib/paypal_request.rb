@@ -4,7 +4,6 @@ class PaypalRequest
     @paypal_payment = options[:payment]
     @return_url = options[:return_url]
     @cancel_url = options[:cancel_url]
-    #@ipn_notification_url = options[:ipn_notification_url]
     @request = options[:request]
     @logger = options[:logger]
   end

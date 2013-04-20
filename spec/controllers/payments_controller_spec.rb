@@ -147,22 +147,22 @@ describe PaymentsController do
         expected_params = { payment: paypal_payment,
                             return_url: completed_payment_url(id: paypal_payment.id),
                             cancel_url: canceled_payment_url(id: paypal_payment.id),
-                            ipn_notification_url: ipn_url }
+                            request: controller.request,
+                            logger: controller.logger}
 
         PaypalPayment.stub(:generate).and_return paypal_payment
-        paypal_request.should_receive(:setup_payment).and_return paypal_setup_response
-        paypal_setup_response.should_receive(:[]).with("payKey").twice.and_return 'FakePayKey'
-        paypal_payment.should_receive(:update_pay_key).with 'FakePayKey'
 
-        ChainedPaypalRequest.should_receive(:new)
+        PaypalRequest.should_receive(:new)
           .with(expected_params)
           .and_return(paypal_request)
+
+        paypal_request.should_receive(:setup_payment).and_return '/FakePaypalUrl'
+
       end
 
       let(:paypal_payment) { double('paypal payment', id: 123) }
       let(:paypal_request) { double('paypal request') }
-      let(:paypal_setup_response) { double('paypal setup response',success?: true, request: double, json: double ) }
-      it 'initializes ChainedPaypalRequest' do
+      it 'sets up PaypalRequest' do
         checkout
       end
     end

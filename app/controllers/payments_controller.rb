@@ -36,14 +36,14 @@ class PaymentsController < ApplicationController
   end
 
   def checkout
-    begin
-      @paypal_payment = PaypalPayment.generate current_registration
-      paypal_request = PaypalRequest.new payment: @paypal_payment,
-        return_url: completed_payment_url(@paypal_payment.id),
-        cancel_url: canceled_payment_url(@paypal_payment.id),
-        request:    request,
-        logger: logger
-      redirect_to paypal_request.setup_payment
+    @paypal_payment = PaypalPayment.generate current_registration
+    paypal_request = PaypalRequest.new payment: @paypal_payment,
+      return_url: completed_payment_url(@paypal_payment.id),
+      cancel_url: canceled_payment_url(@paypal_payment.id),
+      request:    request,
+      logger: logger
+    redirect_to paypal_request.setup_payment
+
     rescue Exception => e
       logger.error e.message
       logger.error e.backtrace
@@ -52,8 +52,6 @@ class PaymentsController < ApplicationController
       @paypal_payment.errors[:base] << "Paypal Payment error #{e.message}"
       @registration = current_registration
       render 'users/show' and return
-    end
-
   end
 
   def completed
