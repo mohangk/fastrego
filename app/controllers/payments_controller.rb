@@ -38,11 +38,15 @@ class PaymentsController < ApplicationController
   def checkout
     @paypal_payment = PaypalPayment.generate current_registration
     paypal_request = PaypalRequest.new payment: @paypal_payment,
-      return_url: completed_payment_url(@paypal_payment.id),
-      cancel_url: canceled_payment_url(@paypal_payment.id),
-      request:    request,
-      logger: logger
-    redirect_to paypal_request.setup_payment
+                                      logger: logger
+
+      setup_payment_options = [
+        completed_payment_url(@paypal_payment.id),
+        canceled_payment_url(@paypal_payment.id),
+        request
+      ]
+
+    redirect_to paypal_request.setup_payment *setup_payment_options
 
     rescue Exception => e
       logger.error e.message
@@ -57,14 +61,11 @@ class PaymentsController < ApplicationController
   def completed
     @paypal_payment = PaypalPayment.find(params[:id])
 
-    paypal_request = PaypalRequest.new payment: @paypal_payment,
-      return_url: completed_payment_url(@paypal_payment.id),
-      cancel_url: canceled_payment_url(@paypal_payment.id),
-      request:    request,
-      logger: logger
-
     #handle express checkout
     if params[:token] && params[:PayerID]
+
+      paypal_request = PaypalRequest.new payment: @paypal_payment,
+                                      logger: logger
       paypal_request.complete_payment params[:token], params[:PayerID]
     end
 

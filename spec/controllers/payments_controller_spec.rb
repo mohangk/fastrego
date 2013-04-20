@@ -142,12 +142,9 @@ describe PaymentsController do
 
     subject(:checkout) { post :checkout }
 
-    describe 'ChainedPaypalRequest integration' do
+    describe 'PaypalRequest integration' do
       before do
         expected_params = { payment: paypal_payment,
-                            return_url: completed_payment_url(id: paypal_payment.id),
-                            cancel_url: canceled_payment_url(id: paypal_payment.id),
-                            request: controller.request,
                             logger: controller.logger}
 
         PaypalPayment.stub(:generate).and_return paypal_payment
@@ -156,12 +153,16 @@ describe PaymentsController do
           .with(expected_params)
           .and_return(paypal_request)
 
-        paypal_request.should_receive(:setup_payment).and_return '/FakePaypalUrl'
+        paypal_request.should_receive(:setup_payment).with(return_url, cancel_url, request).and_return '/FakePaypalUrl'
 
       end
 
+      let(:return_url) { completed_payment_url(id: paypal_payment.id) }
+      let(:cancel_url) { canceled_payment_url(id: paypal_payment.id) }
+      let(:request) { controller.request }
       let(:paypal_payment) { double('paypal payment', id: 123) }
       let(:paypal_request) { double('paypal request') }
+
       it 'sets up PaypalRequest' do
         checkout
       end
@@ -217,7 +218,7 @@ describe PaymentsController do
   describe "GET completed" do
     let(:paypal_payment) { FactoryGirl.create :paypal_payment, registration: registration }
 
-    subject(:completed) { get :completed, { id: paypal_payment.id }   }
+    let(:completed) { get :completed, { id: paypal_payment.id }   }
 
     it 'initializes the right payment' do
       completed
@@ -228,6 +229,25 @@ describe PaymentsController do
     it 'should render tournament registration page' do
       completed
       response.should render_template(:completed)
+    end
+
+    context 'when it is handling a PaypalExpress request' do
+      let(:completed) { get :completed, { id: paypal_payment.id, token: 'FakePayKey', PayerID: 'FakePayerID' }   }
+
+      let(:paypal_request) { double('paypal request') }
+
+      it 'initializes a PaypalRequest and completes the payment' do
+        expected_params = { payment: paypal_payment,
+                            logger: controller.logger}
+
+        PaypalRequest.should_receive(:new)
+          .with(expected_params)
+          .and_return(paypal_request)
+
+        paypal_request.should_receive(:complete_payment).with('FakePayKey', 'FakePayerID')
+        completed
+      end
+
     end
 
     context 'when someone tries to access payments not owned by them' do

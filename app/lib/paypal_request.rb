@@ -2,40 +2,19 @@ class PaypalRequest
 
   def initialize options
     @paypal_payment = options[:payment]
-    @return_url = options[:return_url]
-    @cancel_url = options[:cancel_url]
-    @request = options[:request]
     @logger = options[:logger]
   end
 
-  def recipients
-    raise 'Host paypal account setting not set' if @paypal_payment.primary_receiver.nil?
-    raise 'Fastrego paypal account setting not set' if @paypal_payment.secondary_receiver.nil?
-
-    [{:email => @paypal_payment.primary_receiver,
-      :amount => @paypal_payment.amount_sent,
-      :primary => true}, {
-        :email => @paypal_payment.secondary_receiver,
-        :amount => @paypal_payment.fastrego_fees_portion,
-        :primary => false
-      }
-    ]
-  end
-
-  def setup_payment
-    setup_options = { ip: @request.remote_ip,
-      return_url: @return_url,
-      cancel_return_url: @cancel_url,
+  def setup_payment return_url, cancel_url, request
+    setup_options = { ip: request.remote_ip,
+      return_url: return_url,
+      cancel_return_url: cancel_url,
       currency: @paypal_payment.currency_code,
-      locale: 'en', #I18n.locale.to_s.sub(/-/, '_'), #you can put 'en' if you don't know what it means :)
-      brand_name: 'FastRego', #The name of the company
+      locale: 'en',
+      brand_name: 'FastRego',
       header_image: 'http://www.fastrego.com/assets/fastrego.png',
-      allow_guest_checkout: 'true',   #payment with credit card for non PayPal users
-      items: [
-        {name: "Registration fees for #{@paypal_payment.receiver}",
-         description: "Registration fees for #{@paypal_payment.receiver}",
-         quantity: "1", amount: @paypal_payment.amount_sent_in_cents }
-      ]}
+      allow_guest_checkout: 'true',
+      items: purchase_items }
 
     response = GATEWAY.setup_purchase(@paypal_payment.amount_sent_in_cents, setup_options)
 
@@ -63,15 +42,24 @@ class PaypalRequest
     end
   end
 
-  private
-
   def express_purchase_options
-  {
-    ip: @request.remote_ip,
-    token: @paypal_payment.transaction_txnid,
-    payer_id: @paypal_payment.account_number,
-    currency: @paypal_payment.currency_code
-  }
+    {
+      ip: @request.remote_ip,
+      token: @paypal_payment.transaction_txnid,
+      payer_id: @paypal_payment.account_number,
+      currency: @paypal_payment.currency_code
+    }
+  end
+
+  def purchase_items
+    [
+      {
+        name: "Registration fees for #{@paypal_payment.receiver}",
+        description: "Registration fees for #{@paypal_payment.receiver}",
+        quantity: "1",
+        amount: @paypal_payment.amount_sent_in_cents
+      }
+    ]
   end
 
 end
