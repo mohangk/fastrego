@@ -12,7 +12,8 @@ namespace :fastrego do
     puts "Create setting for '#{t.identifier}'"
 
     settings = [
-        {key: 'enable_pre_registration', value: 'False' },
+        {key: Setting::PRE_REGISTRATION_FEES_PERCENTAGE, value: '0' },
+        {key: Setting::ENABLE_PAYPAL_PAYMENT, value: 'False' },
         {key: 'observer_fees', value: '100'},
         {key: 'adjudicator_fees', value: '100'},
         {key: 'debate_team_fees', value: '200'},

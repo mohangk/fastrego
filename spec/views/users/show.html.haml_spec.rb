@@ -61,7 +61,7 @@ describe "users/show.html.haml" do
         it "will recognise user as the team manager" do
           rendered.should have_content("You are assigned as the team manager for the #{@registration.institution.name} contingent to the MMU Worlds")
         end
-        
+
         it 'will provide the registration form' do
           rendered.should have_css('input#registration_debate_teams_requested')
           rendered.should have_css('input#registration_adjudicators_requested')
@@ -118,9 +118,6 @@ describe "users/show.html.haml" do
 
   describe "payment details section" do
 
-    before :each do
-    end
-
     it "is closed by default" do
       @registration = FactoryGirl.create(:requested_registration, team_manager: user)
       render
@@ -150,17 +147,39 @@ describe "users/show.html.haml" do
         rendered.should have_css 'form#new_payment'
       end
 
-      context 'when PayPal is enabled' do
+      context 'PayPal link' do
 
-        before(:each) do
+        it 'is displayed if its enabled' do
           MockHelperMethods.paypal_payment_enabled = true
-        end
-
-        it 'has a pay via PayPal link' do 
           render
           rendered.should have_content 'PayPal'
         end
-       end
+
+        it 'is hidden otherwise' do
+          MockHelperMethods.paypal_payment_enabled = false
+          render
+          rendered.should_not have_content 'PayPal'
+        end
+      end
+
+      context 'pre-registration fees' do
+
+        before do
+          @registration.stub balance_pre_registration_fees: 10.00
+        end
+
+        it 'is displayed if its enabled and there is balance_pre_registration_fees ' do
+          MockHelperMethods.pre_registration_fees_enabled = true
+          render
+          rendered.should have_content 'Pre registration fees RM10.00'
+        end
+
+        it 'is hidden otherwise' do
+          MockHelperMethods.pre_registration_fees_enabled = false
+          render
+          rendered.should_not have_content 'Total pre-registration fees due'
+        end
+      end
     end
 
   end

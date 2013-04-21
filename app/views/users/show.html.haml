@@ -11,7 +11,7 @@
   - if @registration.requested?
     .row
       .span6
-        %h4.blue Requested slots 
+        %h4.blue Requested slots
         %b You completed pre-registration at #{@registration.requested_at} and requested the following slots
         %ul
           %li #{ pluralize @registration.debate_teams_requested, 'debate team' }
@@ -30,20 +30,25 @@
   - if not @registration.fees.blank?
     %h4.blue Payment details
     %table.payment-items.table.table-striped.table-condensed
-      %tr 
-        %td Total registration fees due  
-        %td #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }
-        %td 
-      %tr 
-        %td Total confirmed payments  
-        %td #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
-        %td 
       %tr
-        %td Balance fees due  
+        %td Total registration fees due
+        %td #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }
+        %td
+      %tr
+        %td Total confirmed payments
+        %td #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
+        %td
+      - if current_tournament.pre_registration_fees_enabled? && @registration.balance_pre_registration_fees
+        %tr
+          %td Pre registration fees
+          %td #{number_to_currency @registration.balance_pre_registration_fees, unit: current_tournament.currency_symbol }
+          %td
+      %tr
+        %td Balance fees due
         %td #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
         %td #{link_to 'Pay now via PayPal', checkout_path, method: :post if current_tournament.paypal_payment_enabled?}
       %tr
-        %td Total unconfirmed payments  
+        %td Total unconfirmed payments
         %td #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
         %td
 
@@ -60,15 +65,15 @@
     %p
       %b You have been confirmed the following slots. Please click on the links to populate the relevant participant details.
       %ul
-        %li 
+        %li
           #{ pluralize @registration.debate_teams_confirmed, 'debate team' }
-          - if @registration.debate_teams_confirmed > 0 
+          - if @registration.debate_teams_confirmed > 0
             #{link_to (@registration.debaters.length > 0 ? 'Edit' : 'Add') + ' debate team details', edit_debaters_registration_path}
-        %li 
+        %li
           #{ pluralize @registration.adjudicators_confirmed, 'adjudicator' }
-          - if @registration.adjudicators_confirmed > 0 
+          - if @registration.adjudicators_confirmed > 0
             #{link_to (@registration.adjudicators.length > 0 ? 'Edit' : 'Add') + ' adjudicator details', edit_adjudicators_registration_path}
-        %li 
-          #{ pluralize @registration.observers_confirmed, 'observer' } 
-          - if @registration.observers_confirmed > 0  
+        %li
+          #{ pluralize @registration.observers_confirmed, 'observer' }
+          - if @registration.observers_confirmed > 0
             #{link_to (@registration.observers.length > 0 ? 'Edit' : 'Add') + ' observer details', edit_observers_registration_path}

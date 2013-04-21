@@ -45,7 +45,7 @@ FactoryGirl.define do
     name 'tournament 1'
     active true
     identifier 't1'
-    admin_user 
+    admin_user
   end
 
   factory :t2_tournament, class: Tournament do
@@ -78,6 +78,11 @@ FactoryGirl.define do
     factory :enable_pre_registration, :class => Setting do
       key 'enable_pre_registration'
       value 'True'
+    end
+
+    factory :pre_registration_fees_percentage, :class => Setting do
+      key Setting::PRE_REGISTRATION_FEES_PERCENTAGE
+      value '50'
     end
 
     factory :enable_paypal_payment, :class => Setting do
@@ -151,7 +156,7 @@ FactoryGirl.define do
     status 'Draft'
     transaction_txnid 'fakeid123'
     registration
-  end  
+  end
 
   factory :observer, class: Observer do
     name 'Jack Observer'

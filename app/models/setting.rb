@@ -5,6 +5,7 @@ class Setting < ActiveRecord::Base
   attr_accessible :key, :value
 
   ENABLE_PAYPAL_PAYMENT = 'enable_paypal_payment'
+  PRE_REGISTRATION_FEES_PERCENTAGE = 'pre_registration_fees_percentage'
 
   def self.currency_symbol(tournament)
     Setting.key(tournament, 'currency_symbol') ? Setting.key(tournament, 'currency_symbol') : 'USD'
@@ -14,12 +15,22 @@ class Setting < ActiveRecord::Base
     self.treat_as_bool Setting.key(tournament, Setting::ENABLE_PAYPAL_PAYMENT)
   end
 
+  def self.pre_registration_fees_enabled?(tournament)
+    percentage = Setting.key(tournament, Setting::PRE_REGISTRATION_FEES_PERCENTAGE)
+    return false if percentage.nil?
+    return true if percentage.to_f > 0
+  end
+
+  def self.pre_registration_fees_percentage(tournament)
+    Setting.key(tournament, Setting::PRE_REGISTRATION_FEES_PERCENTAGE).to_f
+  end
+
   def self.pre_registration_enabled?(tournament)
     self.treat_as_bool Setting.key(tournament, 'enable_pre_registration')
   end
 
   def self.key(tournament, key, value=nil)
-    return nil unless Setting.table_exists? 
+    return nil unless Setting.table_exists?
     setting = self.find_by_tournament_id_and_key(tournament.id, key)
 
     if value.nil?
@@ -28,7 +39,7 @@ class Setting < ActiveRecord::Base
       end
     else
       if setting.nil?
-        setting = Setting.new(key: key) 
+        setting = Setting.new(key: key)
       end
       setting.tournament_id = tournament.id
       setting.value = value

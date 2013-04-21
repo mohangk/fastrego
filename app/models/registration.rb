@@ -167,4 +167,13 @@ class Registration < ActiveRecord::Base
     Setting.key(tournament,'host_paypal_account')
   end
 
+  def pre_registration_fees
+    tournament.pre_registration_fees_percentage/100.00 * fees
+  end
+
+  def balance_pre_registration_fees
+    result = pre_registration_fees - total_confirmed_payments
+    return 0 if result <0
+    result
+  end
 end

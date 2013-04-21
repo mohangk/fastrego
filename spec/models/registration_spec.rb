@@ -289,4 +289,36 @@ describe Registration do
     end
   end
 
+  describe '#pre_registration_fees' do
+    before do
+      r.stub(fees: 200)
+      r.tournament.stub(pre_registration_fees_percentage: 10)
+    end
+
+    it 'is a portion of the total fees' do
+      r.pre_registration_fees.should == 20.00
+    end
+  end
+
+  describe '#balance_pre_registration_fees' do
+
+    it 'is the result of pre_registration_fees - total_confirmed_payment' do
+      r.stub(total_confirmed_payments: 0)
+      r.stub(pre_registration_fees: 100)
+      r.balance_pre_registration_fees.to_i.should == 100.00
+
+      r.stub(total_confirmed_payments: 20)
+      r.stub(pre_registration_fees: 100)
+      r.balance_pre_registration_fees.to_i.should == 80.00
+    end
+
+    it 'returns 0 instead of -ve values' do
+      r.stub(total_confirmed_payments: 120)
+      r.stub(pre_registration_fees: 100)
+      r.balance_pre_registration_fees.to_i.should == 0.00
+    end
+
+
+  end
+
 end
