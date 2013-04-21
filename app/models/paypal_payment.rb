@@ -18,11 +18,15 @@ class PaypalPayment < Payment
   after_initialize :initialize_status
   validates :status, presence: true
 
-  def self.generate registration
+  def self.generate registration, pre_registration = false
 
-    @paypal_payment = PaypalPayment.new({:registration => registration,
-                                         :amount_sent => registration.balance_fees})
-
+    @paypal_payment = PaypalPayment.new
+    @paypal_payment.registration = registration
+    @paypal_payment.amount_sent = if pre_registration
+      registration.balance_pre_registration_fees
+    else
+      registration.balance_fees
+    end
     @paypal_payment.primary_receiver = registration.host_paypal_account
     @paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
     @paypal_payment.save!

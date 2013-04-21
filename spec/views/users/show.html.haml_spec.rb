@@ -143,7 +143,6 @@ describe "users/show.html.haml" do
         rendered.should have_content 'Total confirmed payments RM999.48'
         rendered.should have_content 'Balance fees due RM1,000.52'
         rendered.should have_content 'Total unconfirmed payments RM0.00'
-        rendered.should_not have_content 'PayPal'
         rendered.should have_css 'form#new_payment'
       end
 
@@ -152,13 +151,13 @@ describe "users/show.html.haml" do
         it 'is displayed if its enabled' do
           MockHelperMethods.paypal_payment_enabled = true
           render
-          rendered.should have_content 'PayPal'
+          rendered.should have_css 'a[title="Pay now via PayPal"]'
         end
 
         it 'is hidden otherwise' do
           MockHelperMethods.paypal_payment_enabled = false
           render
-          rendered.should_not have_content 'PayPal'
+          rendered.should_not have_css 'a[title="Pay now via PayPal"]'
         end
       end
 
@@ -174,10 +173,17 @@ describe "users/show.html.haml" do
           rendered.should have_content 'Pre registration fees RM10.00'
         end
 
+        it 'can be paid via PayPal if enabled' do
+          MockHelperMethods.paypal_payment_enabled = true
+          render
+          rendered.should have_css 'a[title="Pay pre registration now via PayPal"]'
+        end
+
+
         it 'is hidden otherwise' do
           MockHelperMethods.pre_registration_fees_enabled = false
           render
-          rendered.should_not have_content 'Total pre-registration fees due'
+          rendered.should_not have_content 'Pre registration fees'
         end
       end
     end

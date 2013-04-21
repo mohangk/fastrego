@@ -14,6 +14,8 @@
   %dd.id= @paypal_payment.id
   %dt Status
   %dd.status= @paypal_payment.status
+  %dt Amount
+  %dd.amount= number_to_currency @paypal_payment.amount_sent, unit: current_tournament.currency_symbol
 
 =link_to 'Return to registration page', profile_path, class: 'done hide'
 

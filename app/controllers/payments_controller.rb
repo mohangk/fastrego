@@ -36,7 +36,14 @@ class PaymentsController < ApplicationController
   end
 
   def checkout
-    @paypal_payment = PaypalPayment.generate current_registration
+
+    if params[:type] == 'pre_registration'
+      pre_registration_payment = true
+    else
+      pre_registration_payment = false
+    end
+
+    @paypal_payment = PaypalPayment.generate current_registration, pre_registration_payment
     paypal_request = PaypalRequest.new payment: @paypal_payment,
                                       logger: logger
 

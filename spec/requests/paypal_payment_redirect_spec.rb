@@ -7,12 +7,10 @@ describe 'Paypal payments redirect', js: true do
   let!(:currency_symbol) { FactoryGirl.create(:currency_symbol, tournament: t1) }
   let!(:mmu) { FactoryGirl.create(:institution) }
 
-  before :all do
-    FactoryGirl.create :host_paypal_account, tournament: t1
-    FactoryGirl.create :enable_paypal_payment, tournament: t1
-  end
 
   before :each do
+    FactoryGirl.create :host_paypal_account, tournament: t1
+    FactoryGirl.create :enable_paypal_payment, tournament: t1
     r = FactoryGirl.create :granted_registration, tournament: t1
     user_login t1, r.team_manager.email, 'password'
   end

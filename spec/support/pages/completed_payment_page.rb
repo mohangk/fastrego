@@ -13,6 +13,10 @@ class CompletedPaymentPage < GenericPage
     find('.id').text.to_i
   end
 
+  def amount
+    find('.amount').text
+  end
+
   def redirected?
     page.should have_content 'Requested slots'
   end

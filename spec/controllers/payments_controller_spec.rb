@@ -138,7 +138,7 @@ describe PaymentsController do
 
   end
 
-  describe "POST checkout" do
+  describe 'POST checkout' do
 
     subject(:checkout) { post :checkout }
 
@@ -168,27 +168,37 @@ describe PaymentsController do
       end
     end
 
-    it 'assigns a newly created payment as @paypal_payment' do
+    it 'generates a PaypalPayment' do
+
+
+    end
+
+    it 'updates the generated paypal_payment' do
       checkout
-      assigns(:paypal_payment).should be_a(PaypalPayment)
       assigns(:paypal_payment).status.should == PaypalPayment::STATUS_PENDING
-      assigns(:paypal_payment).registration == registration
-      assigns(:paypal_payment).registration.team_manager.should == user
-      assigns(:paypal_payment).amount_sent.should == registration.balance_fees
       assigns(:paypal_payment).transaction_txnid.should == 'FakePayKey'
       assigns(:paypal_payment).should be_persisted
     end
 
-    context 'with valid params' do
-      it 'creates a new Payment' do
-        expect {
-          checkout
-        }.to change(PaypalPayment, :count).by(1)
+    it 'creates a new Payment' do
+      expect {
+        checkout
+      }.to change(PaypalPayment, :count).by(1)
+    end
+
+    it 'redirects to Paypal' do
+      checkout
+      response.should redirect_to('/FakePayPal')
+    end
+
+    context 'when type is pre_registration' do
+      before do
+        PaypalRequest.any_instance.stub(:setup_payment).and_return '/FakeyPayPal'
       end
 
-      it 'redirects to Paypal' do
-        checkout
-        response.should redirect_to('/FakePayPal')
+      it 'calls PaypalPayment' do
+        PaypalPayment.should_receive(:generate).with(registration, true).and_return(double(:paypal_payment, id: 999))
+        post :checkout, type: 'pre_registration'
       end
     end
 
