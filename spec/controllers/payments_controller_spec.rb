@@ -169,8 +169,9 @@ describe PaymentsController do
     end
 
     it 'generates a PaypalPayment' do
-
-
+      PaypalRequest.any_instance.stub(:setup_payment).and_return '/FakeyPayPal'
+      PaypalPayment.should_receive(:generate).with(registration, false).and_return(double(:paypal_payment, id: 999))
+      checkout
     end
 
     it 'updates the generated paypal_payment' do
@@ -196,7 +197,7 @@ describe PaymentsController do
         PaypalRequest.any_instance.stub(:setup_payment).and_return '/FakeyPayPal'
       end
 
-      it 'calls PaypalPayment' do
+      it 'generates a pre_registration PaypalPayment' do
         PaypalPayment.should_receive(:generate).with(registration, true).and_return(double(:paypal_payment, id: 999))
         post :checkout, type: 'pre_registration'
       end
