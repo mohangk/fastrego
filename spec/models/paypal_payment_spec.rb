@@ -22,12 +22,12 @@ describe PaypalPayment do
     it { generated.status.should == PaypalPayment::STATUS_DRAFT }
     it { generated.registration.should == registration }
     it { generated.amount_sent.to_i.should == registration.balance_fees }
-
+    it { generated.details.should == "Registration fees for #{registration.tournament.name}" }
     context 'pre_registration payment' do
       let(:generated) { PaypalPayment.generate registration, true }
 
       it { generated.amount_sent.to_i.should == registration.balance_pre_registration_fees }
-
+      it { generated.details.should == "Pre registration fees for #{registration.tournament.name}" }
     end
 
 

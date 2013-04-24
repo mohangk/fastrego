@@ -20,17 +20,19 @@ class PaypalPayment < Payment
 
   def self.generate registration, pre_registration = false
 
-    @paypal_payment = PaypalPayment.new
-    @paypal_payment.registration = registration
-    @paypal_payment.amount_sent = if pre_registration
+    paypal_payment = PaypalPayment.new
+    paypal_payment.registration = registration
+    paypal_payment.amount_sent = if pre_registration
+      paypal_payment.details = "Pre registration fees for #{paypal_payment.receiver}"
       registration.balance_pre_registration_fees
     else
+      paypal_payment.details = "Registration fees for #{paypal_payment.receiver}"
       registration.balance_fees
     end
-    @paypal_payment.primary_receiver = registration.host_paypal_account
-    @paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
-    @paypal_payment.save!
-    @paypal_payment
+    paypal_payment.primary_receiver = registration.host_paypal_account
+    paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
+    paypal_payment.save!
+    paypal_payment
   end
 
   def initialize_status
@@ -73,4 +75,6 @@ class PaypalPayment < Payment
     amount_sent * 100
   end
 
+  alias_attribute :details, :comments
+  alias_attribute :details=, :comments=
 end

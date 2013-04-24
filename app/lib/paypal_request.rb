@@ -54,8 +54,8 @@ class PaypalRequest
   def purchase_items
     [
       {
-        name: "Registration fees for #{@paypal_payment.receiver}",
-        description: "Registration fees for #{@paypal_payment.receiver}",
+        name: @paypal_payment.details,
+        description: @paypal_payment.details,
         quantity: "1",
         amount: @paypal_payment.amount_sent_in_cents
       }
