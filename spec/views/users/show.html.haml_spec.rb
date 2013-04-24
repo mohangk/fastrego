@@ -179,12 +179,22 @@ describe "users/show.html.haml" do
           rendered.should have_css 'a[title="Pay pre registration now via PayPal"]'
         end
 
-
-        it 'is hidden otherwise' do
-          MockHelperMethods.pre_registration_fees_enabled = false
-          render
-          rendered.should_not have_content 'Pre registration fees'
+        context 'when paypal is disabled' do
+          it 'is hidden ' do
+            MockHelperMethods.pre_registration_fees_enabled = false
+            render
+            rendered.should_not have_content 'Pre registration fees'
+          end
         end
+
+        context 'when the balance_pre_registration_fees is 0'
+          it 'is hidden' do
+            @registration.stub balance_pre_registration_fees: 0.00
+            MockHelperMethods.pre_registration_fees_enabled = true
+            render
+            rendered.should_not have_content 'Pre registration fees'
+          end
+
       end
     end
 

@@ -38,7 +38,7 @@
         %td Total confirmed payments
         %td #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
         %td
-      - if current_tournament.pre_registration_fees_enabled? && @registration.balance_pre_registration_fees
+      - if current_tournament.pre_registration_fees_enabled? && @registration.balance_pre_registration_fees > 0
         %tr
           %td Pre registration fees
           %td #{number_to_currency @registration.balance_pre_registration_fees, unit: current_tournament.currency_symbol }
@@ -46,7 +46,7 @@
       %tr
         %td Balance fees due
         %td #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
-        %td #{link_to image_tag("https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"), checkout_path, title: 'Pay now via PayPal', method: :post if current_tournament.paypal_payment_enabled?}
+        %td #{link_to image_tag("https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"), checkout_path, title: 'Pay now via PayPal', method: :post if current_tournament.paypal_payment_enabled? and @registration.balance_fees > 0}
       %tr
         %td Total unconfirmed payments
         %td #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
