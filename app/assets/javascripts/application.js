@@ -8,6 +8,7 @@
 //= require jquery_ujs
 //= require bootstrap-dropdown.js
 //= require bootstrap-alert.js
+//= require bootstrap-modal.js
 //= require jquery.cookie.js
 //= require payment_status_poller.js.coffee
 

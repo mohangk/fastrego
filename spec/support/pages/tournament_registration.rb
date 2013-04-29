@@ -24,12 +24,19 @@ class TournamentRegistration < GenericPage
 
   def pay_via_paypal stubbed = false
     click_link 'Pay now via PayPal'
+    click_link 'Proceed to PayPal'
 
     if stubbed
       CompletedPaymentPage.new
     else
       PayPalFlow.new
     end
+  end
+
+  def click_preregistration_paypal_link
+    click_on 'Pay pre registration now via PayPal'
+    click_link 'Proceed to PayPal'
+    CompletedPaymentPage.new
   end
 
   def payment_details
@@ -54,10 +61,6 @@ class TournamentRegistration < GenericPage
     end
 
 
-    def payment_details.click_preregistration_paypal_link
-      click_on 'Pay pre registration now via PayPal'
-      CompletedPaymentPage.new
-    end
 
     def payment_details.rows
       all('tr').map do |row|

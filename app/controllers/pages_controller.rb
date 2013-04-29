@@ -31,7 +31,7 @@ class PagesController < ApplicationController
       'Berlin WUDC 2013' => 'http://wudcberlin.herokuapp.com',
       'North East Asians 2012' => nil,
       'MMU UADC 2012'  => nil,
-      'BIPEDS Asian BP 2012' => nil, 
+      'BIPEDS Asian BP 2012' => nil,
       'Summer Asian Debate Institute 2012' => nil,
       '11th Korean National Championships' => nil,
       'Philippine School Debates 2012' => nil
@@ -44,5 +44,16 @@ class PagesController < ApplicationController
         @past_tournaments[t.name] = t.url
       end
     end
+  end
+
+  def paypal_payment_notice
+
+    @checkout_params = {}
+
+    if !params[:type].nil?
+      @checkout_params = { type: params[:type] }
+    end
+
+    render :paypal_payment_notice, layout: false
   end
 end

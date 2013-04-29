@@ -45,6 +45,7 @@ UadcRego::Application.routes.draw do
   match "embed_logo" => "pages#embed_logo", as: :embed_logo, via: :get
   match 'enquiry' => 'pages#enquiry', as: :enquiry, via: :get
   match 'enquiry' => 'pages#send_enquiry', as: :enquiry, via: :post
+  match 'paypal_payment_notice'  => 'pages#paypal_payment_notice'
 
   match "export/institution" => "export#institution", via: :get
   match "export/adjudicator" => "export#adjudicator", via: :get

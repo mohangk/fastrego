@@ -1,4 +1,5 @@
 require 'spec_helper'
+require Rails.root.join 'lib/stub_gateway'
 
 describe 'Registration payment table spec' do
 
@@ -28,7 +29,7 @@ describe 'Registration payment table spec' do
       tournament = TournamentRegistration.new.tap { |t| t.visit }
       tournament.payment_details.should have_preregistration_paypal_link
       tournament.payment_details.pre_registration_row[1].should =~ /#{registration.balance_pre_registration_fees}/
-      completed_payment = tournament.payment_details.click_preregistration_paypal_link
+      completed_payment = tournament.click_preregistration_paypal_link
       completed_payment.amount.should =~ /#{registration.balance_pre_registration_fees}/
     end
 

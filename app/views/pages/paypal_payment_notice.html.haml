@@ -1,0 +1,15 @@
+%p
+  Paying through PayPal will cost you an additonal 5% processing fees.
+  The benefits of paying through PayPal are
+  %ul
+    %li No hidden costs. Bank transfers many a times incur transfer costs that you might only be aware of at the point of doing the transfer. With FastRego you will know the complete cost at the point of doing the transfer.
+    %li Transparent currency conversion rates. At the point of paying, you will have the option of using PayPal to carry out the currency conversion (if necessary). This will allow for you to know the rates before carrying out the payment.
+    %li Immediate recognition of payment via FastRego. Because the system track the success or failure of your payment you will not need to be anxious as to whether the payment was successful.
+
+%p The 5% fees mostly goes towards paying PayPal's transaction fees.
+%p Keep in mind that when you pay via bank transfer, you will also be incurring additonal costs, sometimes more then 5% of the total fees. The remainder (~1 %) we keep to cover the costs of running FastRego.
+
+%p Thanks for choosing to pay via PayPal and supporting FastRego.
+
+%a.btn(href="#" data-dismiss='modal' aria-hidden='true') Cancel
+= link_to 'Proceed to PayPal', checkout_path(@checkout_params),  method: :post, class: 'btn btn-primary'

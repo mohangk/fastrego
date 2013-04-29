@@ -6,12 +6,18 @@ module ApplicationHelper
 
     if pre_registration
       title = 'Pay pre registration now via PayPal'
-      params = { type: 'pre_registration' }
+      link_params = { type: 'pre_registration' }
+      modal = 'preRegistrationModal'
     else
       title = 'Pay now via PayPal'
-      params = {}
+      link_params = {}
+      modal = 'registrationModal'
     end
 
-    link_to image_tag(PAYPAL_EXPRESS_BUTTON), checkout_path(params), title: title, method: :post
+    link_to image_tag(PAYPAL_EXPRESS_BUTTON),
+      paypal_payment_notice_path(link_params),
+      'data-target'=>"##{modal}",
+      title: title,
+      'data-toggle' => 'modal'
   end
 end
