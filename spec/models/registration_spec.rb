@@ -282,13 +282,6 @@ describe Registration do
   pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
   pending 'debate_teams explodes when the confirmed quantities are not set yet'
 
-  describe "#host_fees_portion" do
-    it "should be amount smaller than balance fees" do
-      r.stub(:balance_fees).and_return(100.00)
-      r.host_fees_portion.should == r.balance_fees * 0.95
-    end
-  end
-
   describe '#pre_registration_fees' do
     before do
       r.stub(fees: 200)

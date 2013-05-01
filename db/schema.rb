@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130322071730) do
+ActiveRecord::Schema.define(:version => 20130429231713) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20130322071730) do
     t.string   "invoice_number"
     t.string   "primary_receiver"
     t.string   "secondary_receiver"
+    t.decimal  "fastrego_fees",              :precision => 14, :scale => 2
   end
 
   create_table "registrations", :force => true do |t|
@@ -132,10 +133,12 @@ ActiveRecord::Schema.define(:version => 20130322071730) do
   end
 
   create_table "tournaments", :force => true do |t|
-    t.string  "name"
-    t.boolean "active"
-    t.string  "identifier"
-    t.integer "admin_user_id"
+    t.string   "name"
+    t.boolean  "active",        :default => true
+    t.string   "identifier"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "users", :force => true do |t|

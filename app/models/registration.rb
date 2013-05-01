@@ -154,15 +154,6 @@ class Registration < ActiveRecord::Base
     self.institution.name
   end
 
-
-  def fastrego_fees_portion
-    self.balance_fees * 0.05
-  end
-
-  def host_fees_portion
-    self.balance_fees * 0.95
-  end
-
   def host_paypal_account
     Setting.key(tournament,'host_paypal_account')
   end

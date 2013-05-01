@@ -57,7 +57,13 @@ class PaypalRequest
         name: @paypal_payment.details,
         description: @paypal_payment.details,
         quantity: "1",
-        amount: @paypal_payment.amount_sent_in_cents
+        amount: @paypal_payment.registration_fees_in_cents
+      },
+      {
+        name: 'Fastrego transaction fees',
+        description: @paypal_payment.details,
+        quantity: "1",
+        amount: @paypal_payment.fastrego_fees_in_cents
       }
     ]
   end

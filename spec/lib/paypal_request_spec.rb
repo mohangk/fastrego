@@ -54,6 +54,15 @@ describe 'PaypalRequest' do
       GATEWAY.should_receive(:redirect_url_for).with 'FakePayKey'
       payment_request.setup_payment(return_url, cancel_url, request)
     end
+
+  end
+
+  describe '#purchase_items' do
+    it 'returns two row of items' do
+
+      payment_request.purchase_items.size.should == 2
+
+    end
   end
 
 end

@@ -15,6 +15,8 @@ class PaypalPayment < Payment
   STATUS_CANCELED = 'Canceled'
   STATUS_FAIL = 'Fail'
 
+  FASTREGO_FEES = 0.05
+
   after_initialize :initialize_status
   validates :status, presence: true
 
@@ -22,12 +24,14 @@ class PaypalPayment < Payment
 
     paypal_payment = PaypalPayment.new
     paypal_payment.registration = registration
-    paypal_payment.amount_sent = if pre_registration
+    if pre_registration
       paypal_payment.details = "Pre registration fees for #{paypal_payment.receiver}"
-      registration.balance_pre_registration_fees
+      paypal_payment.fastrego_fees = calculate_fastrego_fees(registration.balance_pre_registration_fees)
+      paypal_payment.amount_sent = registration.balance_pre_registration_fees + paypal_payment.fastrego_fees
     else
       paypal_payment.details = "Registration fees for #{paypal_payment.receiver}"
-      registration.balance_fees
+      paypal_payment.fastrego_fees = calculate_fastrego_fees(registration.balance_fees)
+      paypal_payment.amount_sent = registration.balance_fees + paypal_payment.fastrego_fees
     end
     paypal_payment.primary_receiver = registration.host_paypal_account
     paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
@@ -40,7 +44,7 @@ class PaypalPayment < Payment
   end
 
   def fastrego_fees_portion
-    registration.fastrego_fees_portion
+    self.amount_sent * 0.05
   end
 
   def receiver
@@ -73,6 +77,21 @@ class PaypalPayment < Payment
 
   def amount_sent_in_cents
     amount_sent * 100
+  end
+
+  def self.calculate_fastrego_fees fees
+    calculated_fastrego_fees = (fees * FASTREGO_FEES).round(2)
+    return 4.00 if calculated_fastrego_fees < 4.00
+    calculated_fastrego_fees
+  end
+
+  def fastrego_fees_in_cents
+    return 0 if fastrego_fees.nil?
+    fastrego_fees * 100
+  end
+
+  def registration_fees_in_cents
+    amount_sent_in_cents - fastrego_fees_in_cents
   end
 
   alias_attribute :details, :comments
