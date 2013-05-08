@@ -73,7 +73,7 @@ class PaymentsController < ApplicationController
 
       paypal_request = PaypalRequest.new payment: @paypal_payment,
                                       logger: logger
-      paypal_request.complete_payment params[:token], params[:PayerID]
+      paypal_request.complete_payment params[:token], params[:PayerID], request
     end
 
     abort_if_not_owner(@paypal_payment) and return

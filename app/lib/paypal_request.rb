@@ -30,11 +30,11 @@ class PaypalRequest
 
   end
 
-  def complete_payment token, payer_id
+  def complete_payment token, payer_id, request
     payment_details = GATEWAY.details_for token
     @paypal_payment.update_attributes!(account_number: payer_id)
     response = GATEWAY.purchase(@paypal_payment.amount_sent_in_cents,
-                                express_purchase_options)
+                                express_purchase_options(request))
     @logger.info response
     if response.success?
       @paypal_payment.update_attributes!(amount_received: response.params['gross_amount'].to_f,
@@ -42,9 +42,9 @@ class PaypalRequest
     end
   end
 
-  def express_purchase_options
+  def express_purchase_options request
     {
-      ip: @request.remote_ip,
+      ip: request.remote_ip,
       token: @paypal_payment.transaction_txnid,
       payer_id: @paypal_payment.account_number,
       currency: @paypal_payment.currency_code
