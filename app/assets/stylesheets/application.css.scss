@@ -129,3 +129,9 @@ section#payment {
 .text-center {
   text-align: center;
 }
+
+#preRegistrationModal, #registrationModal {
+  .modal-body {
+    max-height: 430px;
+  }
+}
