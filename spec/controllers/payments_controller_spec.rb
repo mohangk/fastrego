@@ -145,7 +145,9 @@ describe PaymentsController do
     describe 'PaypalRequest integration' do
       before do
         expected_params = { payment: paypal_payment,
-                            logger: controller.logger}
+                            logger: controller.logger,
+                            request: request
+                          }
 
         PaypalPayment.stub(:generate).and_return paypal_payment
 
@@ -153,7 +155,7 @@ describe PaymentsController do
           .with(expected_params)
           .and_return(paypal_request)
 
-        paypal_request.should_receive(:setup_payment).with(return_url, cancel_url, request).and_return '/FakePaypalUrl'
+        paypal_request.should_receive(:setup_payment).with(return_url, cancel_url).and_return '/FakePaypalUrl'
 
       end
 
@@ -249,7 +251,9 @@ describe PaymentsController do
 
       it 'initializes a PaypalRequest and completes the payment' do
         expected_params = { payment: paypal_payment,
-                            logger: controller.logger}
+                            logger: controller.logger,
+                            request: controller.request
+                          }
 
         PaypalRequest.should_receive(:new)
           .with(expected_params)

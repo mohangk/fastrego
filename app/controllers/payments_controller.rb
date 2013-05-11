@@ -45,12 +45,12 @@ class PaymentsController < ApplicationController
 
     @paypal_payment = PaypalPayment.generate current_registration, pre_registration_payment
     paypal_request = PaypalRequest.new payment: @paypal_payment,
-                                      logger: logger
+                                      logger: logger,
+                                      request: request
 
       setup_payment_options = [
         completed_payment_url(@paypal_payment.id),
-        canceled_payment_url(@paypal_payment.id),
-        request
+        canceled_payment_url(@paypal_payment.id)
       ]
 
     redirect_to paypal_request.setup_payment *setup_payment_options
@@ -72,8 +72,9 @@ class PaymentsController < ApplicationController
     if params[:token] && params[:PayerID]
 
       paypal_request = PaypalRequest.new payment: @paypal_payment,
-                                      logger: logger
-      paypal_request.complete_payment params[:token], params[:PayerID], request
+                                      logger: logger,
+                                      request: request
+      paypal_request.complete_payment params[:token], params[:PayerID]
     end
 
     abort_if_not_owner(@paypal_payment) and return

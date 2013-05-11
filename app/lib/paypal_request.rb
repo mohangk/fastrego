@@ -3,10 +3,12 @@ class PaypalRequest
   def initialize options
     @paypal_payment = options[:payment]
     @logger = options[:logger]
+    @request = options[:request]
   end
 
-  def setup_payment return_url, cancel_url, request
-    setup_options = { ip: request.remote_ip,
+  def setup_payment return_url, cancel_url
+    setup_options = { ip: @request.remote_ip,
+      order_id: @paypal_payment.id,
       return_url: return_url,
       cancel_return_url: cancel_url,
       currency: @paypal_payment.currency_code,
@@ -30,11 +32,12 @@ class PaypalRequest
 
   end
 
-  def complete_payment token, payer_id, request
+  def complete_payment token, payer_id
     payment_details = GATEWAY.details_for token
+    @logger.info payment_details
     @paypal_payment.update_attributes!(account_number: payer_id)
     response = GATEWAY.purchase(@paypal_payment.amount_sent_in_cents,
-                                express_purchase_options(request))
+                                express_purchase_options)
     @logger.info response
     if response.success?
       @paypal_payment.update_attributes!(amount_received: response.params['gross_amount'].to_f,
@@ -42,9 +45,9 @@ class PaypalRequest
     end
   end
 
-  def express_purchase_options request
+  def express_purchase_options
     {
-      ip: request.remote_ip,
+      ip: @request.remote_ip,
       token: @paypal_payment.transaction_txnid,
       payer_id: @paypal_payment.account_number,
       currency: @paypal_payment.currency_code

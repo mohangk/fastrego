@@ -44,7 +44,7 @@ class PaypalPayment < Payment
   end
 
   def fastrego_fees_portion
-    self.amount_sent * 0.05
+    self.amount_sent * FASTREGO_FEES
   end
 
   def receiver

@@ -23,6 +23,13 @@ describe 'PaypalRequest' do
        request: request)
   }
 
+  describe 'initialization' do
+    it { payment_request.instance_variable_get(:@paypal_payment).should == payment }
+    it { payment_request.instance_variable_get(:@logger).should == logger }
+    it { payment_request.instance_variable_get(:@request).should == request }
+
+  end
+
   describe "setup_payment" do
     before do
       GATEWAY.stub(:setup_purchase).and_return setup_purchase_response
@@ -31,6 +38,7 @@ describe 'PaypalRequest' do
 
       setup_options = {
                     ip: request.remote_ip,
+                    order_id: payment.id,
                     return_url: return_url,
                     cancel_return_url: cancel_url,
                     currency: payment.currency_code,
@@ -47,15 +55,15 @@ describe 'PaypalRequest' do
     let(:items) { double(:items) }
 
     it 'passes the right params' do
-      payment_request.setup_payment(return_url, cancel_url, request)
+      payment_request.setup_payment(return_url, cancel_url)
     end
 
     it 'returns the redirection URL' do
       GATEWAY.should_receive(:redirect_url_for).with 'FakePayKey'
-      payment_request.setup_payment(return_url, cancel_url, request)
+      payment_request.setup_payment(return_url, cancel_url)
     end
-
   end
+
 
   describe '#purchase_items' do
     it 'returns two row of items' do
