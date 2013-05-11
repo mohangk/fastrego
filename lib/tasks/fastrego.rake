@@ -55,5 +55,10 @@ namespace :fastrego do
     s.value = args.host_paypal_account
     s.save!
   end
+
+  task :clean_institutions => :environment
+  task :clean_institutions do |t|
+    Institution.where(country: 'Afghanistan').map {|i| puts i; i.destroy if i.registrations.blank? }
+  end
 end
 
