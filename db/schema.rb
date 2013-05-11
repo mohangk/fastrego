@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(:version => 20130429231713) do
     t.string   "nationality"
     t.string   "passport_number"
     t.string   "transport_number"
-    t.text     "data"
+    t.hstore   "data"
   end
 
   create_table "payments", :force => true do |t|
