@@ -9,6 +9,7 @@ class PaypalRequest
   def setup_payment return_url, cancel_url
     setup_options = { ip: @request.remote_ip,
       order_id: @paypal_payment.id,
+      no_shipping: true,
       return_url: return_url,
       cancel_return_url: cancel_url,
       currency: @paypal_payment.currency_code,
@@ -58,14 +59,12 @@ class PaypalRequest
     [
       {
         name: @paypal_payment.details,
-        description: @paypal_payment.details,
-        quantity: "1",
+        quantity: 1,
         amount: @paypal_payment.registration_fees_in_cents
       },
       {
-        name: 'Fastrego transaction fees',
-        description: @paypal_payment.details,
-        quantity: "1",
+        name: 'Paypal transaction fees',
+        quantity: 1,
         amount: @paypal_payment.fastrego_fees_in_cents
       }
     ]

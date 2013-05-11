@@ -40,6 +40,7 @@ describe 'PaypalRequest' do
                     ip: request.remote_ip,
                     order_id: payment.id,
                     return_url: return_url,
+                    no_shipping: true,
                     cancel_return_url: cancel_url,
                     currency: payment.currency_code,
                     locale: 'en',
