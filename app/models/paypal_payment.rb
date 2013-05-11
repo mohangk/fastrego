@@ -90,6 +90,12 @@ class PaypalPayment < Payment
     fastrego_fees * 100
   end
 
+  def registration_fees
+    return 0 if amount_sent.nil?
+    amount_sent - ( fastrego_fees.nil? ? 0 : fastrego_fees)
+  end
+
+
   def registration_fees_in_cents
     amount_sent_in_cents - fastrego_fees_in_cents
   end

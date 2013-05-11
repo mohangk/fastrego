@@ -5,7 +5,8 @@
       %tr
         %th ID
         %th Date
-        %th Amount
+        %th Registration fees paid
+        %th Transaction fees
         %th Status
         %th Host comments
 
@@ -13,6 +14,7 @@
       %tr
         %td= p.id
         %td= p.created_at
-        %td= number_to_currency p.amount_sent, unit: current_tournament.currency_symbol 
+        %td= number_to_currency p.registration_fees, unit: current_tournament.currency_symbol
+        %td= number_to_currency p.fastrego_fees, unit: current_tournament.currency_symbol
         %td= p.status
         %td= p.admin_comment

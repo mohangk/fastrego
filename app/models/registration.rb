@@ -98,11 +98,11 @@ class Registration < ActiveRecord::Base
   end
 
   def total_confirmed_payments
-    self.payments.confirmed.sum(:amount_received)
+    self.payments.confirmed.sum(:amount_received) - self.payments.confirmed.sum(:fastrego_fees)
   end
 
   def total_unconfirmed_payments
-    self.payments.unconfirmed.sum(:amount_sent)
+    self.payments.unconfirmed.sum(:amount_sent) - self.payments.unconfirmed.sum(:fastrego_fees)
   end
 
   def balance_fees

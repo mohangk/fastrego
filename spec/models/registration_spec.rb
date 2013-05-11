@@ -163,12 +163,27 @@ describe Registration do
       it 'will sum up all amount_received of confirmed payments' do
         r.total_confirmed_payments.should == BigDecimal.new('40000')
       end
+
     end
 
     describe '#total_unconfirmed_payments' do
         it 'will sum up the amount_sent columns for unconfirmed payments' do
           r.total_unconfirmed_payments.should == BigDecimal.new('12000')
         end
+    end
+  end
+
+  describe 'paypal payment related payment calculations' do
+    before :each do
+      FactoryGirl.create_list(:paypal_payment, 5, registration: r, amount_received: 59, amount_sent: 59, fastrego_fees: 9)
+      #set one payment as unconfirmed
+      r.reload.payments[4].amount_received = nil
+      r.payments[4].save
+    end
+
+    it 'excludes the paypal fees' do
+      r.total_confirmed_payments.to_f.should == 200.0
+      r.total_unconfirmed_payments.to_f.should == 50.0
     end
   end
 
