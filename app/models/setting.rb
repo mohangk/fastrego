@@ -4,6 +4,7 @@ class Setting < ActiveRecord::Base
   belongs_to :tournament
   attr_accessible :key, :value
 
+  ENABLE_PRE_REGISTRATION = 'enable_pre_registration'
   ENABLE_PAYPAL_PAYMENT = 'enable_paypal_payment'
   PRE_REGISTRATION_FEES_PERCENTAGE = 'pre_registration_fees_percentage'
 

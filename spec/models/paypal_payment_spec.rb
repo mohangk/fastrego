@@ -53,7 +53,7 @@ describe PaypalPayment do
       PaypalPayment.calculate_fastrego_fees(83).should == 4.15
     end
 
-    it 'returns a minimum of 3' do
+    it 'returns a minimum of 4' do
       PaypalPayment.calculate_fastrego_fees(20).should == 4
     end
   end

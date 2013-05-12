@@ -12,18 +12,21 @@ namespace :fastrego do
     puts "Create setting for '#{t.identifier}'"
 
     settings = [
+        {key: Setting::ENABLE_PRE_REGISTRATION, value: 'False' },
         {key: Setting::PRE_REGISTRATION_FEES_PERCENTAGE, value: '0' },
-        {key: Setting::ENABLE_PAYPAL_PAYMENT, value: 'False' },
         {key: 'observer_fees', value: '100'},
         {key: 'adjudicator_fees', value: '100'},
         {key: 'debate_team_fees', value: '200'},
         {key: 'debate_team_size', value: '3'},
         {key: 'tournament_name', value: 'Debate tournament name'},
         {key: 'currency_symbol',  value: 'USD'},
-        {key: 'tournament_registration_email',  value: 'registration_email@test.com'}
-    ]
-    ss = settings.map { |s| Setting.new(s) }
-    ss.each { |s| s.tournament = t ; s.save! }
+        {key: 'tournament_registration_email',  value: 'registration_email@test.com'}]
+
+    settings.each do |s|
+      s = Setting.where(tournament_id: t.id, key: s[:key]).first_or_initialize
+      next if s.persisted?
+      s.save!
+    end
 
   end
 
