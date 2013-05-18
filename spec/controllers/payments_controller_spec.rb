@@ -5,17 +5,27 @@ Notification = ActiveMerchant::Billing::Integrations::PaypalAdaptivePayment::Not
 
 describe PaymentsController do
 
+  let(:expected_paypal_request_params) do
+    { payment: paypal_payment,
+                      logger: controller.logger,
+                      request: request,
+                      paypal_login: 'fake_paypal_login',
+                      paypal_password: 'fake_paypal_password',
+                      paypal_signature: 'fake_paypal_signature'
+    }
+  end
+
   let(:registration) { FactoryGirl.create(:granted_registration) }
   let(:user) { registration.team_manager }
 
   before(:each) do
-
-    GATEWAY.stub(:redirect_url_for).and_return '/FakePayPal'
-
-    FactoryGirl.create :host_paypal_account, tournament: registration.tournament
     user.confirm!
     sign_in user
     controller.stub(:current_registration).and_return(registration)
+    t = registration.tournament
+    t.stub(:paypal_login).and_return('fake_paypal_login')
+    t.stub(:paypal_password).and_return('fake_paypal_password')
+    t.stub(:paypal_signature).and_return('fake_paypal_signature')
     controller.stub(:current_tournament).and_return(registration.tournament)
 
     Notification.any_instance.stub(acknowledge: true,
@@ -142,17 +152,19 @@ describe PaymentsController do
 
     subject(:checkout) { post :checkout }
 
+    before do
+      PaypalRequest.stub(:new).and_return(paypal_request)
+    end
+
+    let(:paypal_request) { double('paypal request', setup_payment: '/FakePaypalUrl') }
+
     describe 'PaypalRequest integration' do
       before do
-        expected_params = { payment: paypal_payment,
-                            logger: controller.logger,
-                            request: request
-                          }
 
         PaypalPayment.stub(:generate).and_return paypal_payment
 
         PaypalRequest.should_receive(:new)
-          .with(expected_params)
+          .with(expected_paypal_request_params)
           .and_return(paypal_request)
 
         paypal_request.should_receive(:setup_payment).with(return_url, cancel_url).and_return '/FakePaypalUrl'
@@ -163,7 +175,6 @@ describe PaymentsController do
       let(:cancel_url) { canceled_payment_url(id: paypal_payment.id) }
       let(:request) { controller.request }
       let(:paypal_payment) { double('paypal payment', id: 123) }
-      let(:paypal_request) { double('paypal request') }
 
       it 'sets up PaypalRequest' do
         checkout
@@ -176,13 +187,6 @@ describe PaymentsController do
       checkout
     end
 
-    it 'updates the generated paypal_payment' do
-      checkout
-      assigns(:paypal_payment).status.should == PaypalPayment::STATUS_PENDING
-      assigns(:paypal_payment).transaction_txnid.should == 'FakePayKey'
-      assigns(:paypal_payment).should be_persisted
-    end
-
     it 'creates a new Payment' do
       expect {
         checkout
@@ -191,7 +195,7 @@ describe PaymentsController do
 
     it 'redirects to Paypal' do
       checkout
-      response.should redirect_to('/FakePayPal')
+      response.should redirect_to('/FakePaypalUrl')
     end
 
     context 'when type is pre_registration' do
@@ -207,7 +211,7 @@ describe PaymentsController do
 
     context 'when there are exceptions' do
       before do
-        GATEWAY.stub(:setup_purchase).and_raise(Exception.new)
+        paypal_request.stub(:setup_payment).and_raise(Exception.new)
       end
 
       it 'leaves the payment status as draft' do
@@ -250,13 +254,9 @@ describe PaymentsController do
       let(:paypal_request) { double('paypal request') }
 
       it 'initializes a PaypalRequest and completes the payment' do
-        expected_params = { payment: paypal_payment,
-                            logger: controller.logger,
-                            request: controller.request
-                          }
 
         PaypalRequest.should_receive(:new)
-          .with(expected_params)
+          .with(expected_paypal_request_params)
           .and_return(paypal_request)
 
         paypal_request.should_receive(:complete_payment).with('FakePayKey', 'FakePayerID')

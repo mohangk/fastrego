@@ -105,9 +105,18 @@ FactoryGirl.define do
       value 'test@test.com'
     end
 
-    factory :host_paypal_account, class: Setting do
-      key 'host_paypal_account'
+    factory :host_paypal_login, class: Setting do
+      key Setting::HOST_PAYPAL_LOGIN
       value 'mohang_1356050668_biz@gmail.com'
+    end
+
+    factory :host_paypal_password, class: Setting do
+      key Setting::HOST_PAYPAL_PASSWORD
+      value 'password'
+    end
+    factory :host_paypal_signature, class: Setting do
+      key Setting::HOST_PAYPAL_SIGNATURE
+      value 'signature'
     end
   end
 

@@ -6,6 +6,18 @@ class Tournament < ActiveRecord::Base
   validates :identifier, presence: true , uniqueness: true
 
 
+  def paypal_login
+    Setting.paypal_login(self)
+  end
+
+  def paypal_password
+    Setting.paypal_password(self)
+  end
+
+  def paypal_signature
+    Setting.paypal_signature(self)
+  end
+
   def pre_registration_enabled?
     Setting.pre_registration_enabled?(self)
   end

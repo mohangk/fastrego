@@ -16,7 +16,9 @@ describe 'Registration payment table spec' do
   context 'when there is a pre-registration fees set' do
     before do
       FactoryGirl.create :pre_registration_fees_percentage, tournament: t1
-      FactoryGirl.create :host_paypal_account, tournament: t1
+      FactoryGirl.create :host_paypal_login, tournament: t1
+      FactoryGirl.create :host_paypal_password, tournament: t1
+      FactoryGirl.create :host_paypal_signature, tournament: t1
       FactoryGirl.create :enable_paypal_payment, tournament: t1
     end
 

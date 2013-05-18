@@ -4,6 +4,10 @@ class PaypalRequest
     @paypal_payment = options[:payment]
     @logger = options[:logger]
     @request = options[:request]
+    @gateway =  ActiveMerchant::Billing::PaypalExpressGateway.new(
+      login:     options[:paypal_login],
+      password:  options[:paypal_password],
+      signature: options[:paypal_signature])
   end
 
   def setup_payment return_url, cancel_url
@@ -19,14 +23,14 @@ class PaypalRequest
       allow_guest_checkout: 'true',
       items: purchase_items }
 
-    response = GATEWAY.setup_purchase(@paypal_payment.amount_sent_in_cents, setup_options)
+    response = @gateway.setup_purchase(@paypal_payment.amount_sent_in_cents, setup_options)
 
     @logger.info "PAYPAL Setup purchase request'#{response.inspect}'"
     @logger.info "PAYPAL Setup purchase response'#{response.inspect}'"
 
     if response.success?
       @paypal_payment.update_pay_key(response.token)
-      GATEWAY.redirect_url_for(response.token)
+      @gateway.redirect_url_for(response.token)
     else
       raise 'Setup purchase response from Paypal failed'
     end
@@ -34,10 +38,10 @@ class PaypalRequest
   end
 
   def complete_payment token, payer_id
-    payment_details = GATEWAY.details_for token
+    payment_details = @gateway.details_for token
     @logger.info payment_details
     @paypal_payment.update_attributes!(account_number: payer_id)
-    response = GATEWAY.purchase(@paypal_payment.amount_sent_in_cents,
+    response = @gateway.purchase(@paypal_payment.amount_sent_in_cents,
                                 express_purchase_options)
     @logger.info response
     if response.success?

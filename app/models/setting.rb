@@ -4,9 +4,24 @@ class Setting < ActiveRecord::Base
   belongs_to :tournament
   attr_accessible :key, :value
 
+  HOST_PAYPAL_LOGIN = 'host_paypal_login'
+  HOST_PAYPAL_PASSWORD = 'host_paypal_password'
+  HOST_PAYPAL_SIGNATURE = 'host_paypal_signature'
   ENABLE_PRE_REGISTRATION = 'enable_pre_registration'
   ENABLE_PAYPAL_PAYMENT = 'enable_paypal_payment'
   PRE_REGISTRATION_FEES_PERCENTAGE = 'pre_registration_fees_percentage'
+
+  def self.paypal_login(tournament)
+    Setting.key(tournament, HOST_PAYPAL_LOGIN)
+  end
+
+  def self.paypal_password(tournament)
+    Setting.key(tournament, HOST_PAYPAL_PASSWORD)
+  end
+
+  def self.paypal_signature(tournament)
+    Setting.key(tournament, HOST_PAYPAL_SIGNATURE)
+  end
 
   def self.currency_symbol(tournament)
     Setting.key(tournament, 'currency_symbol') ? Setting.key(tournament, 'currency_symbol') : 'USD'

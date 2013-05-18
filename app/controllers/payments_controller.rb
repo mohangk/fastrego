@@ -44,9 +44,7 @@ class PaymentsController < ApplicationController
     end
 
     @paypal_payment = PaypalPayment.generate current_registration, pre_registration_payment
-    paypal_request = PaypalRequest.new payment: @paypal_payment,
-                                      logger: logger,
-                                      request: request
+    paypal_request = PaypalRequest.new paypal_request_params(@paypal_payment)
 
       setup_payment_options = [
         completed_payment_url(@paypal_payment.id),
@@ -71,9 +69,8 @@ class PaymentsController < ApplicationController
     #handle express checkout
     if params[:token] && params[:PayerID]
 
-      paypal_request = PaypalRequest.new payment: @paypal_payment,
-                                      logger: logger,
-                                      request: request
+      paypal_request = PaypalRequest.new paypal_request_params(@paypal_payment)
+
       paypal_request.complete_payment params[:token], params[:PayerID]
     end
 
@@ -135,6 +132,18 @@ class PaymentsController < ApplicationController
 
   def abort_if_not_owner(payment)
     redirect_to profile_url, alert: 'Error' if payment.nil? || !payment.owner?(current_user)
+  end
+
+  def paypal_request_params payment
+    {
+      payment: payment,
+      logger: logger,
+      request: request,
+      paypal_login: current_tournament.paypal_login,
+      paypal_password: current_tournament.paypal_password,
+      paypal_signature: current_tournament.paypal_signature
+    }
+
   end
 
 end

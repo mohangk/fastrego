@@ -19,6 +19,7 @@ describe PaypalPayment do
     end
 
     it { should be_a(PaypalPayment) }
+    it { should be_persisted }
     it { generated.status.should == PaypalPayment::STATUS_DRAFT }
     it { generated.registration.should == registration }
     it { generated.details.should == "Registration fees for #{registration.tournament.name}" }
@@ -93,7 +94,15 @@ describe PaypalPayment do
 
   describe '#registration_fees_in_cents * 100' do
     pending 'is the result of amount_sent - fastrego_fees' do
-
     end
   end
+
+  describe '#update_pay_key' do
+    it {
+      paypal_payment.update_pay_key('FakePayKey')
+      paypal_payment.status.should == PaypalPayment::STATUS_PENDING
+      paypal_payment.transaction_txnid.should == 'FakePayKey'
+    }
+  end
+
 end
