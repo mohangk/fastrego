@@ -9,7 +9,7 @@ UadcRego::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -84,22 +84,16 @@ UadcRego::Application.configure do
   }
   ActionMailer::Base.delivery_method = :smtp
 
-  #::GATEWAY =  ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-  #  :login =>     ENV['PAYPAL_LOGIN'],     #"fastre_1356344930_biz_api1.gmail.com",
-  #  :password =>  ENV['PAYPAL_PASSWORD'],  #"1356344950",
-  #  :signature => ENV['PAYPAL_SIGNATURE'], #"Ata7WHUnSN0WA66.v.mkvBNYXyBsAvZP-x8joINtidDWenedQO5QIv0c",
-  #  :appid =>     ENV['PAYPAL_APPID']      #"APP-80W284485P519543T"
-  #)
-  if ENV['PAYPAL_SIGNATURE'].present?
-    ::GATEWAY =  ActiveMerchant::Billing::PaypalExpressGateway.new(
-      :login =>     ENV['PAYPAL_LOGIN'],
-      :password =>  ENV['PAYPAL_PASSWORD'],
-      :signature => ENV['PAYPAL_SIGNATURE'],
-      :appid =>     ENV['PAYPAL_APPID']
-    )
+  # if ENV['PAYPAL_SIGNATURE'].present?
+  #   ::GATEWAY =  ActiveMerchant::Billing::PaypalExpressGateway.new(
+  #     :login =>     ENV['PAYPAL_LOGIN'],
+  #     :password =>  ENV['PAYPAL_PASSWORD'],
+  #     :signature => ENV['PAYPAL_SIGNATURE'],
+  #     :appid =>     ENV['PAYPAL_APPID']
+  #   )
 
-    ::FASTREGO_PAYPAL_ACCOUNT = ENV['PAYPAL_EMAIL'] #'fastre_1356344930_biz@gmail.com'
-  end
+  #   ::FASTREGO_PAYPAL_ACCOUNT = ENV['PAYPAL_EMAIL'] #'fastre_1356344930_biz@gmail.com'
+  # end
 
-  ActiveMerchant::Billing::Base.mode = :test unless ENV['PAYPAL_PRODUCTION'] == 'true'
+  # ActiveMerchant::Billing::Base.mode = :test unless ENV['PAYPAL_PRODUCTION'] == 'true'
 end

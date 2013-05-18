@@ -22,6 +22,7 @@ class PaypalRequest
       header_image: 'http://www.fastrego.com/assets/fastrego.png',
       allow_guest_checkout: 'true',
       items: purchase_items }
+    debugger
 
     response = @gateway.setup_purchase(@paypal_payment.amount_sent_in_cents, setup_options)
 

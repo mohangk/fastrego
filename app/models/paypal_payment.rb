@@ -34,7 +34,7 @@ class PaypalPayment < Payment
       paypal_payment.amount_sent = registration.balance_fees + paypal_payment.fastrego_fees
     end
     paypal_payment.primary_receiver = registration.host_paypal_account
-    paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
+    # paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
     paypal_payment.save!
     paypal_payment
   end
@@ -52,7 +52,7 @@ class PaypalPayment < Payment
   end
 
   def secondary_receiver
-    ::FASTREGO_PAYPAL_ACCOUNT
+    #::FASTREGO_PAYPAL_ACCOUNT
   end
 
   def deleteable?
