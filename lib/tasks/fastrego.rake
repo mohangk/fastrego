@@ -46,7 +46,7 @@ namespace :fastrego do
 
   desc 'Enable PayPal payment'
   task :enable_paypal_payment => :environment
-  task :enable_paypal_payment, [:host_paypal_account, :tournament_identifier] do |t, args|
+  task :enable_paypal_payment, [:host_paypal_login, :host_paypal_password, :host_paypal_signature, :tournament_identifier] do |t, args|
     t = Tournament.where(identifier: args.tournament_identifier).first
     raise "Cannot find tournament with identifier '#{args.tournament_identifier}'" if t.nil?
     puts "Enabling PayPal for '#{t.identifier}'"
@@ -54,9 +54,19 @@ namespace :fastrego do
     s.value = 'True'
     s.save!
 
-    puts "Setting host_paypal_account '#{args.host_paypal_account}' for '#{t.identifier}'"
-    s = Setting.where(key: 'host_paypal_account', tournament_id: t.id).first_or_initialize
-    s.value = args.host_paypal_account
+    puts "Setting host_paypal_login '#{args.host_paypal_login}' for '#{t.identifier}'"
+    s = Setting.where(key: Setting::HOST_PAYPAL_LOGIN, tournament_id: t.id).first_or_initialize
+    s.value = args.host_paypal_login
+    s.save!
+
+    puts "Setting host_paypal_password '#{args.host_paypal_password}' for '#{t.identifier}'"
+    s = Setting.where(key: Setting::HOST_PAYPAL_PASSWORD, tournament_id: t.id).first_or_initialize
+    s.value = args.host_paypal_password
+    s.save!
+
+    puts "Setting host_paypal_signature '#{args.host_paypal_signature}' for '#{t.identifier}'"
+    s = Setting.where(key: Setting::HOST_PAYPAL_SIGNATURE, tournament_id: t.id).first_or_initialize
+    s.value = args.host_paypal_signature
     s.save!
   end
 
