@@ -24,7 +24,7 @@ namespace :fastrego do
 
     settings.each do |s|
       setting = Setting.where(tournament_id: t.id, key: s[:key]).first_or_initialize
-      next if s.persisted?
+      next if setting.persisted?
       setting.value = s[:value]
       setting.save!
     end
