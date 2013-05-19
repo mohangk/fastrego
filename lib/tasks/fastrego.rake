@@ -23,10 +23,10 @@ namespace :fastrego do
         {key: 'tournament_registration_email',  value: 'registration_email@test.com'}]
 
     settings.each do |s|
-      s = Setting.where(tournament_id: t.id, key: s[:key]).first_or_initialize
+      setting = Setting.where(tournament_id: t.id, key: s[:key]).first_or_initialize
       next if s.persisted?
-      s.value = s[:value]
-      s.save!
+      setting.value = s[:value]
+      setting.save!
     end
 
   end
