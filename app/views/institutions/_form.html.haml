@@ -1,4 +1,4 @@
-= simple_form_for @institution, html: { class: 'form-horizontal add-institution' } do |f|
+= simple_form_for @institution, html: { class: 'form-horizontal add-institution', honeypot: true } do |f|
   -if @institution.errors.any?
     #error_explanation
       %h2= "#{pluralize(@institution.errors.count, "error")} prohibited this institution from being saved:"
