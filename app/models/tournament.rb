@@ -6,6 +6,18 @@ class Tournament < ActiveRecord::Base
   validates :identifier, presence: true , uniqueness: true
 
 
+  def paypal_currency_conversion?
+    Setting.paypal_currency_conversion?(self)
+  end
+
+  def paypal_currency
+    Setting.paypal_currency(self)
+  end
+
+  def paypal_conversion_rate
+    Setting.paypal_conversion_rate(self)
+  end
+
   def paypal_login
     Setting.paypal_login(self)
   end

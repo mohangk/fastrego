@@ -20,4 +20,21 @@ module ApplicationHelper
       title: title,
       'data-toggle' => 'modal'
   end
+
+  def tournament_currency amount
+    amount_string = number_to_currency amount, unit: current_tournament.currency_symbol
+
+    if current_tournament.paypal_currency_conversion?
+      amount_string += paypal_currency amount
+    end
+    amount_string
+  end
+
+  def paypal_currency amount
+    " (#{number_to_currency paypal_currency_conversion(amount), unit: current_tournament.paypal_currency})"
+  end
+
+  def paypal_currency_conversion amount
+    amount * current_tournament.paypal_conversion_rate
+  end
 end

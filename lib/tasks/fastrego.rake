@@ -70,6 +70,22 @@ namespace :fastrego do
     s.save!
   end
 
+  desc 'Enable paypal currency conversion'
+  task :enable_paypal_currency_conversion => :environment
+  task :enable_paypal_currency_conversion, [:paypal_currency, :rate, :tournament_identifier] do |t, args|
+    t = Tournament.where(identifier: args.tournament_identifier).first
+    puts "Setting paypal currency '#{args.paypal_currency}' for '#{t.identifier}'"
+    s = Setting.where(key: Setting::PAYPAL_CURRENCY, tournament_id: t.id).first_or_initialize
+    s.value = args.paypal_currency
+    s.save!
+
+    puts "Setting paypal conversion rate'#{args.rate}' for '#{t.identifier}'"
+    s = Setting.where(key: Setting::PAYPAL_CONVERSION_RATE, tournament_id: t.id).first_or_initialize
+    s.value = args.rate
+    s.save!
+  end
+
+
   task :clean_institutions => :environment
   task :clean_institutions do |t|
     Institution.where(country: 'Afghanistan').map {|i| puts i; i.destroy if i.registrations.blank? }
