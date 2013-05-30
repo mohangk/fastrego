@@ -32,24 +32,24 @@
     %table.payment-items.table.table-striped.table-condensed
       %tr
         %td Total registration fees due
-        %td #{number_to_currency @registration.fees, unit: current_tournament.currency_symbol }
+        %td #{tournament_currency @registration.fees}
         %td
       %tr
         %td Total confirmed payments
-        %td #{number_to_currency @registration.total_confirmed_payments, unit: current_tournament.currency_symbol }
+        %td #{tournament_currency @registration.total_confirmed_payments}
         %td
       - if current_tournament.pre_registration_fees_enabled? && @registration.balance_pre_registration_fees > 0
         %tr
           %td Pre registration fees
-          %td #{number_to_currency @registration.balance_pre_registration_fees, unit: current_tournament.currency_symbol }
+          %td #{tournament_currency @registration.balance_pre_registration_fees }
           %td  #{paypal_button(true) if current_tournament.paypal_payment_enabled?}
       %tr
         %td Balance fees due
-        %td #{number_to_currency @registration.balance_fees, unit: current_tournament.currency_symbol }
+        %td #{tournament_currency @registration.balance_fees}
         %td #{paypal_button if current_tournament.paypal_payment_enabled? and @registration.balance_fees > 0}
       %tr
         %td Total unconfirmed payments
-        %td #{number_to_currency @registration.total_unconfirmed_payments, unit: current_tournament.currency_symbol }
+        %td #{tournament_currency @registration.total_unconfirmed_payments}
         %td
 
     = render 'users/paypal_payment_table'

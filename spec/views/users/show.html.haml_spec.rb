@@ -131,12 +131,11 @@ describe "users/show.html.haml" do
         @registration = FactoryGirl.create(:requested_registration, team_manager: user, fees: 2000)
         #required by _form_payment.html.haml
         @payment = Payment.new
+        payment = FactoryGirl.create(:manual_payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
+        @registration.reload
       end
 
       it "is displayed " do
-        payment = FactoryGirl.create(:manual_payment, amount_sent: 1000, amount_received: 999.48, registration: @registration)
-        @registration.reload
-
         user.reload
         render
         rendered.should have_content 'Total registration fees due RM2,000.00'
@@ -158,6 +157,19 @@ describe "users/show.html.haml" do
           MockHelperMethods.paypal_payment_enabled = false
           render
           rendered.should_not have_css 'a[title="Pay now via PayPal"]'
+        end
+
+        context 'paypal currency conversion' do
+          it 'list the payment amount in the paypal currency' do
+            MockHelperMethods.paypal_payment_enabled = true
+            MockHelperMethods.paypal_currency_conversion = true
+            render
+            #2000 *0.3337
+
+            rendered.should have_content 'Total registration fees due RM2,000.00 (USD667.40)'
+            rendered.should have_content 'RM999.48 (USD333.53)'
+            rendered.should have_content 'RM1,000.52 (USD333.87)'
+          end
         end
       end
 

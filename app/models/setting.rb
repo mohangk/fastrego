@@ -10,6 +10,22 @@ class Setting < ActiveRecord::Base
   ENABLE_PRE_REGISTRATION = 'enable_pre_registration'
   ENABLE_PAYPAL_PAYMENT = 'enable_paypal_payment'
   PRE_REGISTRATION_FEES_PERCENTAGE = 'pre_registration_fees_percentage'
+  PAYPAL_CURRENCY = 'paypal_currency'
+  PAYPAL_CONVERSION_RATE = 'paypal_conversion_rate'
+
+  def self.paypal_currency_conversion?(tournament)
+    !Setting.paypal_conversion_rate(tournament).nil?
+  end
+
+  def self.paypal_currency(tournament)
+    Setting.key(tournament, PAYPAL_CURRENCY)
+  end
+
+  def self.paypal_conversion_rate(tournament)
+    rate = Setting.key(tournament, PAYPAL_CONVERSION_RATE)
+    return rate if rate.nil?
+    BigDecimal.new(rate)
+  end
 
   def self.paypal_login(tournament)
     Setting.key(tournament, HOST_PAYPAL_LOGIN)
