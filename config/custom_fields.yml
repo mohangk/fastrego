@@ -1,4 +1,6 @@
 development:
+  mmuopen:
+    - are_you_fasting
   t1:
     - accomodation
   t2:
@@ -14,6 +16,10 @@ production:
   easters2013:
     - mobile
     - date_of_birth
+  utmaraaustrals2013:
+    - are_you_fasting
+  mmuopen:
+    - are_you_fasting
 
 test:
   t1:
