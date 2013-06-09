@@ -88,25 +88,12 @@ class Registration < ActiveRecord::Base
     self.save
   end
 
-
   def requested?
     (not debate_teams_requested.blank?) or (not adjudicators_requested.blank?) or (not observers_requested.blank?)
   end
 
   def granted?
     (not debate_teams_granted.blank?) or (not adjudicators_granted.blank?) or (not observers_granted.blank?)
-  end
-
-  def total_confirmed_payments
-    self.payments.confirmed.sum(:amount_received) - self.payments.confirmed.sum(:fastrego_fees)
-  end
-
-  def total_unconfirmed_payments
-    self.payments.unconfirmed.sum(:amount_sent) - self.payments.unconfirmed.sum(:fastrego_fees)
-  end
-
-  def balance_fees
-    fees.nil? ? BigDecimal.new('0') : (fees - total_confirmed_payments)
   end
 
   def confirm_slots(debate_teams_confirmed=nil, adjudicators_confirmed=nil, observers_confirmed=nil)
@@ -154,17 +141,33 @@ class Registration < ActiveRecord::Base
     self.institution.name
   end
 
-  def host_paypal_account
-    Setting.key(tournament,'host_paypal_account')
-  end
-
   def pre_registration_fees
-    tournament.pre_registration_fees_percentage/100.00 * fees
+    tournament.to_convertible_currency tournament.pre_registration_fees_percentage/100.00 * fees
   end
 
   def balance_pre_registration_fees
     result = pre_registration_fees - total_confirmed_payments
-    return 0 if result <0
-    result
+    result = 0 if result <0
+    tournament.to_convertible_currency result
   end
+
+  def total_confirmed_payments
+    tournament.to_convertible_currency(
+      self.payments.confirmed.sum(:amount_received) - self.payments.confirmed.sum(:fastrego_fees)
+    )
+  end
+
+  def total_unconfirmed_payments
+    tournament.to_convertible_currency(
+      self.payments.unconfirmed.sum(:amount_sent) - self.payments.unconfirmed.sum(:fastrego_fees)
+    )
+  end
+
+  def balance_fees
+    tournament.to_convertible_currency(
+      fees.nil? ? BigDecimal.new('0') : (fees - total_confirmed_payments)
+    )
+  end
+
+
 end

@@ -149,43 +149,6 @@ describe Registration do
     end
   end
 
-  describe 'payment related methods' do
-
-    before :each do
-      FactoryGirl.create_list(:manual_payment, 5, registration: r, amount_received: 10000)
-      #set one payment as unconfirmed
-      r.reload.payments[4].amount_received = nil
-      r.payments[4].save
-    end
-
-    describe '#total_confirmed_payments' do
-
-      it 'will sum up all amount_received of confirmed payments' do
-        r.total_confirmed_payments.should == BigDecimal.new('40000')
-      end
-
-    end
-
-    describe '#total_unconfirmed_payments' do
-        it 'will sum up the amount_sent columns for unconfirmed payments' do
-          r.total_unconfirmed_payments.should == BigDecimal.new('12000')
-        end
-    end
-  end
-
-  describe 'paypal payment related payment calculations' do
-    before :each do
-      FactoryGirl.create_list(:paypal_payment, 5, registration: r, amount_received: 59, amount_sent: 59, fastrego_fees: 9)
-      #set one payment as unconfirmed
-      r.reload.payments[4].amount_received = nil
-      r.payments[4].save
-    end
-
-    it 'excludes the paypal fees' do
-      r.total_confirmed_payments.to_f.should == 200.0
-      r.total_unconfirmed_payments.to_f.should == 50.0
-    end
-  end
 
   describe '#confirm_slots' do
     context 'nothing confirmed' do
@@ -297,6 +260,47 @@ describe Registration do
   pending 'it should validate that the X_confirmed quantities cannot be set lower then the current amount stored data'
   pending 'debate_teams explodes when the confirmed quantities are not set yet'
 
+  describe 'manual payment related methods' do
+
+    before :each do
+      FactoryGirl.create_list(:manual_payment, 5, registration: r, amount_received: 10000)
+      #set one payment as unconfirmed
+      r.reload.payments[4].amount_received = nil
+      r.payments[4].save
+
+      r.tournament.stub(paypal_currency_conversion?: true)
+      r.tournament.stub(paypal_conversion_rate: 0.5679)
+    end
+
+    describe '#total_confirmed_payments' do
+
+      it 'will sum up all amount_received of confirmed payments' do
+        r.total_confirmed_payments.amount.should == BigDecimal.new('40000')
+      end
+
+    end
+
+    describe '#total_unconfirmed_payments' do
+        it 'will sum up the amount_sent columns for unconfirmed payments' do
+          r.total_unconfirmed_payments.amount.should == BigDecimal.new('12000')
+        end
+    end
+  end
+
+  describe 'paypal payment related payment calculations' do
+    before :each do
+      FactoryGirl.create_list(:paypal_payment, 5, registration: r, amount_received: 59, amount_sent: 59, fastrego_fees: 9)
+      #set one payment as unconfirmed
+      r.reload.payments[4].amount_received = nil
+      r.payments[4].save
+    end
+
+    it 'excludes the paypal fees' do
+      r.total_confirmed_payments.to_f.should == 200.0
+      r.total_unconfirmed_payments.to_f.should == 50.0
+    end
+  end
+
   describe '#pre_registration_fees' do
     before do
       r.stub(fees: 200)
@@ -304,7 +308,7 @@ describe Registration do
     end
 
     it 'is a portion of the total fees' do
-      r.pre_registration_fees.should == 20.00
+      r.pre_registration_fees.amount.should == 20.00
     end
   end
 
@@ -325,7 +329,6 @@ describe Registration do
       r.stub(pre_registration_fees: 100)
       r.balance_pre_registration_fees.to_i.should == 0.00
     end
-
 
   end
 

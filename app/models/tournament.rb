@@ -6,6 +6,25 @@ class Tournament < ActiveRecord::Base
   validates :identifier, presence: true , uniqueness: true
 
 
+  def to_convertible_currency(amount)
+
+    conversion_options  = {}
+
+    if paypal_currency_conversion?
+      conversion_options = {
+        conversion_currency: paypal_currency,
+        conversion_rate: paypal_conversion_rate,
+      }
+    end
+
+    ConvertibleMoney.new(
+      currency_symbol,
+      amount,
+      conversion_options
+    )
+
+  end
+
   def paypal_currency_conversion?
     Setting.paypal_currency_conversion?(self)
   end
@@ -53,6 +72,7 @@ class Tournament < ActiveRecord::Base
   def url
     return "http://#{identifier}.fastrego.com"
   end
+
 end
 
 
