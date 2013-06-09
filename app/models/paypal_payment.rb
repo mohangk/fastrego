@@ -33,11 +33,10 @@ class PaypalPayment < Payment
       paypal_payment.fastrego_fees = calculate_fastrego_fees(registration.balance_fees)
       paypal_payment.amount_sent = registration.balance_fees + paypal_payment.fastrego_fees
     end
-    paypal_payment.primary_receiver = registration.host_paypal_account
-    # paypal_payment.secondary_receiver = ::FASTREGO_PAYPAL_ACCOUNT
     paypal_payment.save!
     paypal_payment
   end
+
 
   def initialize_status
     self.status = STATUS_DRAFT unless persisted?
