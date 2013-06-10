@@ -47,7 +47,7 @@ group :development, :test do
   gem 'spork'
   gem 'shoulda-matchers'
   gem 'timecop'
-  gem 'debugger'
+  gem 'byebug'
   gem 'poltergeist', git: 'https://github.com/jonleighton/poltergeist.git'
   gem 'database_cleaner'
   gem 'konacha'
