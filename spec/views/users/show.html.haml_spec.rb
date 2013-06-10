@@ -11,6 +11,7 @@ describe "users/show.html.haml" do
     RegistrationMailer.stub(:slots_confirmed_notification).and_return double.as_null_object
     user.confirm!
     sign_in user
+    Tournament.any_instance.stub(:currency_symbol).and_return 'RM'
     view.extend MockHelperMethods
   end
 
@@ -161,6 +162,11 @@ describe "users/show.html.haml" do
 
         context 'paypal currency conversion' do
           it 'list the payment amount in the paypal currency' do
+            Tournament.any_instance.stub(paypal_payment_enabled?: true,
+                                         paypal_currency_conversion?: true,
+                                         paypal_currency: 'USD',
+                                         paypal_conversion_rate: 0.3337
+                                        )
             MockHelperMethods.paypal_payment_enabled = true
             MockHelperMethods.paypal_currency_conversion = true
             render
@@ -176,7 +182,7 @@ describe "users/show.html.haml" do
       context 'pre-registration fees' do
 
         before do
-          @registration.stub balance_pre_registration_fees: 10.00
+          @registration.stub balance_pre_registration_fees: ConvertibleMoney.new('RM', 10.00)
         end
 
         it 'is displayed if its enabled and there is balance_pre_registration_fees ' do

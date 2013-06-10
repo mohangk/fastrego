@@ -141,6 +141,15 @@ class Registration < ActiveRecord::Base
     self.institution.name
   end
 
+  def fees
+    #this case should never really happen, but we need to do this so that shoulda still functions
+    if tournament.nil? || self[:fees].nil?
+      super
+    else
+      tournament.to_convertible_currency self[:fees]
+    end
+  end
+
   def pre_registration_fees
     tournament.to_convertible_currency tournament.pre_registration_fees_percentage/100.00 * fees
   end
@@ -165,7 +174,7 @@ class Registration < ActiveRecord::Base
 
   def balance_fees
     tournament.to_convertible_currency(
-      fees.nil? ? BigDecimal.new('0') : (fees - total_confirmed_payments)
+      fees.nil? ? BigDecimal.new('0') : (fees.amount - total_confirmed_payments.amount)
     )
   end
 

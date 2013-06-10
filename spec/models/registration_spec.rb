@@ -2,10 +2,9 @@ require 'spec_helper'
 
 describe Registration do
   let(:t) { FactoryGirl.create(:t1_tournament) }
-  let(:r) { Registration.first }
+  let!(:r) { FactoryGirl.create(:registration, tournament: t) }
 
   before :each do
-    FactoryGirl.create(:registration, tournament: t)
     FactoryGirl.create(:debate_team_fees, tournament: t)
     FactoryGirl.create(:adjudicator_fees, tournament: t)
     FactoryGirl.create(:observer_fees, tournament: t)
@@ -110,19 +109,19 @@ describe Registration do
       it "should calculate the fees if fees param not passed in" do
         r.grant_slots(1,1,1)
         r.reload
-        r.fees.should == 400
+        r.fees.amount.should == BigDecimal('400')
       end
 
       it "should calculate fees if blank string passed in as fees param" do
         r.grant_slots(1,1,0,'')
         r.reload
-        r.fees.should == 300
+        r.fees.amount.should == BigDecimal('300')
       end
 
       it 'should calculate fees if any of the granted values is an empty string or nil' do
         r.grant_slots(1,1,nil)
         r.reload
-        r.fees.should == 300
+        r.fees.amount.should == BigDecimal('300')
       end
 
     end
@@ -135,7 +134,7 @@ describe Registration do
 
         r.grant_slots(1, 1, 0, 0)
         r.reload
-        r.fees.should == 0
+        r.fees.amount.should == BigDecimal('0')
 
       end
     end

@@ -16,8 +16,24 @@ class ConvertibleMoney
     amount.to_s
   end
 
+  def to_f
+    amount.to_f
+  end
+
+  def to_i
+    amount.to_i
+  end
+
+  def coerce(val)
+    amount.coerce(val)
+  end
+
   def conversion_amount
     BigDecimal(amount * conversion_rate).round(ROUND_PRECISION)
+  end
+
+  def has_conversion?
+    return !(self.conversion_currency == self.currency)
   end
 
   #delegate all arithmetic operations

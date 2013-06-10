@@ -47,4 +47,19 @@ describe ConvertibleMoney do
       (money + 0.53).to_s.should == '1000.01'
     end
   end
+
+  describe '#has_conversion?' do
+    it 'returns true when the amount is convertible' do
+      money.has_conversion?.should == true
+    end
+
+    context 'when there are is no currency to convert to' do
+      let(:options) {}
+
+      it 'returns false' do
+        money.has_conversion?.should == false
+      end
+    end
+  end
+
 end
