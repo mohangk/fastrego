@@ -61,6 +61,7 @@ group :development, :test do
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
   gem 'guard-rspec'
+  gem 'zeus'
 end
 
 # To use ActiveModel has_secure_password
