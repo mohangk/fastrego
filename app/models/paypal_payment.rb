@@ -32,8 +32,8 @@ class PaypalPayment < Payment
       registration_fees = registration.balance_fees
     end
     paypal_payment.currency = registration_fees.conversion_currency
-    paypal_payment.fastrego_fees = calculate_fastrego_fees(registration_fees)
-    paypal_payment.amount_sent = registration_fees +  paypal_payment.fastrego_fees
+    paypal_payment.fastrego_fees = calculate_fastrego_fees(registration_fees.conversion_amount)
+    paypal_payment.amount_sent = registration_fees.conversion_amount +  paypal_payment.fastrego_fees
     paypal_payment.save!
     paypal_payment
   end

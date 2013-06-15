@@ -32,11 +32,11 @@ describe PaypalPayment do
     end
 
     it 'sets the fastrego_fees to the calculatd_fastrego_fees' do
-      generated.fastrego_fees.to_f.should == PaypalPayment.calculate_fastrego_fees(registration.balance_fees)
+      generated.fastrego_fees.should == PaypalPayment.calculate_fastrego_fees(registration.balance_fees.conversion_amount)
     end
 
-    it 'sets the amount sent to balance_fees + calculated_fastrego_fees' do
-      generated.amount_sent.to_d.should == registration.balance_fees + PaypalPayment.calculate_fastrego_fees(registration.balance_fees)
+    it 'sets the amount sent to conversion_amount balance_fees + conversion_amount calculated_fastrego_fees' do
+      generated.amount_sent.to_d.should == registration.balance_fees.conversion_amount + PaypalPayment.calculate_fastrego_fees(registration.balance_fees.conversion_amount)
     end
 
     context 'pre_registration payment' do
@@ -45,11 +45,11 @@ describe PaypalPayment do
       it { generated.details.should == "Pre registration fees for #{registration.tournament.name}" }
 
       it 'sets the amount sent to balance_pre_registration_fees + calculated_fastrego_fees' do
-        generated.amount_sent.to_f.should == registration.balance_pre_registration_fees + PaypalPayment.calculate_fastrego_fees(registration.balance_pre_registration_fees)
+        generated.amount_sent.should == registration.balance_pre_registration_fees.conversion_amount + PaypalPayment.calculate_fastrego_fees(registration.balance_pre_registration_fees.conversion_amount)
       end
 
       it 'sets the fastrego_fees to the calculatd_fastrego_fees' do
-        generated.fastrego_fees.to_f.should == PaypalPayment.calculate_fastrego_fees(registration.balance_pre_registration_fees)
+        generated.fastrego_fees.should == PaypalPayment.calculate_fastrego_fees(registration.balance_pre_registration_fees.conversion_amount)
       end
     end
   end
