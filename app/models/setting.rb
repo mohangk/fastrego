@@ -50,11 +50,11 @@ class Setting < ActiveRecord::Base
   def self.pre_registration_fees_enabled?(tournament)
     percentage = Setting.key(tournament, Setting::PRE_REGISTRATION_FEES_PERCENTAGE)
     return false if percentage.nil?
-    return true if percentage.to_f > 0
+    return true if percentage.to_d > 0
   end
 
   def self.pre_registration_fees_percentage(tournament)
-    Setting.key(tournament, Setting::PRE_REGISTRATION_FEES_PERCENTAGE).to_f
+    Setting.key(tournament, Setting::PRE_REGISTRATION_FEES_PERCENTAGE).to_d
   end
 
   def self.pre_registration_enabled?(tournament)
