@@ -26,13 +26,14 @@ class PaypalPayment < Payment
     paypal_payment.registration = registration
     if pre_registration
       paypal_payment.details = "Pre registration fees for #{paypal_payment.receiver}"
-      paypal_payment.fastrego_fees = calculate_fastrego_fees(registration.balance_pre_registration_fees)
-      paypal_payment.amount_sent = registration.balance_pre_registration_fees + paypal_payment.fastrego_fees
+      registration_fees = registration.balance_pre_registration_fees
     else
       paypal_payment.details = "Registration fees for #{paypal_payment.receiver}"
-      paypal_payment.fastrego_fees = calculate_fastrego_fees(registration.balance_fees)
-      paypal_payment.amount_sent = registration.balance_fees + paypal_payment.fastrego_fees
+      registration_fees = registration.balance_fees
     end
+    paypal_payment.currency = registration_fees.conversion_currency
+    paypal_payment.fastrego_fees = calculate_fastrego_fees(registration_fees)
+    paypal_payment.amount_sent = registration_fees +  paypal_payment.fastrego_fees
     paypal_payment.save!
     paypal_payment
   end
@@ -68,10 +69,6 @@ class PaypalPayment < Payment
 
   def date_sent
     created_at
-  end
-
-  def currency_code
-    registration.tournament.currency_symbol
   end
 
   def amount_sent_in_cents

@@ -11,10 +11,13 @@ describe PaypalPayment do
   describe '.generate' do
     let(:generated) { PaypalPayment.generate registration }
 
+    let(:balance_pre_registration_fees) { ConvertibleMoney.new('INR', 100, {conversion_rate: BigDecimal.new('0.337'), conversion_currency: 'USD'}) }
+    let(:balance_fees) { ConvertibleMoney.new('INR', 900, {conversion_rate: BigDecimal.new('0.337'), conversion_currency: 'USD'}) }
+
     let(:registration) do
       registration = FactoryGirl.build_stubbed :granted_registration
-      registration.stub(balance_pre_registration_fees: 100,
-                        balance_fees: 900)
+      registration.stub(balance_pre_registration_fees: balance_pre_registration_fees,
+                        balance_fees: balance_fees )
       registration
     end
 
@@ -24,12 +27,16 @@ describe PaypalPayment do
     it { generated.registration.should == registration }
     it { generated.details.should == "Registration fees for #{registration.tournament.name}" }
 
+    it 'uses the conversion_currency' do
+      generated.currency.should == balance_fees.conversion_currency
+    end
+
     it 'sets the fastrego_fees to the calculatd_fastrego_fees' do
       generated.fastrego_fees.to_f.should == PaypalPayment.calculate_fastrego_fees(registration.balance_fees)
     end
 
     it 'sets the amount sent to balance_fees + calculated_fastrego_fees' do
-      generated.amount_sent.to_f.should == registration.balance_fees + PaypalPayment.calculate_fastrego_fees(registration.balance_fees)
+      generated.amount_sent.to_d.should == registration.balance_fees + PaypalPayment.calculate_fastrego_fees(registration.balance_fees)
     end
 
     context 'pre_registration payment' do

@@ -47,7 +47,7 @@ describe 'ChainedPaypalRequest' do
     let(:recipients) { double('recipients') }
 
     it 'passes the right params' do
-      setup_options = { currency_code: payment.currency_code,
+      setup_options = { currency_code: payment.currency,
                     fees_payer: 'SECONDARYONLY',
                     return_url: return_url,
                     cancel_url: cancel_url,

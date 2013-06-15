@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130429231713) do
+ActiveRecord::Schema.define(:version => 20130612080715) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20130429231713) do
     t.string   "primary_receiver"
     t.string   "secondary_receiver"
     t.decimal  "fastrego_fees",              :precision => 14, :scale => 2
+    t.string   "currency"
   end
 
   create_table "registrations", :force => true do |t|

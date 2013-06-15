@@ -16,7 +16,7 @@ class PaypalRequest
       no_shipping: true,
       return_url: return_url,
       cancel_return_url: cancel_url,
-      currency: @paypal_payment.currency_code,
+      currency: @paypal_payment.currency,
       locale: 'en',
       brand_name: 'FastRego',
       header_image: 'http://www.fastrego.com/assets/fastrego.png',
@@ -55,7 +55,7 @@ class PaypalRequest
       ip: @request.remote_ip,
       token: @paypal_payment.transaction_txnid,
       payer_id: @paypal_payment.account_number,
-      currency: @paypal_payment.currency_code
+      currency: @paypal_payment.currency
     }
   end
 

@@ -12,6 +12,7 @@ describe 'PaypalRequest' do
     paypal_payment = FactoryGirl.create(:paypal_payment)
     paypal_payment.stub( primary_receiver: 'fakehost@gmail.com',
     secondary_receiver: 'fastrego@gmail.com',
+    currency: 'INR',
     amount_sent: 10.00,
     fastrego_fees_portion: 1.00)
 
@@ -66,7 +67,7 @@ describe 'PaypalRequest' do
                     return_url: return_url,
                     no_shipping: true,
                     cancel_return_url: cancel_url,
-                    currency: payment.currency_code,
+                    currency: payment.currency,
                     locale: 'en',
                     brand_name: 'FastRego',
                     header_image: 'http://www.fastrego.com/assets/fastrego.png',

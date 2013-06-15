@@ -24,7 +24,7 @@ class ChainedPaypalRequest
 
   def setup_payment
     response = GATEWAY.setup_purchase(
-      :currency_code =>        @paypal_payment.currency_code,
+      :currency_code =>        @paypal_payment.currency,
       :fees_payer =>           'SECONDARYONLY',
       :return_url =>           @return_url,
       :cancel_url =>           @cancel_url,
