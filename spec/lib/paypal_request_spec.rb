@@ -14,7 +14,7 @@ describe 'PaypalRequest' do
     secondary_receiver: 'fastrego@gmail.com',
     currency: 'INR',
     amount_sent: 10.00,
-    fastrego_fees_portion: 1.00)
+    fastrego_fees: 1.00)
 
     paypal_payment
   end

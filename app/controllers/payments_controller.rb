@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
-  before_filter :authenticate_user!, except: :ipn
-  skip_before_filter :verify_authenticity_token, :only => [:ipn]
+  before_filter :authenticate_user!
+
   include ActiveMerchant::Billing::Integrations
 
   def show
@@ -83,44 +83,6 @@ class PaymentsController < ApplicationController
     abort_if_not_owner(@paypal_payment) and return
     @paypal_payment.cancel!
     render 'users/canceled'
-  end
-
-  def ipn
-    notify = PaypalAdaptivePayment::Notification.new(request.raw_post)
-
-    payment = Payment.where(transaction_txnid: notify.params['pay_key']).first
-    acknowledged = notify.acknowledge
-
-    if acknowledged and payment.nil?
-      logger.error "MISSING PAYMENT pay_key: '#{notify.params['pay_key']}' complete ?: '#{notify.complete?}', amount: '#{notify.amount}'"
-    end
-    if acknowledged and !payment.nil?
-      begin
-        completeness = notify.complete?
-        if completeness and payment.amount_sent.to_i == notify.amount.split[1].to_i
-          log_notify notify
-          payment.status = PaypalPayment::STATUS_COMPLETED
-          payment.amount_received = notify.amount.split[1].to_i
-        elsif completeness and notify.amount > 0
-          log_notify notify
-          payment.status = PaypalPayment::STATUS_COMPLETED
-          payment.amount_received = notify.amount
-        else
-          log_notify notify
-          payment.status = PaypalPayment::STATUS_FAIL
-          logger.error("Failed to verify Paypal's notification, please investigate")
-        end
-
-      rescue => e
-        logger.error "FAILED : #{notify.complete?}"
-        payment.status = PaypalPayment::STATUS_FAIL
-        raise
-      ensure
-        payment.save
-      end
-    end
-
-    render nothing: true
   end
 
   private

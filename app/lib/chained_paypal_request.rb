@@ -16,7 +16,7 @@ class ChainedPaypalRequest
       :amount => @paypal_payment.amount_sent,
       :primary => true}, {
         :email => @paypal_payment.secondary_receiver,
-        :amount => @paypal_payment.fastrego_fees_portion,
+        :amount => @paypal_payment.fastrego_fees,
         :primary => false
       }
     ]

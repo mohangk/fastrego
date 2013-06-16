@@ -43,16 +43,8 @@ class PaypalPayment < Payment
     self.status = STATUS_DRAFT unless persisted?
   end
 
-  def fastrego_fees_portion
-    self.amount_sent * FASTREGO_FEES
-  end
-
   def receiver
     registration.tournament.name
-  end
-
-  def secondary_receiver
-    #::FASTREGO_PAYPAL_ACCOUNT
   end
 
   def deleteable?

@@ -22,7 +22,7 @@ describe 'ChainedPaypalRequest' do
     paypal_payment.stub( primary_receiver: 'fakehost@gmail.com',
     secondary_receiver: 'fastrego@gmail.com',
     amount_sent: 10.00,
-    fastrego_fees_portion: 1.00)
+    fastrego_fees: 1.00)
 
     paypal_payment
   end
@@ -83,7 +83,7 @@ describe 'ChainedPaypalRequest' do
     context 'the second hash' do
       subject { payment_request.recipients.last }
       let(:email) { payment.secondary_receiver }
-      let(:amount) { payment.fastrego_fees_portion }
+      let(:amount) { payment.fastrego_fees }
       let(:primary) { false }
       it_behaves_like 'Paypal recipients hash'
     end
@@ -94,7 +94,7 @@ describe 'ChainedPaypalRequest' do
                               primary_receiver: nil,
                               secondary_receiver: 'fastrego@gmail.com',
                               amount_sent: 10.00,
-                              fastrego_fees_portion: 1.00) }
+                              fastrego_fees: 1.00) }
       it 'should raise an error' do
         expect {payment_request.recipients}.to raise_error
       end
