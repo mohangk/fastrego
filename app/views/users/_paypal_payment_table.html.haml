@@ -14,7 +14,7 @@
       %tr
         %td= p.id
         %td= p.created_at
-        %td= number_to_currency p.registration_fees, unit: current_tournament.currency_symbol
-        %td= number_to_currency p.fastrego_fees, unit: current_tournament.currency_symbol
+        %td= tournament_currency p.registration_fees_as_convertible_money
+        %td= tournament_currency p.fastrego_fees_as_convertible_money
         %td= p.status
         %td= p.admin_comment

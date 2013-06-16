@@ -24,7 +24,15 @@ describe 'users/_paypal_payment_table' do
   end
 
   context 'when there is a paypal payment' do
-    let!(:paypal_payment) { FactoryGirl.create(:paypal_payment, amount_sent: 50, amount_received: 50, fastrego_fees: 5, registration: @registration) }
+    let!(:paypal_payment) { FactoryGirl.create(:paypal_payment,
+                                               amount_sent: 50,
+                                               currency: 'INR',
+                                               conversion_currency: 'RM',
+                                               amount_received: 50,
+                                               conversion_rate: 0.1,
+                                               fastrego_fees: 5,
+                                               registration: @registration)
+    }
 
     before :each do
       FactoryGirl.create(:manual_payment, registration: @registration)
@@ -44,11 +52,24 @@ describe 'users/_paypal_payment_table' do
 
     it 'should contain a table of paypal payments' do
       render
+
       rendered.should have_css("table")
       rendered.should have_css("td", text: paypal_payment.created_at.to_s, count:1)
-      rendered.should have_css("td", text: 'RM45', count:1)
-      rendered.should have_css("td", text: 'RM5', count:1)
+      rendered.should have_css("td", text: 'INR45.00', count:1)
+      rendered.should have_css("td", text: 'INR5.00', count:1)
       rendered.should have_css("td", text: 'Draft', count:1)
+    end
+
+    context 'when there is a conversion currency' do
+
+      it 'should contain a table of paypal payments with the conversion currency' do
+        render
+        rendered.should have_css("table")
+        rendered.should have_css("td", text: paypal_payment.created_at.to_s, count:1)
+        rendered.should have_css("td", text: 'INR45.00 (RM4.50)', count:1)
+        rendered.should have_css("td", text: 'INR5.00 (RM0.50)', count:1)
+        rendered.should have_css("td", text: 'Draft', count:1)
+      end
     end
   end
 end

@@ -31,13 +31,23 @@ class PaypalPayment < Payment
       paypal_payment.details = "Registration fees for #{paypal_payment.receiver}"
       registration_fees = registration.balance_fees
     end
-    paypal_payment.currency = registration_fees.conversion_currency
-    paypal_payment.fastrego_fees = calculate_fastrego_fees(registration_fees.conversion_amount)
-    paypal_payment.amount_sent = registration_fees.conversion_amount +  paypal_payment.fastrego_fees
+    paypal_payment.currency = registration_fees.currency
+    paypal_payment.conversion_currency = registration_fees.conversion_currency
+    paypal_payment.conversion_rate = registration_fees.conversion_rate
+    paypal_payment.fastrego_fees = calculate_fastrego_fees(registration_fees)
+    paypal_payment.amount_sent = registration_fees +  paypal_payment.fastrego_fees
     paypal_payment.save!
     paypal_payment
   end
 
+
+  def conversion_rate=(rate)
+    self[:conversion_rate] = rate.to_s
+  end
+
+  def conversion_rate
+    BigDecimal.new(self[:conversion_rate] || '1')
+  end
 
   def initialize_status
     self.status = STATUS_DRAFT unless persisted?
@@ -63,19 +73,23 @@ class PaypalPayment < Payment
     created_at
   end
 
-  def amount_sent_in_cents
-    amount_sent * 100
-  end
 
   def self.calculate_fastrego_fees fees
-    calculated_fastrego_fees = (fees * FASTREGO_FEES).round(2)
-    return 4.00 if calculated_fastrego_fees < 4.00
-    calculated_fastrego_fees
+    calculated_fastrego_fees = (fees.conversion_amount * FASTREGO_FEES).round(2)
+    if calculated_fastrego_fees < 4.00
+      calculated_fastrego_fees = 4
+    end
+    (calculated_fastrego_fees/fees.conversion_rate).round(2)
   end
 
-  def fastrego_fees_in_cents
-    return 0 if fastrego_fees.nil?
-    fastrego_fees * 100
+  def fastrego_fees_as_convertible_money
+    ConvertibleMoney.new(currency, fastrego_fees,
+                         {conversion_rate: conversion_rate, conversion_currency: conversion_currency})
+  end
+
+  def amount_sent_as_convertible_money
+    ConvertibleMoney.new(currency, amount_sent,
+                         {conversion_rate: conversion_rate, conversion_currency: conversion_currency})
   end
 
   def registration_fees
@@ -83,10 +97,10 @@ class PaypalPayment < Payment
     amount_sent - ( fastrego_fees.nil? ? 0 : fastrego_fees)
   end
 
-
-  def registration_fees_in_cents
-    amount_sent_in_cents - fastrego_fees_in_cents
+  def registration_fees_as_convertible_money
+    ConvertibleMoney.new(currency, registration_fees, {conversion_rate: conversion_rate, conversion_currency: conversion_currency})
   end
+
 
   alias_attribute :details, :comments
   alias_attribute :details=, :comments=

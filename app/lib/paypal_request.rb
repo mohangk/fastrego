@@ -16,14 +16,14 @@ class PaypalRequest
       no_shipping: true,
       return_url: return_url,
       cancel_return_url: cancel_url,
-      currency: @paypal_payment.currency,
+      currency: @paypal_payment.conversion_currency,
       locale: 'en',
       brand_name: 'FastRego',
       header_image: 'http://www.fastrego.com/assets/fastrego.png',
       allow_guest_checkout: 'true',
       items: purchase_items }
 
-    response = @gateway.setup_purchase(@paypal_payment.amount_sent_in_cents, setup_options)
+    response = @gateway.setup_purchase(to_cents(@paypal_payment.amount_sent_as_convertible_money.conversion_amount), setup_options)
 
     @logger.info "PAYPAL Setup purchase request'#{response.inspect}'"
     @logger.info "PAYPAL Setup purchase response'#{response.inspect}'"
@@ -41,7 +41,7 @@ class PaypalRequest
     payment_details = @gateway.details_for token
     @logger.info payment_details
     @paypal_payment.update_attributes!(account_number: payer_id)
-    response = @gateway.purchase(@paypal_payment.amount_sent_in_cents,
+    response = @gateway.purchase(to_cents(@paypal_payment.amount_sent_as_convertible_money.conversion_amount),
                                 express_purchase_options)
     @logger.info response
     if response.success?
@@ -55,7 +55,7 @@ class PaypalRequest
       ip: @request.remote_ip,
       token: @paypal_payment.transaction_txnid,
       payer_id: @paypal_payment.account_number,
-      currency: @paypal_payment.currency
+      currency: @paypal_payment.conversion_currency
     }
   end
 
@@ -64,14 +64,22 @@ class PaypalRequest
       {
         name: @paypal_payment.details,
         quantity: 1,
-        amount: @paypal_payment.registration_fees_in_cents
+        amount: to_cents(@paypal_payment.registration_fees_as_convertible_money.conversion_amount)
       },
       {
         name: 'Paypal transaction fees',
         quantity: 1,
-        amount: @paypal_payment.fastrego_fees_in_cents
+        amount: to_cents(@paypal_payment.fastrego_fees_as_convertible_money.conversion_amount)
       }
     ]
   end
+
+  private
+
+  def to_cents(amount)
+    amount * 100
+  end
+
+
 
 end

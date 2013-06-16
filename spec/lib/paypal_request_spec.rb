@@ -10,12 +10,12 @@ describe 'PaypalRequest' do
 
   let (:payment) do
     paypal_payment = FactoryGirl.create(:paypal_payment)
-    paypal_payment.stub( primary_receiver: 'fakehost@gmail.com',
-    secondary_receiver: 'fastrego@gmail.com',
-    currency: 'INR',
-    amount_sent: 10.00,
-    fastrego_fees: 1.00)
-
+    paypal_payment.stub(
+      currency: 'INR',
+      conversion_currency: 'MYR',
+      conversion_rate: BigDecimal.new('0.1'),
+      amount_sent: BigDecimal.new('10.00'),
+      fastrego_fees: BigDecimal.new('1.00'))
     paypal_payment
   end
 
@@ -67,14 +67,14 @@ describe 'PaypalRequest' do
                     return_url: return_url,
                     no_shipping: true,
                     cancel_return_url: cancel_url,
-                    currency: payment.currency,
+                    currency: payment.conversion_currency,
                     locale: 'en',
                     brand_name: 'FastRego',
                     header_image: 'http://www.fastrego.com/assets/fastrego.png',
                     allow_guest_checkout: 'true',
                     items:items
                     }
-      fake_gateway.should_receive(:setup_purchase).with(payment.amount_sent_in_cents, setup_options)
+      fake_gateway.should_receive(:setup_purchase).with(payment.amount_sent_as_convertible_money.conversion_amount * 100, setup_options)
       payment_request.setup_payment(return_url, cancel_url)
     end
 
