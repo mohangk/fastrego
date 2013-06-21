@@ -14,7 +14,13 @@ class ActiveMerchant::Billing::PaypalExpressGateway
   end
 
   def redirect_url_for(*args)
-    @return_url
+    @return_url+'?token=fakeToken&PayerID=fakePayerID'
   end
 
+  def purchase(amount_sent_in_cents, express_purchase_options)
+    OpenStruct.new(success?: true, params: {'gross_amount' => amount_sent_in_cents/100 })
+  end
+
+  def details_for(*args)
+  end
 end

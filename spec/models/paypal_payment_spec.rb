@@ -6,7 +6,7 @@ describe PaypalPayment do
                                                amount_sent: 50,
                                                currency: 'INR',
                                                conversion_currency: 'RM',
-                                               amount_received: 50,
+                                               amount_received: nil,
                                                conversion_rate: '0.1',
                                                fastrego_fees: 5)
   }
@@ -157,5 +157,12 @@ describe PaypalPayment do
       paypal_payment.fastrego_fees_as_convertible_money
     end
 
+  end
+
+  describe '#conversion_amount_received=' do
+    it 'sets the amount_received based on the conversion_rate' do
+      paypal_payment.conversion_amount_received = 5
+      paypal_payment.amount_received.should == 50
+    end
   end
 end

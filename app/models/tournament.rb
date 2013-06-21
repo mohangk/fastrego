@@ -1,7 +1,12 @@
 class Tournament < ActiveRecord::Base
   has_many :settings
   has_many :registrations
+  has_many :payments, through: :registrations
+  has_many :paypal_payments, through: :registrations
+  has_many :manual_payments, through: :registrations
+
   belongs_to :admin_user
+
   validates :name, presence: true
   validates :identifier, presence: true , uniqueness: true
 

@@ -32,7 +32,8 @@ describe 'Registration payment table spec' do
       tournament.payment_details.should have_preregistration_paypal_link
       tournament.payment_details.pre_registration_row[1].should =~ /#{registration.balance_pre_registration_fees}/
       completed_payment = tournament.click_preregistration_paypal_link
-      completed_payment.amount.should =~ /#{registration.balance_pre_registration_fees + PaypalPayment.calculate_fastrego_fees(registration.balance_pre_registration_fees)}/
+      last_payment = Payment.last
+      completed_payment.amount.should =~ /#{last_payment.currency}#{last_payment.amount_received}/
     end
 
   end

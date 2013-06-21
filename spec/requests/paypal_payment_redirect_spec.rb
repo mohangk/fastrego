@@ -21,10 +21,7 @@ describe 'Paypal payments redirect', js: true do
     tournament = TournamentRegistration.new.tap { |t| t.visit }
     tournament.should_not have_paypal_payment
     completed_payment = tournament.pay_via_paypal true
-    completed_payment.status.should == PaypalPayment::STATUS_PENDING
-    payment = Payment.find completed_payment.payment_id
-    payment.update_attribute(:status, PaypalPayment::STATUS_COMPLETED)
-    completed_payment.status? PaypalPayment::STATUS_COMPLETED
+    completed_payment.status.should == PaypalPayment::STATUS_COMPLETED
     completed_payment.return_to_registration_page
   end
 

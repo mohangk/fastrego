@@ -74,13 +74,12 @@ ActiveRecord::Schema.define(:version => 20130616035135) do
     t.integer  "speaker_number"
     t.integer  "team_number"
     t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "nationality"
     t.string   "passport_number"
     t.string   "transport_number"
-    t.hstore   "participants"
     t.hstore   "data"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
   end
 
   create_table "payments", :force => true do |t|

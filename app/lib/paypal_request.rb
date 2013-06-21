@@ -45,8 +45,9 @@ class PaypalRequest
                                 express_purchase_options)
     @logger.info response
     if response.success?
-      @paypal_payment.update_attributes!(amount_received: response.params['gross_amount'].to_f,
-                                         status: PaypalPayment::STATUS_COMPLETED)
+      @paypal_payment.conversion_amount_received = response.params['gross_amount'].to_d
+      @paypal_payment.status = PaypalPayment::STATUS_COMPLETED
+      @paypal_payment.save
     end
   end
 

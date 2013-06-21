@@ -73,6 +73,10 @@ class PaypalPayment < Payment
     created_at
   end
 
+  def conversion_amount_received=(amount)
+    self.amount_received = (amount/conversion_rate).round(2)
+  end
+
 
   def self.calculate_fastrego_fees fees
     calculated_fastrego_fees = (fees.conversion_amount * FASTREGO_FEES).round(2)
