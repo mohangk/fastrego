@@ -1,13 +1,13 @@
 ActiveAdmin.register Registration do
   actions :edit, :destroy, :show, :index
-  scope_to association_method: :call do 
+  scope_to association_method: :call do
     lambda {  Registration.for_tournament(current_subdomain, current_admin_user) }
   end
 
   scope :all, :default => true do |r|
     r.includes [ :institution ]
   end
-  
+
   config.sort_order = "requested_at_asc"
 
   index do
@@ -36,7 +36,7 @@ ActiveAdmin.register Registration do
       number_to_currency r.total_confirmed_payments, unit: ''
     end
     column 'Bal', :balance_fees, sortable: false do |r|
-      number_to_currency r.balance_fees, unit: '' 
+      number_to_currency r.balance_fees, unit: ''
     end
     default_actions
   end
@@ -76,7 +76,7 @@ ActiveAdmin.register Registration do
     if f.object.new_record? and f.object.requested_at.nil?
       f.object.requested_at = Time.now
     elsif not f.object.new_record?
-      disable_field = true 
+      disable_field = true
     end
     f.inputs "Request details for #{f.object.tournament.name}" do
       f.input :team_manager, label: 'Team manager', as: :select, collection: Hash[User.order(:name).all.map{ |u| [u.name, u.id] }], :input_html => { :disabled => disable_field }
@@ -141,4 +141,8 @@ ActiveAdmin.register Registration do
   filter :debate_teams_confirmed
   filter :adjudicators_confirmed
   filter :observers_confirmed
+
+  action_item :only => :index do
+    link_to('Email team managers', new_admin_batch_email_path)
+  end
 end

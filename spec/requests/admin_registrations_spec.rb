@@ -1,4 +1,5 @@
 require 'spec_helper'
+require Rails.root.join 'lib/stub_send_batch_email'
 
 describe 'AdminRegistration' do
   let!(:t2) { FactoryGirl.create(:t2_tournament) }
@@ -89,6 +90,25 @@ describe 'AdminRegistration' do
 
     pending 'does not allow the deleting of a different tournaments registrations'
 
+  end
+
+  describe 'batch email team managers' do
+    it 'provides a form that can be used to email all team managers' do
+      visit admin_registrations_path
+      team_manager = t2_registration.team_manager
+
+      page.should have_content 'Email team managers'
+      click_link 'Email team managers'
+      page.should have_field 'Subject'
+      page.should have_field 'From'
+      page.should have_field 'Content'
+
+      fill_in 'Subject', with: 'Test subject'
+      fill_in 'From', with: 'Test from'
+      fill_in 'Content', with: 'Test content'
+      click_on 'Send emails'
+      page.should have_content 'Sent email to team managers'
+    end
   end
 end
 

@@ -34,6 +34,7 @@ gem 'country_select', :git => 'git://github.com/mohangk/country_select.git'
 gem 'rack-google-analytics', :require => 'rack/google-analytics'
 gem 'active_paypal_adaptive_payment'
 gem 'honeypot-captcha'
+gem 'rest-client'
 
 group :development, :test do
   gem 'sqlite3'

@@ -55,4 +55,5 @@ UadcRego::Application.configure do
   # ::FASTREGO_PAYPAL_ACCOUNT = 'fastre_1356344930_biz@gmail.com'
 
   require Rails.root.join 'lib/stub_gateway'
+  require Rails.root.join 'lib/stub_send_batch_email'
 end
