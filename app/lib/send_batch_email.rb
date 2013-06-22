@@ -1,21 +1,21 @@
 class SendBatchEmail
 
-  FASTREGO_MAILGUN_DOMAIN = 'fastrego.mailgun.com'
+  FASTREGO_MAILGUN_DOMAIN = 'fastrego.mailgun.org'
 
   def initialize(users, subject, message, from)
     RestClient.post(messaging_api_end_point,
-    from: from,
-    to: users.map(&:email).join(", "),
-    subject: subject,
-    text: message,
-    :"recipient-variables" => recipient_variables(users)
+      from: from,
+      to: users.map(&:email).join(", "),
+      subject: subject,
+      text: message,
+      :"recipient-variables" => recipient_variables(users)
     )
   end
 
   private
 
   def messaging_api_end_point
-    @messaging_api_end_piont ||= "https://api:#{ENV["MAILGUN_API_KEY"]}@api.mailgun.net/v2/#{FASTREGO_MAILGUN_DOMAIN}/messages"
+    @messaging_api_end_point ||= "https://api:#{ENV["MAILGUN_API_KEY"]}@api.mailgun.net/v2/#{FASTREGO_MAILGUN_DOMAIN}/messages"
   end
 
   def recipient_variables(recipients)
