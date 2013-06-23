@@ -93,12 +93,24 @@ describe 'AdminRegistration' do
   end
 
   describe 'batch email team managers' do
-    it 'provides a form that can be used to email all team managers' do
+    before do
       visit admin_registrations_path
       team_manager = t2_registration.team_manager
 
       page.should have_content 'Email team managers'
+    end
+
+    it 'is a paid feature' do
       click_link 'Email team managers'
+      page.should have_content 'Mass emailing team managers is a paid feature.'
+    end
+
+    it 'provides a form that can be used to email all team managers' do
+      t2.update_attribute(:mass_emailing_enabled, true)
+
+      click_link 'Email team managers'
+
+      page.should_not have_content 'Mass emailing team managers is a paid feature.'
       page.should have_field 'Subject'
       page.should have_field 'From'
       page.should have_field 'Content'

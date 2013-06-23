@@ -1,0 +1,5 @@
+panel "Paid feature" do
+  h3 "#{feature_name} is a paid feature. Please get in touch with support@fastrego.com to enable it."
+
+  div "This feature allows you to email all the team manager at once from a simple easy to use form."
+end
