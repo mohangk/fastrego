@@ -12,6 +12,11 @@ class Setting < ActiveRecord::Base
   PRE_REGISTRATION_FEES_PERCENTAGE = 'pre_registration_fees_percentage'
   PAYPAL_CURRENCY = 'paypal_currency'
   PAYPAL_CONVERSION_RATE = 'paypal_conversion_rate'
+  TOURNAMENT_REGISTRATION_EMAIL = 'tournament_registration_email'
+
+  def self.registration_email(tournament)
+    Setting.key(tournament, TOURNAMENT_REGISTRATION_EMAIL)
+  end
 
   def self.paypal_currency_conversion?(tournament)
     !Setting.paypal_conversion_rate(tournament).nil?

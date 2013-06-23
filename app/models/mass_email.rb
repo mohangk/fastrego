@@ -1,4 +1,4 @@
-class BatchEmail
+class MassEmail
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

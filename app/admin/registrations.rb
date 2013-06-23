@@ -143,6 +143,6 @@ ActiveAdmin.register Registration do
   filter :observers_confirmed
 
   action_item :only => :index do
-    link_to('Email team managers', new_admin_batch_email_path)
+    link_to('Email team managers', new_admin_mass_email_path)
   end
 end

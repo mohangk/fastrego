@@ -85,6 +85,11 @@ FactoryGirl.define do
       value '50'
     end
 
+    factory :tournament_registration_email, :class => Setting do
+      key Setting::TOURNAMENT_REGISTRATION_EMAIL
+      value 'test@test.com'
+    end
+
     factory :enable_paypal_payment, :class => Setting do
       key Setting::ENABLE_PAYPAL_PAYMENT
       value 'True'
@@ -98,11 +103,6 @@ FactoryGirl.define do
     factory :currency_symbol, :class => Setting do
       key 'currency_symbol'
       value 'RM'
-    end
-
-    factory :tournament_registration_email, class: Setting do
-      key 'tournament_registration_email'
-      value 'test@test.com'
     end
 
     factory :host_paypal_login, class: Setting do

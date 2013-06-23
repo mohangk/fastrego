@@ -1,16 +1,16 @@
 require 'spec_helper'
-require Rails.root.join 'lib/stub_send_batch_email'
+require Rails.root.join 'lib/stub_send_mass_email'
 
 describe 'AdminRegistration' do
   let!(:t2) { FactoryGirl.create(:t2_tournament) }
   let!(:t1) { FactoryGirl.create(:t1_tournament) }
+  let!(:tourney_email) { FactoryGirl.create :tournament_registration_email, tournament: t2}
   let!(:t1_team_manager) { FactoryGirl.create(:user, email: 't1_team_manager@test.com') }
   let!(:t2_team_manager) { FactoryGirl.create(:user, email: 't2_team_manager@test.com') }
   let!(:t1_registration) { FactoryGirl.create(:registration, tournament: t1, team_manager: t1_team_manager) }
   let!(:t2_registration) { FactoryGirl.create(:registration, tournament: t2, team_manager: t2_team_manager) }
 
   before :each do
-    FactoryGirl.create :tournament_registration_email, tournament: t2
     FactoryGirl.create :debate_team_fees, tournament: t2
     login_for_tournament(t2)
   end
@@ -112,7 +112,7 @@ describe 'AdminRegistration' do
 
       page.should_not have_content 'Mass emailing team managers is a paid feature.'
       page.should have_field 'Subject'
-      page.should have_field 'From'
+      page.should have_field 'From', with: t2.registration_email
       page.should have_field 'Content'
 
       fill_in 'Subject', with: 'Test subject'

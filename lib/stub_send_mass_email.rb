@@ -1,4 +1,4 @@
-class SendBatchEmail
+class SendMassEmail
   def initialize(*args)
 
   end

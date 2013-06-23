@@ -1,4 +1,4 @@
-class SendBatchEmail
+class SendMassEmail
 
   FASTREGO_MAILGUN_DOMAIN = 'fastrego.mailgun.org'
 

@@ -38,6 +38,10 @@ class Tournament < ActiveRecord::Base
     Setting.paypal_currency(self)
   end
 
+  def registration_email
+    Setting.registration_email(self)
+  end
+
   def paypal_conversion_rate
     Setting.paypal_conversion_rate(self)
   end

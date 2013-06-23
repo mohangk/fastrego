@@ -1,11 +1,11 @@
-ActiveAdmin.register BatchEmail do
+ActiveAdmin.register MassEmail do
   menu false
   actions :new, :create
 
   form do |f|
     f.inputs "Send email to all team managers" do
       f.input :subject, as: :string
-      f.input :from, as: :string
+      f.input :from, as: :string, input_html: { disabled: true }
       f.input :content, as: :text
     end
     f.actions do
@@ -18,6 +18,8 @@ ActiveAdmin.register BatchEmail do
 
     def new
       if current_tournament.mass_emailing_enabled?
+        @resource = MassEmail.new
+        @resource.from = current_tournament.registration_email
         super
       else
         render 'admin/shared/paid_feature', layout: 'active_admin', locals: { feature_name: 'Mass emailing team managers' }
@@ -25,10 +27,11 @@ ActiveAdmin.register BatchEmail do
     end
 
     def create
-      @batch_email = BatchEmail.new(params[:batch_email])
-      if @batch_email.valid? and current_tournament.mass_emailing_enabled?
+      mass_email = MassEmail.new(params[:mass_email])
+      mass_email.from = current_tournament.registration_email
+      if mass_email.valid? and current_tournament.mass_emailing_enabled?
         users = User.team_managers(current_subdomain, current_admin_user)
-        SendBatchEmail.new(users, @batch_email.subject, @batch_email.content, @batch_email.from)
+        SendMassEmail.new(users, mass_email.subject, mass_email.content, mass_email.from)
         redirect_to admin_registrations_path, notice: 'Sent email to team managers'
       end
     end
