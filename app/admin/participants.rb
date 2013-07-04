@@ -5,6 +5,17 @@ ActiveAdmin.register Participant do
     lambda { Participant.where(registration_id: Registration.for_tournament(current_subdomain, current_admin_user).collect { |r| r.id }) }
   end
 
+  controller do
+    def index
+      Participant.custom_fields(current_subdomain).each do | field|
+        if active_admin_config.csv_builder.columns.select { |c| c.name == field.titleize }.count == 0
+          active_admin_config.csv_builder.column field.to_sym
+        end
+      end
+      index!
+    end
+  end
+
   index do
     selectable_column
     column :id
@@ -34,11 +45,12 @@ ActiveAdmin.register Participant do
     column :passport_number
     column :transport_number
     Participant.custom_fields(current_subdomain).each do | field|
-      column field.to_sym, sortable: false 
-    end 
+      column field.to_sym, sortable: false
+    end
 
     default_actions
   end
+
 
   csv do
     column :id
@@ -52,7 +64,7 @@ ActiveAdmin.register Participant do
   	column :allergies
   	column :email
   	column :point_of_entry
-    column :arrival_at do |p| 
+    column :arrival_at do |p|
       p.arrival_at.strftime("%d/%m %H:%M:%S") unless p.arrival_at.nil?
     end
     column :emergency_contact_person
@@ -68,15 +80,12 @@ ActiveAdmin.register Participant do
     column :passport_number
     column :transport_number
 
-    Participant.custom_fields(current_subdomain).each do | field|
-      column field.to_sym
-    end
   end
 
   show do |p|
-    attributes_table do 
+    attributes_table do
       row :id
-      row 'Inst' do 
+      row 'Inst' do
           link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.institution)
       end
       row :name
@@ -94,27 +103,27 @@ ActiveAdmin.register Participant do
         p.emergency_contact_person
       end
 
-      row 'Emer cnt number'do 
+      row 'Emer cnt number'do
         p.emergency_contact_number
       end
 
-      row 'Pref roommate'do 
+      row 'Pref roommate'do
         p.preferred_roommate
       end
 
-      row 'Pref roomate institution'do 
+      row 'Pref roomate institution'do
         p.preferred_roommate_institution
       end
 
-      row 'Spkr no.'do 
+      row 'Spkr no.'do
         p.speaker_number
       end
 
-      row 'Team no.'do 
+      row 'Team no.'do
         p.team_number
       end
 
-      row 'Depature'  do 
+      row 'Depature'  do
         p.departure_at.strftime("%d/%m %H:%M:%S") unless p.departure_at.nil?
       end
 
@@ -124,15 +133,15 @@ ActiveAdmin.register Participant do
 
       Participant.custom_fields(current_subdomain).each do | field|
         row field.to_sym
-      end 
+      end
     end
     active_admin_comments
-  end  
+  end
 
   filter :registration_institution_name, as: :select, collection: proc { Institution.participating(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
   filter :name
-  filter :gender, as: :check_boxes, collection: ['Male', 'Female'] 
-  filter :type, as: :check_boxes, collection: ['Debater', 'Adjudicator', 'Observer'] 
+  filter :gender, as: :check_boxes, collection: ['Male', 'Female']
+  filter :type, as: :check_boxes, collection: ['Debater', 'Adjudicator', 'Observer']
   filter :dietary_requirement
   filter :allergies
   filter :email
