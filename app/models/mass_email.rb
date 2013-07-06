@@ -6,7 +6,6 @@ class MassEmail
   attr_accessor :subject, :content, :from
 
   validates_presence_of :subject
-  validates_length_of :content, :maximum => 500
 
   def initialize(attributes = {})
     attributes.each do |name, value|
