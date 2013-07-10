@@ -1,58 +1,11 @@
 FactoryGirl.define do
 
-  factory :institution do
-    sequence(:abbreviation) { |n| "MMU#{n}" }
-    sequence(:name) { |n| "Multimedia University #{n}" }
-    type 'University'
-    website 'http://www.mmu.edu.my'
-    country 'Malaysia'
-  end
-
-  factory :university do
-    sequence(:abbreviation) { |n| "MMU#{n}" }
-    sequence(:name) { |n| "Multimedia University #{n}" }
-    website 'http://www.mmu.edu.my'
-    country 'Malaysia'
-  end
-
-  factory :open_institution, class: OpenInstitution do
-    sequence(:abbreviation) { |n| "MMU#{n}" }
-    sequence(:name) { |n| "Multimedia University #{n}" }
-    website 'http://www.mmu.edu.my'
-    country 'Malaysia'
-    association :tournament, factory: :t1_tournament
-  end
-
-  factory :admin_user do
-    sequence(:email) { |n| "admin#{n}@test.com" }
-    password 'password'
-  end
-
-  factory :t2_admin_user, class: AdminUser do
-    email 't2.admin@test.com'
-    password 'password'
-  end
-
   factory :user do
       after(:build) { |user| user.skip_confirmation! }
       name 'Suthen Thomas'
       sequence(:email) { |n| "suthen#{n}.thomas@gmail.com" }
       password 'password'
       phone_number '123123123123'
-  end
-
-  factory :t1_tournament, class: Tournament do
-    name 'tournament 1'
-    active true
-    identifier 't1'
-    admin_user
-  end
-
-  factory :t2_tournament, class: Tournament do
-    name 'tournament 2'
-    active true
-    identifier 't2'
-    association :admin_user, factory: :t2_admin_user
   end
 
   factory :tournament_name, class: Setting do
@@ -120,30 +73,6 @@ FactoryGirl.define do
     end
   end
 
-  factory :registration do
-    association :team_manager, factory: :user
-    association :tournament, factory: :t1_tournament
-    institution
-
-    factory :requested_registration do
-      debate_teams_requested 3
-      adjudicators_requested 1
-      observers_requested 1
-      requested_at '2011-01-01 01:01:01'
-
-      factory :granted_registration do
-        debate_teams_granted 1
-        fees 90
-
-        factory :confirmed_registration do
-          debate_teams_confirmed 1
-          adjudicators_confirmed 1
-          observers_confirmed 1
-        end
-      end
-    end
-
-  end
 
   factory :manual_payment do
     account_number 'AB1231234'
@@ -197,14 +126,4 @@ FactoryGirl.define do
     registration
   end
 
-  factory :adjudicator do
-    name 'Jack Nostrum'
-    gender 'Male'
-    sequence(:email) { |n| "test_adjudicator#{n}@test.com" }
-    dietary_requirement 'Halal'
-    point_of_entry 'KLIA'
-    emergency_contact_person 'Jason Statham'
-    emergency_contact_number '123123123123'
-    registration
-  end
 end
