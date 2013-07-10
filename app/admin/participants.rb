@@ -22,13 +22,13 @@ ActiveAdmin.register Participant do
     column 'Inst',sortable: 'institutions.abbreviation' do |p|
         link_to p.registration.institution.abbreviation, admin_institution_path(p.registration.institution)
     end
-  	column :name
-  	column :gender
-  	column :type
-  	column 'Diet',:dietary_requirement
-  	column :allergies
-  	column :email
-  	column :point_of_entry
+    column :name
+    column :gender
+    column :type
+    column 'Diet',:dietary_requirement
+    column :allergies
+    column :email
+    column :point_of_entry
     column 'Arrival', sortable: :arrival_at do |r|
       r.arrival_at.strftime("%d/%m %H:%M:%S") unless r.arrival_at.nil?
     end
@@ -39,7 +39,7 @@ ActiveAdmin.register Participant do
     column 'Spkr no.', :speaker_number
     column 'Team no.', :team_number
     column 'Depature', sortable: :departure_at do |r|
-    	r.departure_at.strftime("%d/%m %H:%M:%S") unless r.departure_at.nil?
+      r.departure_at.strftime("%d/%m %H:%M:%S") unless r.departure_at.nil?
     end
     column :nationality
     column :passport_number

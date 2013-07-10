@@ -393,6 +393,7 @@ DEPENDENCIES
   rb-inotify
   rest-client
   rspec-rails (~> 2.11.0)
+  rubyzip
   sass-rails
   sextant
   shoulda-matchers

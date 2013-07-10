@@ -35,6 +35,7 @@ gem 'rack-google-analytics', :require => 'rack/google-analytics'
 gem 'active_paypal_adaptive_payment'
 gem 'honeypot-captcha'
 gem 'rest-client'
+gem 'rubyzip'
 
 group :development, :test do
   gem 'sqlite3'

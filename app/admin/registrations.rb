@@ -126,6 +126,20 @@ ActiveAdmin.register Registration do
         render action: "edit"
       end
     end
+
+  end
+
+  action_item :only => :index do
+    link_to('Email team managers', new_admin_mass_email_path)
+  end
+
+  collection_action :three_tab_export, :method => :get do
+    send_data(ThreeTabExport.generate_zip(current_tournament),
+              filename: 'three_tab_export.zip')
+  end
+
+  action_item :only => :index do
+    link_to('Generate 3Tab export', three_tab_export_admin_registrations_path)
   end
 
   filter :team_manager_id, collection: proc { Hash[User.team_managers(current_subdomain, current_admin_user).order(:name).all.map{ |u| [u.name, u.id] }] }
@@ -142,7 +156,4 @@ ActiveAdmin.register Registration do
   filter :adjudicators_confirmed
   filter :observers_confirmed
 
-  action_item :only => :index do
-    link_to('Email team managers', new_admin_mass_email_path)
-  end
 end
