@@ -19,14 +19,14 @@ If you would like to use FastRego but not go through the process of setting it u
   * phantomjs - Refer to [poltergeist Github page](https://github.com/jonleighton/poltergeist#installing-phantomjs) for installation instructions.
 
 2. Ensure that you have a working Ruby running on your machine, ideally setup via chruby. For chruby/Ruby setup instructions,
-    ## Ubuntu
+    ### Ubuntu
 
         wget -O chruby-0.3.8.tar.gz https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz
         tar -xzvf chruby-0.3.8.tar.gz
         cd chruby-0.3.8/
         sudo make install
 
-    ## Mac:
+    ### Mac:
 
         brew install chruby
 
@@ -49,6 +49,7 @@ For more information on how to setup chruby and Ruby, please refer to [chruby se
     rake db:create
 
     rake fastrego:add_hstore
+
         If you get the following error:
           PG::UndefinedFile: ERROR:  could not open extension control file "/usr/share/postgresql/9.3/extension/hstore.control": No such file or directory : CREATE EXTENSION hstore
 
