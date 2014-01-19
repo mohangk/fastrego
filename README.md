@@ -75,7 +75,7 @@ For more information on how to setup chruby and Ruby, please refer to [chruby se
 
 ## License
 
-   Copyright 2012 Mohan Krishnan & Logan Balavijendran
+   Copyright 2012, 2014 Mohan Krishnan & Logan Balavijendran
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
