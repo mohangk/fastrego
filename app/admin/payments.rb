@@ -78,10 +78,10 @@ ActiveAdmin.register Payment do
       f.input :comments, :input_html => { :disabled => disable_field }
       if !f.object.new_record?
         f.input :created_at, :input_html => { :disabled => true }
-      end 
+      end
       f.input :amount_received, as: :string
       f.input :admin_comment
-      f.actions do 
+      f.actions do
         f.action :submit, label: (f.object.new_record? ? 'Create Payment' : 'Update Payment' )
         f.action :cancel, label: 'Cancel'
       end
@@ -122,8 +122,8 @@ ActiveAdmin.register Payment do
 
   end
 
-  filter :registration_team_manager_name, as: :select, collection: proc { User.paid_team_managers(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
-  filter :registration_institution_name, as: :select, collection: proc { Institution.paid_participating(current_subdomain, current_admin_user).order(:name).all.map(&:name) }
+  filter :registration_team_manager_name, as: :select, collection: proc { User.paid_team_managers(current_subdomain, current_admin_user).order(:name).all.map(&:name).uniq }
+  filter :registration_institution_name, as: :select, collection: proc { Institution.paid_participating(current_subdomain, current_admin_user).order(:name).all.map(&:name).uniq }
   filter :date_sent
   filter :amount_sent
   filter :comments
