@@ -69,6 +69,7 @@ For more information on how to setup chruby and Ruby, please refer to [chruby se
 1. I'm having some problem getting specs up and running. It is complaining about uninitliazed constants. What do I do?
 
    Try including the following lines before 'Dir[Rails....].each { |f| require f }'
+
      require Rails.root.join("spec/support/page.rb")
      require Rails.root.join('spec/support/pages/admin_page.rb')
 
