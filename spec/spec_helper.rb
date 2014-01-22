@@ -11,6 +11,8 @@ require 'capybara/rspec'
 require 'capybara/rails'
 require 'capybara/poltergeist'
 #in spec/support/ and its subdirectories.
+require Rails.root.join("spec/support/page.rb")
+require Rails.root.join('spec/support/pages/admin_page.rb')
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :selenium
