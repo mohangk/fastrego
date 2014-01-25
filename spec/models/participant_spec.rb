@@ -17,7 +17,8 @@ describe Participant do
   it { should validate_presence_of :emergency_contact_person }
   it { should validate_presence_of :emergency_contact_number }
   it { should have_db_column(:data).of_type(:hstore) }
-  it { should have_attached_file(:profile_image) }
+  it { should have_attached_file(:profile_picture) }
+
 
   describe 'validations' do
     describe 'email' do
