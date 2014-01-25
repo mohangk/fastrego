@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130623030259) do
+ActiveRecord::Schema.define(:version => 20140125052257) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -80,6 +80,10 @@ ActiveRecord::Schema.define(:version => 20130623030259) do
     t.string   "passport_number"
     t.string   "transport_number"
     t.hstore   "data"
+    t.string   "profile_picture_file_name"
+    t.string   "profile_picture_content_type"
+    t.integer  "profile_picture_file_size"
+    t.datetime "profile_picture_updated_at"
   end
 
   create_table "payments", :force => true do |t|
