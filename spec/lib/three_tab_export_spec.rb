@@ -8,7 +8,7 @@ describe 'ThreeTabExport' do
     it 'generates a valid institution export' do
       csv = ThreeTabExport::Institution.new
       csv.each_registration registration
-      expect(csv.string).to eq "code,name\n#{registration.institution.abbreviation},Multimedia University 1\n"
+      expect(csv.string).to eq "code,name\n#{registration.institution.abbreviation},#{registration.institution.name}\n"
     end
   end
 
