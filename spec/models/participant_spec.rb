@@ -17,6 +17,11 @@ describe Participant do
   it { should validate_presence_of :emergency_contact_person }
   it { should validate_presence_of :emergency_contact_number }
   it { should have_db_column(:data).of_type(:hstore) }
+  it { should have_attached_file(:profile_picture) }
+  it { should validate_attachment_size(:profile_picture).less_than(2.megabytes) }
+  it { should validate_attachment_content_type(:profile_picture).
+                  allowing('image/png', 'image/jpeg').
+                  rejecting('text/plain', 'text/xml') }
 
   describe 'validations' do
     describe 'email' do
@@ -40,13 +45,12 @@ describe Participant do
         observer_for_t2 = FactoryGirl.create :observer, email: email, registration: r_for_t2
 
         observer_for_t1.should be_valid
-
         observer_for_t2.should be_valid
       end
     end
   end
+
   describe 'initialize data attr' do
-    pending 'it disallows similar email addresses in the same tournament'
 
     it 'sets it to a hash' do
       Participant.new.data.should == {}

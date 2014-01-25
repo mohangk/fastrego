@@ -1,11 +1,11 @@
 class DebateTeamDetails < GenericPage
-  
+
   def correct_page?
     page.should have_css 'input[type="text"][name="registration[debaters_attributes][0][name]"]'
   end
-  
+
   def fill_details options = {}, custom_fields = {}
-    
+
     fill_in 'Name', with: options[:name] || 'Test Speaker'
     choose options[:gender] || 'Male'
     fill_in 'Email', with: options[:email] || 'speaker@utm.com'
@@ -14,6 +14,7 @@ class DebateTeamDetails < GenericPage
     fill_in 'Emergency contact number', with: options[:emergency_contact_number] || '1231234'
     fill_in 'Preferred roommate', with: options[:preferred_roommate] || 'Test roommate'
     fill_in 'Preferred roommate institution', with: options[:preferred_roommate_institution] || 'NUS'
+    attach_file 'profile_image', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
 
     custom_fields.each do |k,v|
       fill_in k, with: v
@@ -26,9 +27,9 @@ class DebateTeamDetails < GenericPage
 
     TournamentRegistration.new
   end
-  
+
   def field_value field_name
     find_field(field_name).value
   end
-  
+
 end
