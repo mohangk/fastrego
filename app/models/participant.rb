@@ -7,7 +7,7 @@ class Participant < ActiveRecord::Base
   has_attached_file :profile_picture
 
   validates_attachment_size :profile_picture, less_than: 2.megabytes, message: ' file size must be less then 3 megabytes'
-  validates_attachment_content_type :profile_picture, content_type: %w(image/jpeg image/png image), message: 'file type must be of an image (JPG/PNG)'
+  validates_attachment_content_type :profile_picture, content_type: %w(image/jpeg image/png), message: 'file type must be of an image (JPG/PNG)'
   validates_presence_of :name, :gender, :email, :dietary_requirement, :emergency_contact_person, :emergency_contact_number, :registration, :registration_id
   validate :uniqueness_of_email_across_tournament
 
