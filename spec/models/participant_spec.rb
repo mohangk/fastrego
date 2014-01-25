@@ -18,7 +18,10 @@ describe Participant do
   it { should validate_presence_of :emergency_contact_number }
   it { should have_db_column(:data).of_type(:hstore) }
   it { should have_attached_file(:profile_picture) }
-
+  it { should validate_attachment_size(:profile_picture).less_than(2.megabytes) }
+  it { should validate_attachment_content_type(:profile_picture).
+                  allowing('image/png', 'image/jpeg').
+                  rejecting('text/plain', 'text/xml') }
 
   describe 'validations' do
     describe 'email' do
