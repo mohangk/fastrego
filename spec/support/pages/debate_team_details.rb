@@ -14,7 +14,7 @@ class DebateTeamDetails < GenericPage
     fill_in 'Emergency contact number', with: options[:emergency_contact_number] || '1231234'
     fill_in 'Preferred roommate', with: options[:preferred_roommate] || 'Test roommate'
     fill_in 'Preferred roommate institution', with: options[:preferred_roommate_institution] || 'NUS'
-    attach_file 'profile_image', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
+    attach_file 'registration_debaters_attributes_0_profile_picture', File.join(Rails.root, 'spec', 'uploaded_files', 'test_image.jpg')
 
     custom_fields.each do |k,v|
       fill_in k, with: v

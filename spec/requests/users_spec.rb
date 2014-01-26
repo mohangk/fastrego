@@ -183,7 +183,7 @@ describe "Users" do
 
         describe 'adding details' do
           before :each do
-            FactoryGirl.create :debate_team_size, tournament: t1
+            FactoryGirl.create :debate_team_size, tournament: t1, value: 1
             FactoryGirl.create :confirmed_registration, institution: mmu, tournament: t1, team_manager: user
             visit profile_path
           end
