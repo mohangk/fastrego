@@ -1,6 +1,15 @@
 %header.subhead
   %h2.jumbotron.blue Institutions
 
+= search_form_for @search do |f|
+  .field
+    = f.label :name_cont
+    = f.text_field :name_cont
+  .field
+    = f.label :country_in, "Country"
+    = f.select :country_in, @institutions.sort_by(&:country).map(&:country).uniq!, {}, {multiple: true}
+  = f.submit
+
 %table.table.table-striped.table-bordered.table-condensed
   %thead
     %tr

@@ -1,8 +1,10 @@
 class InstitutionsController < ApplicationController
+
   # GET /institutions
   # GET /institutions.json
   def index
-    @institutions = Institution.alphabetically.for_tournament current_tournament.identifier
+  @search = Institution.ransack(params[:q])
+  @institutions = @search.result.alphabetically.for_tournament current_tournament.identifier
 
     respond_to do |format|
       format.html # index.html.erb
