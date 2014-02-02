@@ -7,7 +7,7 @@
     = f.text_field :name_cont
   .field
     = f.label :country_in, "Country"
-    = f.select :country_in, @institutions.sort_by(&:country).map(&:country).uniq!, {}, {multiple: true}
+    = f.select :country_in, @countries, {}, {multiple: true}
   = f.submit
 
 %table.table.table-striped.table-bordered.table-condensed

@@ -6,6 +6,8 @@ class InstitutionsController < ApplicationController
   @search = Institution.ransack(params[:q])
   @institutions = @search.result.alphabetically.for_tournament current_tournament.identifier
 
+  @countries = @institutions.map(&:country).uniq!.sort!
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @institutions }
