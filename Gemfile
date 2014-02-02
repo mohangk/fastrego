@@ -13,6 +13,7 @@ gem 'paperclip'
 gem 'aws-sdk'
 #putting this in so I can dupe data on beta-debreg
 gem 'faker'
+gem 'ransack'
 
 # Gems used only for assets and not required
 # in production environments by default.
