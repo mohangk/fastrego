@@ -10,6 +10,6 @@
   = form.simple_fields_for :observers do |f|
     - i+=1
     %legend Observer #{i}
-    = render partial: 'participant_form', locals: {f: f} 
+    = render partial: 'participant_form', locals: {f: f}
     %hr
   = form.submit 'Update'

@@ -100,7 +100,7 @@ describe "Users" do
         describe "top section of the profile page" do
 
           before :each do
-            FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user 
+            FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user
             visit profile_path
           end
 
@@ -114,7 +114,7 @@ describe "Users" do
         describe 'submitting pre-registration' do
           before :each do
             FactoryGirl.create(:enable_pre_registration, tournament: t1)
-            FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user 
+            FactoryGirl.create :registration, institution: mmu, tournament: t1, team_manager: user
             visit profile_path
           end
 
@@ -143,7 +143,7 @@ describe "Users" do
           end
 
           before :each do
-            FactoryGirl.create :granted_registration, institution: mmu, tournament: t1, team_manager: user 
+            FactoryGirl.create :granted_registration, institution: mmu, tournament: t1, team_manager: user
             visit profile_path
           end
 
@@ -183,8 +183,8 @@ describe "Users" do
 
         describe 'adding details' do
           before :each do
-            FactoryGirl.create :debate_team_size, tournament: t1
-            FactoryGirl.create :confirmed_registration, institution: mmu, tournament: t1, team_manager: user 
+            FactoryGirl.create :debate_team_size, tournament: t1, value: 1
+            FactoryGirl.create :confirmed_registration, institution: mmu, tournament: t1, team_manager: user
             visit profile_path
           end
 
@@ -192,6 +192,7 @@ describe "Users" do
             tournament = TournamentRegistration.new.tap { |t| t.visit }
             debate_team_form = tournament.add_debate_team_details
             debate_team_form.correct_page?
+            tournament = debate_team_form.fill_details
           end
         end
       end

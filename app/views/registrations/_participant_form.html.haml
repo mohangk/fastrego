@@ -15,3 +15,7 @@
 = f.input :preferred_roommate_institution
 - f.object.custom_fields.each do | field|
   = f.input field.to_sym
+= f.label :profile_picture, 'Profile picture'
+- if f.object.profile_picture.exists?
+  = link_to image_tag(f.object.profile_picture.url, size: "200x200"), f.object.profile_picture.url(:original), popup: 'original_image'
+= f.file_field :profile_picture, class: 'span3', label: 'profile_picture'
