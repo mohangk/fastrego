@@ -24,10 +24,30 @@ describe InstitutionsController do
   end
 
   describe "GET index" do
-    it "assigns all institutions as @institutions" do
-      university = University.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:institutions).should eq([university])
+    before { @university = University.create! valid_attributes }
+
+    describe "with no search params" do
+      it "assigns all institutions as @institutions" do
+        get :index, {}, valid_session
+        assigns(:institutions).should eq([@university])
+        assigns(:countries).should eq([@university.country])
+      end
+    end
+
+    describe "with a name of an non-existing institution" do
+      it "assigns all institutions as @institutions" do
+        get :index, {"q"=>{"name_cont"=>"invalid", "country_in"=>[""]}}, valid_session
+        assigns(:institutions).should eq([])
+        assigns(:countries).should eq([@university.country])
+      end
+    end
+
+    describe "with a country of an non-existing institution" do
+      it "assigns all institutions as @institutions" do
+        get :index, {"q"=>{"name_cont"=>"", "country_in"=>["Singapore"]}}, valid_session
+        assigns(:institutions).should eq([])
+        assigns(:countries).should eq([@university.country])
+      end
     end
   end
 

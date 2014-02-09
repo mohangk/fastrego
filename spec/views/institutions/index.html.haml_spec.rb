@@ -16,6 +16,8 @@ describe "institutions/index" do
         :country => "Country"
       )
     ])
+    assign(:search, Institution.ransack())
+    assign(:countries, ["Country"])
   end
 
   it "renders a list of institutions" do

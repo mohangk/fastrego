@@ -17,6 +17,8 @@ describe "Institutions list" do
       dum = FactoryGirl.create(:institution, name: 'Dummy institution', abbreviation: 'DUM')
       
       institutions_page = InstitutionsPage.new.tap { |p| p.visit }
+      institutions_page.should have_field("q_name_cont")
+      institutions_page.should have_field("q_country_in")
       institutions_page.should have_add_institution_link
       institutions_page.should have_institution dum
       institutions_page.should_not have_team_manager dum
